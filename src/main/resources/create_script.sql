@@ -1,57 +1,34 @@
-CREATE TABLE STUDENTS (
-  STUDENT_ID             INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
-  STUDENT_FIRSTNAME       VARCHAR(40),
-  STUDENT_LASTNAME        VARCHAR(40),
-  LOGIN                   VARCHAR(40),
-  PASSWORD                VARCHAR(40),
-CONSTRAINT PK_STUDENTS PRIMARY KEY (STUDENT_ID)
-)
-;
+CREATE TABLE `students` (
+	`student_id`	integer NOT NULL UNIQUE,
+	`student_first_name`	varchar ( 40 ),
+	`student_last_name`	varchar ( 40 ),
+	PRIMARY KEY(`student_id`)
+);
 
-CREATE TABLE TUTORS (
-  TUTOR_ID                INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
-  TUTOR_FIRSTNAME         VARCHAR(40),
-  TUTOR_LASTNAME          VARCHAR(40),
-  LOGIN                   VARCHAR(40),
-  PASSWORD                VARCHAR(40),
-CONSTRAINT PK_TUTORS PRIMARY KEY (TUTOR_ID)
-)
-;
+CREATE TABLE `tutors` (
+	`tutor_id`	integer NOT NULL UNIQUE,
+	`tutor_first_name`	varchar ( 40 ),
+	`tutor_last_name`	varchar ( 40 ),
+	PRIMARY KEY(`tutor_id`)
+);
 
-CREATE TABLE STUDENT_COURSE (
-  STUDENT_ID              INT(10) ZEROFILL NOT NULL,
-  COURSE_ID               INT(10) ZEROFILL NOT NULL,
-  MARK                    INT(3),
-  FEEDBACK                VARCHAR(200)
-)
-;
+CREATE TABLE `courses` (
+	`course_id`	integer NOT NULL UNIQUE,
+	`course_name`	varchar ( 40 ),
+	`tutor_id`	integer,
+	`starting_date`	date,
+	`finishing_date`	date,
+	`active`	boolean,
+	FOREIGN KEY(`tutor_id`) REFERENCES `tutors`,
+	PRIMARY KEY(`course_id`)
+);
 
-CREATE TABLE COURSES (
-  COURSE_ID               INT(10) ZEROFILL NOT NULL AUTO_INCREMENT,
-  COURSE_NAME             VARCHAR(40),
-  TUTOR_ID                INT(10) NOT NULL,
-  STARTING_DATE           DATE,
-  FINISHING_DATE          DATE,
-  ACTIVE                  BOOLEAN,
-CONSTRAINT PK_COURSES PRIMARY KEY (COURSE_ID)
-)
-;
+CREATE TABLE `student_course` (
+	`student_id`	integer,
+	`course_id`	integer,
+	`mark`	integer ( 1 ),
+	`feedback`	varchar ( 200 ),
+	FOREIGN KEY(`student_id`) REFERENCES `students`,
+	FOREIGN KEY(`course_id`) REFERENCES `courses`
+);
 
-ALTER TABLE STUDENT_COURSE
-    ADD CONSTRAINT One_Course_To_Many_Student_Courses
-        FOREIGN KEY (COURSE_ID)
-            REFERENCES COURSES (COURSE_ID)
- ;
-
-ALTER TABLE STUDENT_COURSE
-    ADD CONSTRAINT One_Student_To_Many_Student_Courses
-        FOREIGN KEY (STUDENT_ID)
-            REFERENCES STUDENTS (STUDENT_ID)
- ;
-
-
-ALTER TABLE COURSES
-    ADD CONSTRAINT One_Tutor_To_One_Course
-        FOREIGN KEY (TUTOR_ID)
-            REFERENCES TUTORS (TUTOR_ID)
- ;
