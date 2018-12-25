@@ -15,5 +15,6 @@ public class StudentController extends HttpServlet {
         HttpSession session = req.getSession();
         ServletContext servletContext = req.getServletContext();
         resp.getWriter().println("hello from student servlet");
+        resp.sendRedirect("index.html");
     }
 }
