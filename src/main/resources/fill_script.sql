@@ -1,83 +1,91 @@
-/*STUDENTS*/
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (0,'LAURA','HIEME','0','0');
+/*Tutors*/
+INSERT INTO tutors (tutor_id,tutor_first_name,tutor_last_name,login,passmord)
+VALUES (0,"Mark","Rasane");
 
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (1,'SAM','GARRISON','0','0');
+INSERT INTO tutors (tutor_id,tutor_first_name,tutor_last_name,login,passmord)
+VALUES (1,"Lewis","Meckln");
 
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (2,'DONALD','TRUMP','0','0');
+/*--------------------------------------------------------------------------------*/
+/*Students*/
+INSERT INTO students (student_id,student_first_name,student_last_name,login,password)
+VALUES (0,"Laura","Hieme","0","0");
 
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (3,'LESLEY','DOWNER','0','0');
+INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+VALUES (1,"Sam","Garrison","0","0");
 
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (4,'KEN','HAM','0','0');
+INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+VALUES (2,"Donald","Trump","0","0");
 
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (5,'JESSE','LESNER','0','0');
+INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+VALUES (3,"Britney","Speers","0","0");
 
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (6,'CASTER','DOUCHE','0','0');
+INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+VALUES (4,"Ken","Ham","0","0");
 
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (7,'MAY','LE SOUGE','0','0');
-
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (8,'BOB','FONTAINE','0','0');
-
-INSERT INTO STUDENTS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (9,'SAID','AL-MAIJD','0','0');
-
-/*TUTORS*/
-INSERT INTO TUTORS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (0,'HUE','CHONG','0','0');
-
-INSERT INTO TUTORS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (1,'GAVIN','KENSEY','0','0');
-
-INSERT INTO TUTORS (STUDENT_ID,STUDENT_FIRSTNAME,STUDENT_LASTNAME,LOGIN,PASSWORD)
-VALUES (2,'ANTON','PETROV','0','0');
-
-/*COURSES*/
-INSERT INTO COURSES ( COURSE_ID,
-  COURSE_NAME           ,
-  TUTOR_ID              ,
-  STARTING_DATE         ,
-  FINISHING_DATE        ,
-  ACTIVE                )
-VALUES ( 0,
-'COURSE_1',
+/*----------------------------------------------------------------------------------*/
+/*Courses*/
+INSERT INTO courses (
+  course_id,
+  course_name,
+  tutor_id,
+  starting_date,
+  finishing_date,
+  active
+)
+VALUES (
 0,
-17-DEC-2018,
-18-DEC-2018,
+"COURSE_1",
+0,
+17-12-2018,
+18-12-2018,
 TRUE
 );
 
-INSERT INTO COURSES ( COURSE_ID,
-  COURSE_NAME           ,
-  TUTOR_ID              ,
-  STARTING_DATE         ,
-  FINISHING_DATE        ,
-  ACTIVE                )
-VALUES ( 1,
-'COURSE_2',
+INSERT INTO courses (
+  course_id,
+  course_name,
+  tutor_id,
+  starting_date,
+  finishing_date,
+  active
+)
+VALUES (
+1,
+"COURSE_2",
 2,
-1-DEC-2018,
-8-DEC-2018,
+1-12-2018,
+8-12-2018,
 FALSE
 );
 
-/*STUDENT COURSE*/
-INSERT INTO STUDENT_COURSE (STUDENT_ID,
-  COURSE_ID,
-  MARK,
-  FEEDBACK
+/*---------------------------------------------------------------------------------------*/
+/*Student course*/
+INSERT INTO student_course(
+  student_id,
+  course_id,
+  mark,
+  feedback
   )
-VALUES ( 0,
+VALUES
+(
+0,
 0,
 NULL,
-''
+NULL
+)
+
+INSERT INTO student_course(
+  student_id,
+  course_id,
+  mark,
+  feedback
+  )
+VALUES
+(
+3,
+1,
+4,
+"Good preformance"
 )
 
 
