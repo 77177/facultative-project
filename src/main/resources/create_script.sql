@@ -35,5 +35,3 @@ CREATE TABLE student_course (
 	FOREIGN KEY(student_id) REFERENCES students,
 	FOREIGN KEY(course_id) REFERENCES courses
 );
-
-

@@ -24,72 +24,16 @@ VALUES (4,'Ken','Ham','0','0');
 
 /*----------------------------------------------------------------------------------*/
 /*Courses*/
-INSERT INTO courses (
-  course_id,
-  course_name,
-  tutor_id,
-  starting_date,
-  finishing_date,
-  active
-)
-VALUES (
-0,
-'COURSE_1',
-0,
-'17-12-2018',
-'18-12-2018',
-'true'
-);
+INSERT INTO courses (course_id,course_name,tutor_id,starting_date,finishing_date,active)
+VALUES (0,'COURSE_1',0,'17-12-2018','18-12-2018','true');
 
-INSERT INTO courses (
-  course_id,
-  course_name,
-  tutor_id,
-  starting_date,
-  finishing_date,
-  active
-)
-VALUES (
-1,
-'COURSE_2',
-1,
-'1-12-2018',
-'8-12-2018',
-'false'
-);
+INSERT INTO courses (course_id,course_name,tutor_id,starting_date,finishing_date,active)
+VALUES (1,'COURSE_2',1,'1-12-2018','8-12-2018','false');
 
 /*---------------------------------------------------------------------------------------*/
 /*Student course*/
-INSERT INTO student_course(
-  student_id,
-  course_id,
-  mark,
-  feedback
-  )
-VALUES
-(
-0,
-0,
--1,
-'Empty'
-)
+INSERT INTO student_course(student_id,course_id,mark,feedback)
+VALUES(0,0,-1,'Empty');
 
-INSERT INTO student_course(
-  student_id,
-  course_id,
-  mark,
-  feedback
-  )
-VALUES
-(
-3,
-1,
-4,
-'Good performance'
-)
-
-
-
-
-
-
+INSERT INTO student_course(student_id,course_id,mark,feedback)
+VALUES(3,1,4,'Good performance');
