@@ -1,8 +1,8 @@
 /*Tutors*/
-INSERT INTO tutors (tutor_id,tutor_first_name,tutor_last_name,login,passmord)
+INSERT INTO tutors (tutor_id,tutor_first_name,tutor_last_name,login,password)
 VALUES (0,'Mark','Rasane','0','0');
 
-INSERT INTO tutors (tutor_id,tutor_first_name,tutor_last_name,login,passmord)
+INSERT INTO tutors (tutor_id,tutor_first_name,tutor_last_name,login,password)
 VALUES (1,'Lewis','Meckln','0','0');
 
 /*--------------------------------------------------------------------------------*/
