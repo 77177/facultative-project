@@ -10,16 +10,16 @@ VALUES (1,'Lewis','Meckln','0','0');
 INSERT INTO students (student_id,student_first_name,student_last_name,login,password)
 VALUES (0,'Laura','Hieme','0','0');
 
-INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+INSERT INTO students (student_id,student_first_name,student_last_name,login,password)
 VALUES (1,'Sam','Garrison','0','0');
 
-INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+INSERT INTO students (student_id,student_first_name,student_last_name,login,password)
 VALUES (2,'Donald','Trump','0','0');
 
-INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+INSERT INTO students (student_id,student_first_name,student_last_name,login,password)
 VALUES (3,'Britney','Speers','0','0');
 
-INSERT INTO STUDENTS (student_id,student_first_name,student_last_name,login,password)
+INSERT INTO students (student_id,student_first_name,student_last_name,login,password)
 VALUES (4,'Ken','Ham','0','0');
 
 /*----------------------------------------------------------------------------------*/
