@@ -9,12 +9,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Teacher {
     private int id;
     private String firstname;
     private String lastname;
     private String username;
     private String password;
     private List<Course> courses;
-
 }
