@@ -1,6 +1,6 @@
 package com.epam.lab.group1.facultative.model;
 
-public class Student {
+public class Teacher {
     private int id;
     private String firstname;
     private String lastname;
