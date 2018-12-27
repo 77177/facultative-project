@@ -64,12 +64,16 @@ public class StudentController {
         return modelAndView;
     }
 
-    public ModelAndView delete(@PathVariable int studentId) {
+    /**
+     * @param studentId student to delete
+     * @return redirect to /course if succeed, /student/studentId if not.
+     */
+    public String delete(@PathVariable int studentId) {
         boolean isDeleted = studentService.getById(studentId);
         if (isDeleted) {
-            return new ModelAndView("/courses");
+            return "redirect:/course";
         } else {
-            return new ModelAndView("/student/" + studentId);
+            return "redirect:/student/" + studentId;
         }
     }
 }
