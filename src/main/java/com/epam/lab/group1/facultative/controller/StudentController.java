@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Responsible for processing CRUD requests from users related with Student.
+ */
 @Controller
 @RequestMapping("/student")
 public class StudentController {
@@ -25,12 +28,19 @@ public class StudentController {
         this.courseService = courseService;
     }
 
+    /**
+     * @return all student in db as list.
+     */
     @GetMapping("")
     @ResponseBody
     public List<Student> getAll() {
         return studentService.getAll();
     }
 
+    /**
+     * @param studentId
+     * @return Student by db's student's id with corresponding courseList.
+     */
     @GetMapping("/{studentId}")
     public ModelAndView getById(@PathVariable int studentId) {
         Student student = studentService.getById(studentId);
@@ -41,6 +51,10 @@ public class StudentController {
         return modelAndView;
     }
 
+    /**
+     * @param request post-request from user.
+     * @return modelAndView with created by StudentService Student object with empty Course list.
+     */
     @PostMapping("")
     public ModelAndView create(HttpServletRequest request) {
         Student student = studentService.create(request);
@@ -48,5 +62,14 @@ public class StudentController {
         modelAndView.addObject("student", student);
         modelAndView.addObject("courseList", Collections.EMPTY_LIST);
         return modelAndView;
+    }
+
+    public ModelAndView delete(@PathVariable int studentId) {
+        boolean isDeleted = studentService.getById(studentId);
+        if (isDeleted) {
+            return new ModelAndView("/courses");
+        } else {
+            return new ModelAndView("/student/" + studentId);
+        }
     }
 }
