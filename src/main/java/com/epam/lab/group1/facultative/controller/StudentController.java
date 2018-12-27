@@ -1,20 +1,52 @@
 package com.epam.lab.group1.facultative.controller;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+import com.epam.lab.group1.facultative.model.Student;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.epam.lab.group1.facultative.service.StudentService;
+import com.epam.lab.group1.facultative.model.Course;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
-public class StudentController extends HttpServlet {
+@Controller
+@RequestMapping("/student")
+public class StudentController {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        ServletContext servletContext = req.getServletContext();
-        resp.getWriter().println("hello from student servlet");
-        resp.sendRedirect("index.html");
+    private final String viewName = "studentProfile";
+    private StudentService studentService;
+    private CourseService courseService;
+
+    public StudentController(StudentService studentService, CourseService courseService) {
+        this.studentService = studentService;
+        this.courseService = courseService;
+    }
+
+    @GetMapping("")
+    @ResponseBody
+    public List<Student> getAll() {
+        return studentService.getAll();
+    }
+
+    @GetMapping("/{studentId}")
+    public ModelAndView getById(@PathVariable int studentId) {
+        Student student = studentService.getById(studentId);
+        List<Course> courseList = courseService.getByStudentId(studentId);
+        ModelAndView modelAndView = new ModelAndView(viewName);
+        modelAndView.addObject("student", student);
+        modelAndView.addObject("courseList", courseList);
+        return modelAndView;
+    }
+
+    @PostMapping("")
+    public ModelAndView create(HttpServletRequest request) {
+        Student student = studentService.create(request);
+        ModelAndView modelAndView = new ModelAndView(viewName);
+        modelAndView.addObject("student", student);
+        modelAndView.addObject("courseList", Collections.EMPTY_LIST);
+        return modelAndView;
     }
 }
