@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
 
-    private final String viewName = "studentProfile";
+    private final String viewName = "student";
 
     /**
      * @return all student in db as list.
