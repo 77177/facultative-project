@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.epam.lab.group1.facultative.service.StudentService;
-import com.epam.lab.group1.facultative.model.Course;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
@@ -20,13 +17,6 @@ import java.util.List;
 public class StudentController {
 
     private final String viewName = "studentProfile";
-    private StudentService studentService;
-    private CourseService courseService;
-
-    public StudentController(StudentService studentService, CourseService courseService) {
-        this.studentService = studentService;
-        this.courseService = courseService;
-    }
 
     /**
      * @return all student in db as list.
@@ -34,7 +24,7 @@ public class StudentController {
     @GetMapping("")
     @ResponseBody
     public List<Student> getAll() {
-        return studentService.getAll();
+        return Collections.emptyList();
     }
 
     /**
@@ -43,11 +33,7 @@ public class StudentController {
      */
     @GetMapping("/{studentId}")
     public ModelAndView getById(@PathVariable int studentId) {
-        Student student = studentService.getById(studentId);
-        List<Course> courseList = courseService.getByStudentId(studentId);
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("student", student);
-        modelAndView.addObject("courseList", courseList);
         return modelAndView;
     }
 
@@ -57,10 +43,7 @@ public class StudentController {
      */
     @PostMapping("")
     public ModelAndView create(HttpServletRequest request) {
-        Student student = studentService.create(request);
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("student", student);
-        modelAndView.addObject("courseList", Collections.EMPTY_LIST);
         return modelAndView;
     }
 
@@ -68,9 +51,9 @@ public class StudentController {
      * @param studentId student to delete
      * @return redirect to /course if succeed, /student/studentId if not.
      */
+    @DeleteMapping("")
     public String delete(@PathVariable int studentId) {
-        boolean isDeleted = studentService.getById(studentId);
-        if (isDeleted) {
+        if (false) {
             return "redirect:/course";
         } else {
             return "redirect:/student/" + studentId;
