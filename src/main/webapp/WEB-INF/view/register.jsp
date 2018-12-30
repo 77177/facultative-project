@@ -10,6 +10,11 @@
             Last name:      <input type="text" name="lastName" placeholder="last name"/><br>
             E-mail:          <input type="text" name="email" placeholder="e-mail"/><br>
             Password:       <input type="password" name="password" placeholder="password"/><br>
+            Position:
+            <select name="position">
+                <option>student</option>
+                <option>teacher</option>
+            </select>
             <button type="submit">Register</button>
         </form>
         <br><br>
