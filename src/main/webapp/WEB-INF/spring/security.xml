@@ -8,11 +8,11 @@
         http://www.springframework.org/schema/security/spring-security.xsd">
     
     <http>
+        <intercept-url pattern="/authenticator/**" access="isAnonymous()"/>
         <intercept-url pattern="/**" access="hasAnyRole('admin', 'student', 'teacher')"/>
-        <intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <form-login login-processing-url="/login"
+        <form-login login-page="/authenticator/login"
                     authentication-failure-url="/"
-                    default-target-url="/student"/>
+                    default-target-url="/course"/>
         <logout logout-url="/"/>
     </http>
 
