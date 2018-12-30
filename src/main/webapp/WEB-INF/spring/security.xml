@@ -9,7 +9,10 @@
     
     <http>
         <intercept-url pattern="/authenticator/**" access="isAnonymous()"/>
+        <intercept-url pattern="/course**" access="isAnonymous()"/>
         <intercept-url pattern="/**" access="hasAnyRole('admin', 'student', 'teacher')"/>
+        <intercept-url pattern="/student**" access="hasAnyRole('admin', 'student')"/>
+        <intercept-url pattern="/teacher**" access="hasAnyRole('admin', 'teacher')"/>
         <form-login login-page="/authenticator/login"
                     authentication-failure-url="/"
                     default-target-url="/course"/>
