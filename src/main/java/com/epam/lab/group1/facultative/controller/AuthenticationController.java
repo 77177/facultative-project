@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthenticationController {
 
     private final String loginViewName = "login";
-    private final String registrationViewName = "registration";
+    private final String registrationViewName = "register";
     private final String courseViewName = "course";
 
     /**
