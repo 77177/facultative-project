@@ -13,7 +13,8 @@
         <form-login login-page="/authenticator/login"
                     authentication-failure-url="/"
                     default-target-url="/course"/>
-        <logout logout-url="/"/>
+        <logout delete-cookies="JSESSIONID"
+                logout-url="/"/>
     </http>
 
     <authentication-manager>
