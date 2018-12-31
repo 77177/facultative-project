@@ -1,8 +1,10 @@
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="bundle.login" var="pageBundle"/>
+<fmt:setLocale value="es_ES"/>
+<fmt:setBundle basename="bundle.login"/>
 <html>
     <head>
         <title>Login to facultative</title>
