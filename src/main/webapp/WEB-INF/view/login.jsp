@@ -8,7 +8,7 @@
     <body>
         Sign into the Facultative system.
         <form method="post" action="/login">
-            Email:      <input type="text" name="name" placeholder="your email"/><br>
+            Email:      <input type="text" name="username" placeholder="your email"/><br>
             Password:   <input type="password" name="password" placeholder="password"/><br>
             <button type="submit">Login in</button>
         </form>
