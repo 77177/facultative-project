@@ -11,6 +11,9 @@
             Email:      <input type="text" name="username" placeholder="your email"/><br>
             Password:   <input type="password" name="password" placeholder="password"/><br>
             <button type="submit">Login in</button>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
         </form>
         <br><br>
         Not registered?<br>
