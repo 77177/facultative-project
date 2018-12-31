@@ -1,9 +1,8 @@
-<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="es_ES"/>
+<fmt:setLocale value="${pageContext.request.locale}"/>
 <fmt:setBundle basename="bundle.login"/>
 <html>
     <head>
