@@ -20,26 +20,26 @@ public class StudentDAO implements DAO<Student> {
 
     @Override
     public Student get(Student student) {
-        return new Student();
+        return null;
     }
 
     @Override
     public Student delete(Student student) {
-        return new Student();
+        return null;
     }
 
     @Override
     public List<Student> getList() {
-        return Collections.emptyList();
+        return null;
     }
 
     @Override
     public Student create(Student student) {
-        return new Student();
+        return null;
     }
 
     @Override
     public Student update(Student student) {
-        return new Student();
+        return null;
     }
 }
