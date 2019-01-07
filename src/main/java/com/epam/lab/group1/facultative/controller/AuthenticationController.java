@@ -25,11 +25,10 @@ public class AuthenticationController {
     }
 
     /**
-     * @return page of registration form/
+     * @return page of registration form.
      */
     @GetMapping("/registration")
     public ModelAndView registration() {
-        boolean isAuthenticated = false;
         ModelAndView modelAndView = new ModelAndView(registrationViewName);
         return modelAndView;
     }
