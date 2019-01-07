@@ -5,6 +5,7 @@ import com.epam.lab.group1.facultative.model.Student;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 public class StudentDAO implements DAO<Student> {
@@ -17,26 +18,26 @@ public class StudentDAO implements DAO<Student> {
 
     @Override
     public Student get(Student student) {
-        return null;
+        return new Student();
     }
 
     @Override
-    public Student deleteById(Student student) {
-        return null;
+    public Student delete(Student student) {
+        return new Student();
     }
 
     @Override
     public List<Student> getList() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public Student create(Student student) {
-        return null;
+        return new Student();
     }
 
     @Override
     public Student update(Student student) {
-        return null;
+        return new Student();
     }
 }

@@ -6,7 +6,7 @@ public interface DAO<T> {
 
     T get(T t);
 
-    T deleteById(T t);
+    T delete(T t);
 
     List<T> getList();
 
