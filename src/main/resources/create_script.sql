@@ -1,6 +1,6 @@
 CREATE TABLE students
 (
-  student_id         INT NOT NULL UNIQUE,
+  student_id         BIGINT AUTO_INCREMENT,
   student_first_name VARCHAR(40),
   student_last_name  VARCHAR(40),
   username           VARCHAR(40),
@@ -9,7 +9,7 @@ CREATE TABLE students
 );
 CREATE TABLE tutors
 (
-  tutor_id         INT NOT NULL UNIQUE,
+  tutor_id         BIGINT AUTO_INCREMENT,
   tutor_first_name VARCHAR(40),
   tutor_last_name  VARCHAR(40),
   username         VARCHAR(40),
@@ -18,7 +18,7 @@ CREATE TABLE tutors
 );
 CREATE TABLE courses
 (
-  course_id      INT NOT NULL UNIQUE,
+  course_id      BIGINT AUTO_INCREMENT,
   course_name    VARCHAR(40),
   tutor_id       INT,
   starting_date  DATE,

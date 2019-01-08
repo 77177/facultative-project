@@ -40,15 +40,16 @@ public class StudentDAO implements DAO<Student> {
     }
 
     @Override
-    public void create(Student student) {
-        int id = (int) (Math.random() * 1000);
-        jdbcTemplate.update("INSERT INTO students (student_id, student_first_name, student_last_name, username, password)" +
-                        " values(?,?,?,?,?);"
-                , id
+    public Student create(Student student) {
+        jdbcTemplate.update("INSERT INTO students (student_first_name, student_last_name, username, password)" +
+                        " values(?,?,?,?);"
                 , student.getStudent_first_name()
                 , student.getStudent_last_name()
                 , student.getUsername()
                 , student.getPassword());
+        student = jdbcTemplate.queryForObject("SELECT * FROM students WHERE username = ?;"
+                , new BeanPropertyRowMapper<>(Student.class), student.getUsername());
+        return student;
     }
 
     @Override

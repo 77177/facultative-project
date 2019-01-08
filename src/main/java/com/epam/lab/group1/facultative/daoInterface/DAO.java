@@ -11,7 +11,7 @@ public interface DAO<T> {
 
     List<T> getList();
 
-    void create(T t);
+    T create(T t);
 
     void update(T t);
 }
