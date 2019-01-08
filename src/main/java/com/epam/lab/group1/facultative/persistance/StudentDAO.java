@@ -1,6 +1,5 @@
-package com.epam.lab.group1.facultative.daoImpl;
+package com.epam.lab.group1.facultative.persistance;
 
-import com.epam.lab.group1.facultative.daoInterface.DAO;
 import com.epam.lab.group1.facultative.model.Student;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

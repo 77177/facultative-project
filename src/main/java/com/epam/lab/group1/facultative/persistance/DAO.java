@@ -1,4 +1,4 @@
-package com.epam.lab.group1.facultative.daoInterface;
+package com.epam.lab.group1.facultative.persistance;
 
 import java.util.List;
 import java.util.Optional;
