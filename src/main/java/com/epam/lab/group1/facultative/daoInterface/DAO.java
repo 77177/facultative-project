@@ -1,16 +1,17 @@
 package com.epam.lab.group1.facultative.daoInterface;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DAO<T> {
 
-    T get(T t);
+    Optional<T> getById(int id);
 
-    T delete(T t);
+    void deleteById(int id);
 
     List<T> getList();
 
-    T create(T t);
+    void create(T t);
 
-    T update(T t);
+    void update(T t);
 }
