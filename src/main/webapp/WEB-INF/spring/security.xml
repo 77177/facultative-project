@@ -10,9 +10,9 @@
     <http>
         <intercept-url pattern="/authenticator/**" access="isAnonymous()"/>
         <intercept-url pattern="/course/**" access="isAnonymous()"/>
-        <intercept-url pattern="/**" access="hasAnyAuthority('admin', 'student', 'teacher')"/>
-        <intercept-url pattern="/student**" access="hasAnyAuthority('admin', 'student')"/>
-        <intercept-url pattern="/teacher**" access="hasAnyAuthority('admin', 'teacher')"/>
+        <intercept-url pattern="/**" access="hasAnyAuthority('student', 'teacher')"/>
+        <intercept-url pattern="/student**" access="hasAnyAuthority('student')"/>
+        <intercept-url pattern="/teacher**" access="hasAnyAuthority('teacher')"/>
         <form-login login-page="/authenticator/login"
                     authentication-failure-url="/"
                     default-target-url="/course"/>
@@ -23,7 +23,8 @@
     <authentication-manager>
         <authentication-provider>
             <user-service>
-                <user name="me" authorities="admin" password="{noop}12345"/>
+                <user name="st" authorities="student" password="{noop}12345"/>
+                <user name="te" authorities="teacher" password="{noop}12345"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>
