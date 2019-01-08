@@ -21,7 +21,7 @@ public class StudentDAO implements DAO<Student> {
 
     @Override
     public Optional<Student> getById(int id) {
-        Optional<Student> student = Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM students where student_id ="
+        Optional<Student> student = Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM students WHERE student_id ="
                         + id
                         + ";",
                 new BeanPropertyRowMapper<>(Student.class)));
