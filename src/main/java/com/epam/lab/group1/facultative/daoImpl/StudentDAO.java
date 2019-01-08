@@ -42,7 +42,7 @@ public class StudentDAO implements DAO<Student> {
     @Override
     public Student create(Student student) {
         jdbcTemplate.update("INSERT INTO students (student_first_name, student_last_name, username, password)" +
-                        " values(?,?,?,?);"
+                        " VALUES(?,?,?,?);"
                 , student.getStudent_first_name()
                 , student.getStudent_last_name()
                 , student.getUsername()
