@@ -7,5 +7,6 @@
     <import resource="dataBaseConfig.xml"/>
 
     <bean id="student" class="com.epam.lab.group1.facultative.model.Student"/>
+    <bean id="tutor" class="com.epam.lab.group1.facultative.model.Tutor"/>
 
 </beans>
