@@ -21,12 +21,14 @@
     </http>
 
     <authentication-manager>
-        <authentication-provider>
+        <authentication-provider user-service-ref="facultativeJdbcUserDetailsServicevice">
             <user-service>
                 <user name="st" authorities="student" password="{noop}12345"/>
                 <user name="te" authorities="teacher" password="{noop}12345"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>
+
+    <beans:bean id="facultativeJdbcUserDetailsServicevice" class="com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService"/>
 
 </beans:beans>
