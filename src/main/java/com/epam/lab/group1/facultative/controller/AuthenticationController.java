@@ -1,10 +1,8 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -39,11 +37,7 @@ public class AuthenticationController {
      * @return page of all courses.
      */
     @PostMapping("/registration")
-    public ModelAndView registerNewUser(@RequestParam String firstName,
-                                        @RequestParam String lastName,
-                                        @RequestParam String email,
-                                        @RequestParam String password,
-                                        @RequestParam String position) {
+    public ModelAndView registerNewUser(@ModelAttribute PersonRegistrationFormDTO personRegistrationFormDTO) {
         //TODO redirect param-list to AuthenticationService. Which should create new UserDetails and save in DB.
         //AuthenticationService creates new user, sets Authentication in SecurityContextHolder
         ModelAndView modelAndView = new ModelAndView(courseViewName);
