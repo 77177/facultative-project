@@ -10,11 +10,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
-    private int studentId;
-    private String studentFirstName;
-    private String studentLastName;
+    private int student_id;
+    private String student_first_name;
+    private String student_last_name;
     private String username;
     private String password;
     private List<Course> courses;
-
 }
