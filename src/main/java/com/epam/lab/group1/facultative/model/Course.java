@@ -11,7 +11,7 @@ import java.util.List;
 class Course {
     private int courseId;
     private String courseName;
-    private String tutorId;
+    private int tutorId;
     private LocalDate startingDate;
     private LocalDate finishingDate;
     private boolean active;
