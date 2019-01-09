@@ -8,4 +8,6 @@
 
     <bean id="student" class="com.epam.lab.group1.facultative.model.Student"/>
 
+    <bean id="personRegistrationFormDTO" class="com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO"/>
+
 </beans>
