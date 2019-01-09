@@ -29,6 +29,4 @@
         </authentication-provider>
     </authentication-manager>
 
-    <beans:bean id="facultativeJdbcUserDetailsServicevice" class="com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService"/>
-
 </beans:beans>
