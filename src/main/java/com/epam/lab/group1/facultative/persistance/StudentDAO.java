@@ -42,8 +42,8 @@ public class StudentDAO implements DAO<Student> {
     public Student create(Student student) {
         jdbcTemplate.update("INSERT INTO students (student_first_name, student_last_name, username, password)" +
                         " VALUES(?,?,?,?);"
-                , student.getStudent_first_name()
-                , student.getStudent_last_name()
+                , student.getStudentFirstName()
+                , student.getStudentLastName()
                 , student.getUsername()
                 , student.getPassword());
         student = jdbcTemplate.queryForObject("SELECT * FROM students WHERE username = ?;"
@@ -59,10 +59,10 @@ public class StudentDAO implements DAO<Student> {
                         ",students.username=?" +
                         ",students.password=?" +
                         " WHERE student_id = ?"
-                , student.getStudent_first_name()
-                , student.getStudent_last_name()
+                , student.getStudentFirstName()
+                , student.getStudentLastName()
                 , student.getUsername()
                 , student.getPassword()
-                , student.getStudent_id());
+                , student.getStudentId());
     }
 }
