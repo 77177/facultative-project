@@ -10,9 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
-    private int id;
-    private String firstname;
-    private String lastname;
+    private int studentId;
+    private String studentFirstName;
+    private String studentLastName;
     private String username;
     private String password;
     private List<Course> courses;
