@@ -11,6 +11,7 @@
     </bean>
 
     <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController"/>
+    <bean id="authenticationController" class="com.epam.lab.group1.facultative.controller.AuthenticationController"/>
 
     <bean id="studentDAO" class="com.epam.lab.group1.facultative.daoImpl.StudentDAO">
         <constructor-arg ref="dataSource"/>
