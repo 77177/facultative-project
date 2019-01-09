@@ -2,18 +2,19 @@ package com.epam.lab.group1.facultative.model;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 class Course {
-    private int id;
-    private String name;
-    private String teacherName;
-    private Date startDate;
-    private Date finalDate;
+    private int courseId;
+    private String courseName;
+    private String tutorId;
+    private LocalDate startingDate;
+    private LocalDate finishingDate;
+    private boolean active;
     private List<Student> studentsList;
 
 }
