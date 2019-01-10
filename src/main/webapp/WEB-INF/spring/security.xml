@@ -6,13 +6,15 @@
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <beans:import resource="springContext.xml"/>
     
     <http>
         <intercept-url pattern="/authenticator/**" access="isAnonymous()"/>
         <intercept-url pattern="/course/**" access="isAnonymous()"/>
-        <intercept-url pattern="/**" access="hasAnyAuthority('student', 'teacher')"/>
+        <intercept-url pattern="/**" access="hasAnyAuthority('student', 'tutor')"/>
         <intercept-url pattern="/student**" access="hasAnyAuthority('student')"/>
-        <intercept-url pattern="/teacher**" access="hasAnyAuthority('teacher')"/>
+        <intercept-url pattern="/tutor**" access="hasAnyAuthority('tutor')"/>
         <form-login login-page="/authenticator/login"
                     authentication-failure-url="/"
                     default-target-url="/course"/>
@@ -21,10 +23,10 @@
     </http>
 
     <authentication-manager>
-        <authentication-provider user-service-ref="facultativeJdbcUserDetailsServicevice">
+        <authentication-provider user-service-ref="facultativeJdbcUserDetailsService">
             <user-service>
                 <user name="st" authorities="student" password="{noop}12345"/>
-                <user name="te" authorities="teacher" password="{noop}12345"/>
+                <user name="te" authorities="tutor" password="{noop}12345"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>

@@ -6,8 +6,24 @@
     <import resource="security.xml"/>
     <import resource="dataBaseConfig.xml"/>
 
+    <!--model bean-->
+
     <bean id="student" class="com.epam.lab.group1.facultative.model.Student"/>
+    <bean id="tutor" class="com.epam.lab.group1.facultative.model.Tutor"/>
+    <bean id="course" class="com.epam.lab.group1.facultative.model.Course"/>
+
+    <!--service-->
+
+    <bean id="authenticationService" class="com.epam.lab.group1.facultative.service.AuthenticationService">
+        <constructor-arg name="userDetailsService" ref="facultativeJdbcUserDetailsService"/>
+    </bean>
+    <bean id="facultativeJdbcUserDetailsService" class="com.epam.lab.group1.facultative.service.security.FacultativeJdbcUserDetailsService">
+        <constructor-arg name="userDao" ref="userDao"/>
+    </bean>
+
+    <!--DTO-->
 
     <bean id="personRegistrationFormDTO" class="com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO"/>
+    <bean id="userDto" class="com.epam.lab.group1.facultative.dto.UserDto"/>
 
 </beans>
