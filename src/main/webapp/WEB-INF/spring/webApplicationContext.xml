@@ -10,15 +10,21 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController"/>
+    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO" >
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="userService" class="com.epam.lab.group1.facultative.service.UserService" >
+        <constructor-arg ref="userDAO"/>
+    </bean>
+
+    <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController">
+        <constructor-arg ref="userService"/>
+    </bean>
+    <bean id="tutorController" class="com.epam.lab.group1.facultative.controller.TutorController">
+        <constructor-arg ref="userService"/>
+    </bean>
+
     <bean id="authenticationController" class="com.epam.lab.group1.facultative.controller.AuthenticationController"/>
-
-    <bean id="studentDAO" class="com.epam.lab.group1.facultative.persistance.StudentDAO">
-        <constructor-arg ref="dataSource"/>
-    </bean>
-
-    <bean id="tutorDAO" class="com.epam.lab.group1.facultative.persistance.TutorDAO">
-        <constructor-arg ref="dataSource"/>
-    </bean>
 
 </beans>

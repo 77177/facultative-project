@@ -7,4 +7,5 @@
         <jdbc:script location="classpath:create_script.sql"/>
         <jdbc:script location="classpath:fill_script.sql"/>
     </jdbc:embedded-database>
+
 </beans>

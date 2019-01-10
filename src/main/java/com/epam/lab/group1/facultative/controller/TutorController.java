@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/student")
-public class StudentController {
+@RequestMapping("/tutor")
+public class TutorController {
     private UserService userService;
-    private final String viewName = "StudentProfile";
+    private final String viewName = "TutorProfile";
 
-    public StudentController(UserService userService) {
+    public TutorController(UserService userService) {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/{studentId}")
-    public ModelAndView getById(@PathVariable int studentId) {
+    @RequestMapping(value = "/{tutorId}")
+    public ModelAndView getById(@PathVariable int tutorId) {
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("student", userService.getById(studentId));
+        modelAndView.addObject("tutor", userService.getById(tutorId));
         return modelAndView;
     }
 }

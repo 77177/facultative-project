@@ -1,20 +1,12 @@
-CREATE TABLE students
+CREATE TABLE users
 (
-  student_id         BIGINT AUTO_INCREMENT,
-  student_first_name VARCHAR(40),
-  student_last_name  VARCHAR(40),
-  username           VARCHAR(40),
-  password           VARCHAR(40),
-  PRIMARY KEY (student_id)
-);
-CREATE TABLE tutors
-(
-  tutor_id         BIGINT AUTO_INCREMENT,
-  tutor_first_name VARCHAR(40),
-  tutor_last_name  VARCHAR(40),
-  username         VARCHAR(40),
-  password         VARCHAR(40),
-  PRIMARY KEY (tutor_id)
+  id         BIGINT AUTO_INCREMENT,
+  first_name VARCHAR(40),
+  last_name  VARCHAR(40),
+  email      VARCHAR(40) UNIQUE,
+  password   VARCHAR(40),
+  position   VARCHAR(40),
+  primary key (id)
 );
 CREATE TABLE courses
 (
