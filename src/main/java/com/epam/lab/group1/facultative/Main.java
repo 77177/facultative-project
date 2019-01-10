@@ -2,7 +2,6 @@ package com.epam.lab.group1.facultative;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
-import org.springframework.test.context.ContextConfiguration;
 
 import javax.servlet.ServletException;
 import java.io.File;
