@@ -1,17 +1,17 @@
-INSERT INTO tutors (tutor_first_name, tutor_last_name, username, password)
-VALUES ('Mark', 'Rasane', '0', '0');
-INSERT INTO tutors (tutor_first_name, tutor_last_name, username, password)
-VALUES ('Lewis', 'Meckln', '0', '0');
-INSERT INTO students (student_first_name, student_last_name, username, password)
-VALUES ('Laura', 'Hieme', '0', '0');
-INSERT INTO students (student_first_name, student_last_name, username, password)
-VALUES ('Sam', 'Garrison', '0', '0');
-INSERT INTO students (student_first_name, student_last_name, username, password)
-VALUES ('Donald', 'Trump', '0', '0');
-INSERT INTO students (student_first_name, student_last_name, username, password)
-VALUES ('Britney', 'Speers', '0', '0');
-INSERT INTO students (student_first_name, student_last_name, username, password)
-VALUES ('Ken', 'Ham', '0', '0');
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Mark', 'Rasane', '0tutor@gmail.com', '0', 'tutor');
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Lewis', 'Meckln', '1tutor@gmail.com', '1', 'tutor');
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Laura', 'Hieme', '0student@gmail.com', '0', 'student');
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Sam', 'Garrison', '1student@gmail.com', '1', 'student');
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Donald', 'Trump', '2student@gmail.com', '2', 'student');
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Britney', 'Speers', '3student@gmail.com', '3', 'student');
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Ken', 'Ham', '4student@gmail.com', '4', 'student');
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
 VALUES ('COURSE_1', 0, '2015-11-10', '2015-11-12', 'true');
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
