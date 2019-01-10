@@ -37,7 +37,7 @@ public class UserDAO {
     }
 
     public List<User> getList() {
-        sql = "SELECT * FROM user";
+        sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
@@ -56,7 +56,7 @@ public class UserDAO {
     }
 
     public void update(User user) {
-        sql = "UPDATE user SET users.first_name=:firstName, users.last_name=:lastName, users.email=:email, users.password=:password WHERE id = :id ";
+        sql = "UPDATE users SET first_name=:firstName, last_name=:lastName, email=:email, password=:password WHERE id = :id ";
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource("firstName", user.getFirstName());
         sqlParameterSource.addValue("lastName", user.getLastName());
         sqlParameterSource.addValue("email", user.getEmail());
