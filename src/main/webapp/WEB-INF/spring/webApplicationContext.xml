@@ -17,4 +17,8 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
+    <bean id="tutorDAO" class="com.epam.lab.group1.facultative.persistance.TutorDAO">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
 </beans>
