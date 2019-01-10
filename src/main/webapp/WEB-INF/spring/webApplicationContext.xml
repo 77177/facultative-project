@@ -13,9 +13,11 @@
     <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO" >
         <constructor-arg ref="dataSource"/>
     </bean>
+
     <bean id="userService" class="com.epam.lab.group1.facultative.service.UserService" >
         <constructor-arg ref="userDAO"/>
     </bean>
+
     <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController">
         <constructor-arg ref="userService"/>
     </bean>
@@ -24,6 +26,5 @@
     </bean>
 
     <bean id="authenticationController" class="com.epam.lab.group1.facultative.controller.AuthenticationController"/>
-
 
 </beans>
