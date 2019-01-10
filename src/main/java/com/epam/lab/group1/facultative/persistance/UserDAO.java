@@ -29,6 +29,11 @@ public class UserDAO {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
         return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, new BeanPropertyRowMapper<>(User.class)));
     }
+    public Optional<User> getByEmail(String email) {
+        sql = "SELECT * FROM users WHERE email = :email;";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("email", email);
+        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, new BeanPropertyRowMapper<>(User.class)));
+    }
 
     public void deleteById(int id) {
         sql = "SELECT * FROM users WHERE id = :id;";
