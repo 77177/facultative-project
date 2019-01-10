@@ -28,7 +28,7 @@ public class TutorDAO implements DAO<Tutor> {
     public Optional<Tutor> getById(int id) {
         sql = "SELECT * FROM tutors WHERE tutor_id = :id;";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
-        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, Tutor.class));
+        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, new BeanPropertyRowMapper<>(Tutor.class)));
     }
 
     @Override
