@@ -1,11 +1,11 @@
 CREATE TABLE users
 (
-  id              BIGINT AUTO_INCREMENT,
-  user_first_name VARCHAR(40),
-  user_last_name  VARCHAR(40),
-  email           VARCHAR(40) UNIQUE,
-  password        VARCHAR(40),
-  position        VARCHAR(40),
+  id         BIGINT AUTO_INCREMENT,
+  first_name VARCHAR(40),
+  last_name  VARCHAR(40),
+  email      VARCHAR(40) UNIQUE,
+  password   VARCHAR(40),
+  position   VARCHAR(40),
   primary key (id)
 );
 CREATE TABLE courses
