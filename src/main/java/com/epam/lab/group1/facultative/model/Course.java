@@ -9,12 +9,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 class Course {
-    private int courseId;
-    private String courseName;
+    private int id;
+    private String name;
     private int tutorId;
     private LocalDate startingDate;
     private LocalDate finishingDate;
     private boolean active;
-    private List<Student> studentsList;
+    private List<User> usersList;
 
 }
