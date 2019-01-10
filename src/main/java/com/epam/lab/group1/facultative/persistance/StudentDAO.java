@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class StudentDAO implements DAO<Student> {
+public class StudentDAO implements DAOInterface<Student> {
 
     private JdbcTemplate jdbcTemplate;
 

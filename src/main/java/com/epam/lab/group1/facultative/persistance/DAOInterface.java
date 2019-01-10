@@ -3,7 +3,7 @@ package com.epam.lab.group1.facultative.persistance;
 import java.util.List;
 import java.util.Optional;
 
-public interface DAO<T> {
+public interface DAOInterface<T> {
 
     Optional<T> getById(int id);
 
