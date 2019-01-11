@@ -124,11 +124,6 @@ public class UserDaoTest {
         assertNotEquals(position, user.getPosition());
     }
 
-    @Test(expected = SQLException.class)
-    public void testDeleteByIdSqlException() {
-        userDAO.deleteById(8);
-    }
-
     @Test
     public void testDeleteById() {
         User user = new User();
