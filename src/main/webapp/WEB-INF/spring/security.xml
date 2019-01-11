@@ -17,8 +17,7 @@
                     authentication-success-forward-url="/course"
                     authentication-failure-url="/"
                     default-target-url="/course"/>
-        <logout delete-cookies="JSESSIONID"
-                logout-url="/"/>
+        <logout delete-cookies="JSESSIONID" invalidate-session="true"/>
     </http>
 
     <authentication-manager>
