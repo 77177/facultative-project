@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import java.io.File;
 
 public class Main {
+
     private void startTomcat() throws LifecycleException, ServletException {
         String docBase = "src/main/webapp/";
 
