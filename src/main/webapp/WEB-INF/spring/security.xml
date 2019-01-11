@@ -10,7 +10,7 @@
     <http>
         <intercept-url pattern="/authenticator/**" access="isAnonymous()"/>
         <intercept-url pattern="/course/**" access="isAnonymous()"/>
-        <intercept-url pattern="/ups/**" access="isAnonymous()"/>
+        <intercept-url pattern="/error/**" access="isAnonymous()"/>
         <intercept-url pattern="/**" access="hasAnyAuthority('student', 'tutor')"/>
         <intercept-url pattern="/student**" access="hasAnyAuthority('student')"/>
         <intercept-url pattern="/tutor**" access="hasAnyAuthority('tutor')"/>

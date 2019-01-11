@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ErrorController {
 
-    public final String errorView = "error";
+    private final String errorView = "error";
 
-    @RequestMapping("/ups/somethingBad")
+    @RequestMapping("/error")
     public ModelAndView bad(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(errorView);
         modelAndView.addObject("errorStatus", request.getAttribute("javax.servlet.error.status_code") );
@@ -19,8 +19,4 @@ public class ErrorController {
         return modelAndView;
     }
 
-    @RequestMapping("/course")
-    public ModelAndView course() {
-        return new ModelAndView("course");
-    }
 }
