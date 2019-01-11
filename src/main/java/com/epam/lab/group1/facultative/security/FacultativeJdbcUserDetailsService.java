@@ -37,23 +37,20 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> optionalUser = userDAO.getByEmail(email);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            SimpleGrantedAuthority grantedAuthority = null;
-            switch (user.getPosition()) {
-                case studentRole: {
-                    grantedAuthority = new SimpleGrantedAuthority(studentRole);
-                    break;
-                }
-                case tutorRole: {
-                    grantedAuthority = new SimpleGrantedAuthority(tutorRole);
-                    break;
-                }
+        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User " + email + " does not exist"));
+        SimpleGrantedAuthority grantedAuthority = null;
+        switch (user.getPosition()) {
+            case studentRole: {
+                grantedAuthority = new SimpleGrantedAuthority(studentRole);
+                break;
             }
-            List<GrantedAuthority> authorities = Arrays.asList(grantedAuthority);
-            return new org.springframework.security.core.userdetails.User(email, user.getPassword(), authorities);
-        } else {
-            throw new UsernameNotFoundException("User " + email + " does not exist");
+            case tutorRole: {
+                grantedAuthority = new SimpleGrantedAuthority(tutorRole);
+                break;
+            }
         }
+        List<GrantedAuthority> authorities = Arrays.asList(grantedAuthority);
+        return new org.springframework.security.core.userdetails.User(email, user.getPassword(), authorities);
+
     }
 }
