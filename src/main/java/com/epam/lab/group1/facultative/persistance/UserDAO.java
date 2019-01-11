@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -25,20 +24,32 @@ public class UserDAO {
     }
 
     public Optional<User> getById(int id) {
-        sql = "SELECT * FROM users WHERE id = :id;";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
-        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, new BeanPropertyRowMapper<>(User.class)));
+        sql = String.format("SELECT * FROM users WHERE id = %d;", id);
+        User user = null;
+        try {
+            user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class));
+        } finally {
+            return Optional.ofNullable(user);
+        }
     }
+
     public Optional<User> getByEmail(String email) {
         sql = "SELECT * FROM users WHERE email = :email;";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("email", email);
-        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, new BeanPropertyRowMapper<>(User.class)));
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource("email", email);
+        User user = null;
+        try {
+            user = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, new BeanPropertyRowMapper<>(User.class));
+            System.out.println("asd");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            return Optional.ofNullable(user);
+        }
     }
 
     public void deleteById(int id) {
-        sql = "SELECT * FROM users WHERE id = :id;";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+        sql = String.format("DELETE FROM users WHERE id = %d;", id);
+        jdbcTemplate.execute(sql);
     }
 
     public List<User> getList() {
