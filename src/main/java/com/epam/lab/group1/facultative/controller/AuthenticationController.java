@@ -44,7 +44,7 @@ public class AuthenticationController {
      */
     @PostMapping("/registration")
     public ModelAndView registerNewUser(@ModelAttribute PersonRegistrationFormDTO personRegistrationFormDTO) {
-        authenticationService.createAccount(personRegistrationFormDTO);
+        authenticationService.createAndAuthorizeUser(personRegistrationFormDTO);
         ModelAndView modelAndView = new ModelAndView(courseViewName);
         return modelAndView;
     }
