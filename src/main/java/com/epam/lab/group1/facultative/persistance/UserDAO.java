@@ -45,7 +45,7 @@ public class UserDAO {
     }
 
     public void deleteById(int id) {
-        sql = String.format("DELETE * FROM users WHERE id = %d;", id);
+        sql = String.format("DELETE FROM users WHERE id = %d;", id);
         jdbcTemplate.execute(sql);
     }
 
