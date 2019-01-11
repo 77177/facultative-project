@@ -1,7 +1,6 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.User;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -35,11 +34,15 @@ public class UserDAO {
     }
 
     public Optional<User> getByEmail(String email) {
-        sql = String.format("SELECT * FROM users WHERE id = %s;", email);
+        sql = "SELECT * FROM users WHERE email = :email;";
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource("email", email);
         User user = null;
         try {
-            user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class));
-        } finally {
+            user = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, new BeanPropertyRowMapper<>(User.class));
+            System.out.println("asd");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
             return Optional.ofNullable(user);
         }
     }
