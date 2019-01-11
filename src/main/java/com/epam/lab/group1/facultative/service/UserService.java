@@ -20,6 +20,10 @@ public class UserService {
         return userDAO.getById(id);
     }
 
+    public Optional<User> getByEmail(String string) {
+        return userDAO.getByEmail(string);
+    }
+    
     public void deleteById(int id) {
         userDAO.deleteById(id);
     }
