@@ -35,11 +35,15 @@ public class UserDAO {
     }
 
     public Optional<User> getByEmail(String email) {
-        sql = String.format("SELECT * FROM users WHERE id = %s;", email);
+        sql = "SELECT * FROM users WHERE email = :email;";
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource("email", email);
         User user = null;
         try {
-            user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class));
-        } finally {
+            user = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, new BeanPropertyRowMapper<>(User.class));
+            System.out.println("asd");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
             return Optional.ofNullable(user);
         }
     }
