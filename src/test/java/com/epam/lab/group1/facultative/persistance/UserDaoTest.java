@@ -140,7 +140,9 @@ public class UserDaoTest {
 
     @Test
     public void testCreate() {
-        userDAO.create(new User());
+        User user = new User();
+        user.setEmail("anithing@something.com");
+        userDAO.create(user);
         assertTrue(true);
     }
 }
