@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/userDaoTest/UserDaoSpringContextConfiguration.xml")
-public class UserDAOTest {
+public class UserDaoTest {
 
     @Autowired
     private UserDAO userDAO;
