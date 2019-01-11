@@ -65,7 +65,6 @@ public class UserDaoTest {
 
     @Test
     public void testGetByEmail() {
-        userDAO.getList().stream().forEach(user -> System.out.println(user));
         String existingUserEmail = "1student@gmail.com";
         Optional<User> optionalUser = userDAO.getByEmail(existingUserEmail);
         assertNotNull(optionalUser);
