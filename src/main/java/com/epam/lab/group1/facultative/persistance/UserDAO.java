@@ -1,7 +1,6 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.User;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
