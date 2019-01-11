@@ -14,6 +14,7 @@
         <intercept-url pattern="/student**" access="hasAnyAuthority('student')"/>
         <intercept-url pattern="/tutor**" access="hasAnyAuthority('tutor')"/>
         <form-login login-page="/authenticator/login"
+                    authentication-success-forward-url="/course"
                     authentication-failure-url="/"
                     default-target-url="/course"/>
         <logout delete-cookies="JSESSIONID"
@@ -21,11 +22,13 @@
     </http>
 
     <authentication-manager>
-        <authentication-provider user-service-ref="facultativeJdbcUserDetailsService"/>
+        <authentication-provider user-service-ref="facultativeJdbcUserDetailsService">
+            <password-encoder ref="facultativePasswordEncoder"/>
+        </authentication-provider>
     </authentication-manager>
 
     <beans:bean id="facultativeJdbcUserDetailsService"
-                class="com.epam.lab.group1.facultative.service.security.FacultativeJdbcUserDetailsService">
+                class="com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService">
         <beans:constructor-arg name="userDAO" ref="userDAO"/>
     </beans:bean>
 
@@ -33,5 +36,7 @@
         <beans:constructor-arg name="userDetailsService" ref="facultativeJdbcUserDetailsService"/>
         <beans:constructor-arg name="userService" ref="userService"/>
     </beans:bean>
+
+    <beans:bean id="facultativePasswordEncoder" class="com.epam.lab.group1.facultative.security.FacultativePasswordEncoder"/>
 
 </beans:beans>

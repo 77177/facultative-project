@@ -1,4 +1,4 @@
-package com.epam.lab.group1.facultative.service.security;
+package com.epam.lab.group1.facultative.security;
 
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;

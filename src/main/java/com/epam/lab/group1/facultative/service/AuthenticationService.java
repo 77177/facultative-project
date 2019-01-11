@@ -1,7 +1,7 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
-import com.epam.lab.group1.facultative.service.security.FacultativeJdbcUserDetailsService;
+import com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
