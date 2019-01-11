@@ -7,8 +7,6 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <beans:import resource="springContext.xml"/>
-    
     <http>
         <intercept-url pattern="/authenticator/**" access="isAnonymous()"/>
         <intercept-url pattern="/course/**" access="isAnonymous()"/>
@@ -23,12 +21,17 @@
     </http>
 
     <authentication-manager>
-        <authentication-provider user-service-ref="facultativeJdbcUserDetailsService">
-            <user-service>
-                <user name="st" authorities="student" password="{noop}12345"/>
-                <user name="te" authorities="tutor" password="{noop}12345"/>
-            </user-service>
-        </authentication-provider>
+        <authentication-provider user-service-ref="facultativeJdbcUserDetailsService"/>
     </authentication-manager>
+
+    <beans:bean id="facultativeJdbcUserDetailsService"
+                class="com.epam.lab.group1.facultative.service.security.FacultativeJdbcUserDetailsService">
+        <beans:constructor-arg name="userDAO" ref="userDAO"/>
+    </beans:bean>
+
+    <beans:bean id="authenticationService" class="com.epam.lab.group1.facultative.service.AuthenticationService">
+        <beans:constructor-arg name="userDetailsService" ref="facultativeJdbcUserDetailsService"/>
+        <beans:constructor-arg name="userService" ref="userService"/>
+    </beans:bean>
 
 </beans:beans>
