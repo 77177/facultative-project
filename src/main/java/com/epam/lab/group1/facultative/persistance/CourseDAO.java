@@ -45,7 +45,7 @@ public class CourseDAO {
     }
 
     public void deleteById(int id) {
-        sql = String.format("DELETE FROM courses WHERE courseI_id = %d;", id);
+        sql = String.format("DELETE FROM courses WHERE course_id = %d;", id);
         jdbcTemplate.execute(sql);
     }
 
