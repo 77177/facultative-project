@@ -14,7 +14,9 @@
         <spring.security.version>5.1.2.RELEASE</spring.security.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
+        <javax.persistance.version>2.2</javax.persistance.version>
         <h2.version>1.4.197</h2.version>
+        <hibernate.version>5.4.0.Final</hibernate.version>
     </properties>
 
     <dependencies>
@@ -28,6 +30,11 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>${javax.servlet.jstl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>${javax.persistance.version}</version>
         </dependency>
 
         <!--Spring-->
@@ -54,6 +61,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
@@ -89,6 +101,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--Hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

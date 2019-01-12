@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     private UserDAO userDAO;
 
     public UserService(UserDAO userDAO) {
@@ -49,5 +50,4 @@ public class UserService {
         user.setPosition(personRegistrationFormDTO.getPosition());
         return create(user);
     }
-
 }
