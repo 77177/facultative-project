@@ -37,6 +37,6 @@
     %>
 </table>
 
-<a href="/course/1/">fddf</a>
+<a href="/course/1/">Course_1</a>
 </body>
 </html>
