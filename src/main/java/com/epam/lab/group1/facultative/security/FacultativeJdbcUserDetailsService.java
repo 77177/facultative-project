@@ -30,14 +30,14 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
     /**
      * Loads user data via UserDao and then depending on user role grants corresponding GrantedAuthority.
      *
-     * @param email user's email to search for this user in the database.
+     * @param username user's username to search for this user in the database.
      * @return UserDetails
      * @throws UsernameNotFoundException - if user was not found in the application's database.
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userDAO.getByEmail(email);
-        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User " + email + " does not exist"));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> optionalUser = userDAO.getByEmail(username);
+        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User " + username + " does not exist"));
         SimpleGrantedAuthority grantedAuthority = null;
         switch (user.getPosition()) {
             case studentRole: {
@@ -50,7 +50,7 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
             }
         }
         List<GrantedAuthority> authorities = Arrays.asList(grantedAuthority);
-        return new org.springframework.security.core.userdetails.User(email, user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
 
     }
 }

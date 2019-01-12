@@ -11,7 +11,7 @@
         <form method="post" action="/login">
             <fmt:message key="firstName"/>:<input type="text"     name="firstName"  placeholder="first name"/><br>
             <fmt:message key="lastName"/>: <input type="text"     name="lastName"   placeholder="last name"/><br>
-            <fmt:message key="email"/>:    <input type="text"     name="email"      placeholder="e-mail"/><br>
+            <fmt:message key="email"/>:    <input type="text"     name="username"   placeholder="e-mail"/><br>
             <fmt:message key="password"/>: <input type="password" name="password"   placeholder="password"/><br>
             <fmt:message key="position"/>:
             <select name="position">

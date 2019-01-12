@@ -28,8 +28,6 @@ public class NewUserRegistrationFilter implements Filter {
         if (isRegistration) {
             PersonRegistrationFormDTO personRegistrationFormDTO = formDtoFromRequest(servletRequest);
             authenticationService.createUser(personRegistrationFormDTO);
-            servletRequest.setAttribute("username", personRegistrationFormDTO.getEmail());
-            servletRequest.setAttribute("password", personRegistrationFormDTO.getPassword());
         }
         filterChain.doFilter(servletRequest, response);
     }
@@ -43,7 +41,7 @@ public class NewUserRegistrationFilter implements Filter {
         PersonRegistrationFormDTO dto = new PersonRegistrationFormDTO();
         dto.setFirstName(req.getParameter("firstName"));
         dto.setLastName(req.getParameter("lastName"));
-        dto.setEmail(req.getParameter("email"));
+        dto.setEmail(req.getParameter("username"));
         dto.setPosition(req.getParameter("position"));
         dto.setPassword(req.getParameter("password"));
         return dto;
