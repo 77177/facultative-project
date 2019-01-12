@@ -24,7 +24,7 @@ public class CourseController {
     @RequestMapping(value = "")
     public ModelAndView getAllCourses() {
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("list", courseService.getList());
+        modelAndView.addObject("list", courseService.getAll());
         return modelAndView;
     }
 

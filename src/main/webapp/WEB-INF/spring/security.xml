@@ -8,11 +8,7 @@
         http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http>
-        <intercept-url pattern="/authenticator/**" access="permitAll()"/>
-        <intercept-url pattern="/course/**" access="permitAll()"/>
-        <intercept-url pattern="/student/**" access="hasAnyAuthority('student')"/>
-        <intercept-url pattern="/tutor/**" access="hasAnyAuthority('tutor')"/>
-        <intercept-url pattern="/**" access="hasAnyAuthority('student', 'tutor')"/>
+        <intercept-url pattern="/myprofile" access="hasAnyAuthority('student', 'tutor')"/>
         <custom-filter ref="registrationFilter" before="FORM_LOGIN_FILTER"/>
         <form-login login-page="/authenticator/login"
                     always-use-default-target="true"

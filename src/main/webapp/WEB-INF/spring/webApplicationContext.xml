@@ -11,7 +11,9 @@
     </bean>
 
     <!--Controller-->
-    <bean id="welcomeController" class="com.epam.lab.group1.facultative.controller.WelcomeController"/>
+    <bean id="welcomeController" class="com.epam.lab.group1.facultative.controller.WelcomeController">
+        <constructor-arg name="courseService" ref="courseService"/>
+    </bean>
 
     <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController">
         <constructor-arg ref="userService"/>

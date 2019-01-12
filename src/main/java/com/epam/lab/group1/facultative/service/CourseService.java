@@ -37,7 +37,7 @@ public class CourseService {
         courseDAO.deleteById(id);
     }
 
-    public List<Course> getList() {
+    public List<Course> getAll() {
         return courseDAO.getList();
     }
 
