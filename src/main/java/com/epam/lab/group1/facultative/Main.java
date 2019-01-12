@@ -12,7 +12,7 @@ public class Main {
 
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
-        tomcat.addWebapp("/context", new File(docBase).getAbsolutePath());
+        tomcat.addWebapp("/", new File(docBase).getAbsolutePath());
 
         tomcat.start();
         tomcat.getServer().await();
