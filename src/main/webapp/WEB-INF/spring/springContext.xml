@@ -3,20 +3,20 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="security.xml"/>
+    <import resource="webApplicationContext.xml"/>
     <import resource="dataBaseConfig.xml"/>
+    <import resource="security.xml"/>
 
     <!--DTO-->
     <bean id="personRegistrationFormDTO" class="com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO"/>
 
-    <!--DAO-->
-    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO" >
-        <constructor-arg ref="dataSource"/>
-    </bean>
-
     <!--Service-->
     <bean id="userService" class="com.epam.lab.group1.facultative.service.UserService" >
         <constructor-arg ref="userDAO"/>
+    </bean>
+
+    <bean id="courseService" class="com.epam.lab.group1.facultative.service.CourseService">
+        <constructor-arg ref="courseDAO"/>
     </bean>
 
 </beans>
