@@ -13,6 +13,7 @@
         <intercept-url pattern="/**" access="hasAnyAuthority('student', 'tutor')"/>
         <intercept-url pattern="/student**" access="hasAnyAuthority('student')"/>
         <intercept-url pattern="/tutor**" access="hasAnyAuthority('tutor')"/>
+        <custom-filter ref="registrationFilter" before="FORM_LOGIN_FILTER"/>
         <form-login login-page="/authenticator/login"
                     always-use-default-target="true"
                     authentication-failure-url="/"
@@ -25,6 +26,11 @@
             <password-encoder ref="bCryptPasswordEncoder"/>
         </authentication-provider>
     </authentication-manager>
+
+    <beans:bean id="registrationFilter" class="com.epam.lab.group1.facultative.security.NewUserRegistrationFilter">
+        <beans:constructor-arg name="userService" ref="userService"/>
+        <beans:constructor-arg name="authenticationService" ref="authenticationService"/>
+    </beans:bean>
 
     <beans:bean id="facultativeJdbcUserDetailsService"
                 class="com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService">

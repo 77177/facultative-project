@@ -1,10 +1,9 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,16 +26,9 @@ public class AuthenticationService {
      *
      * @param personRegistrationFormDTO user's data from registration form.
      */
-    public void createAndAuthorizeUser(PersonRegistrationFormDTO personRegistrationFormDTO) {
-
-        //save new user to db
-        userService.createUserFromDto(personRegistrationFormDTO);
-
-        //create and set UserDetails into SecurityContextHolder
-        String email = personRegistrationFormDTO.getEmail();
-        String password = personRegistrationFormDTO.getPassword();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    public User createUser(PersonRegistrationFormDTO personRegistrationFormDTO) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        personRegistrationFormDTO.setPassword(encoder.encode(personRegistrationFormDTO.getPassword()));
+        return userService.createUserFromDto(personRegistrationFormDTO);
     }
 }

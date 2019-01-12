@@ -19,7 +19,6 @@
     </bean>
     <bean id="authenticationController"
           class="com.epam.lab.group1.facultative.controller.AuthenticationController">
-        <constructor-arg name="authenticationService" ref="authenticationService"/>
     </bean>
 
 </beans>
