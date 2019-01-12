@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/student")
 public class StudentController {
     private UserService userService;
+    private final String viewName = "student";
 
     public StudentController(UserService userService) {
         this.userService = userService;
@@ -17,7 +18,7 @@ public class StudentController {
 
     @RequestMapping(value = "/{studentId}")
     public ModelAndView getById(@PathVariable int studentId) {
-        ModelAndView modelAndView = new ModelAndView("student");
+        ModelAndView modelAndView = new ModelAndView(viewName);
         modelAndView.addObject("student", userService.getById(studentId));
         return modelAndView;
     }

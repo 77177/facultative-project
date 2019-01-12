@@ -13,9 +13,9 @@ VALUES ('Britney', 'Speers', '3student@gmail.com', '3', 'student');
 INSERT INTO users (first_name, last_name, email, password, position)
 VALUES ('Ken', 'Ham', '4student@gmail.com', '4', 'student');
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
-VALUES ('COURSE_1', 0, '2015-11-10', '2015-11-12', 'true');
+VALUES ('COURSE_1', 1, '2015-11-10', '2015-11-12', 'true');
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
-VALUES ('COURSE_2', 1, '2015-11-18', '2015-11-19', 'false');
+VALUES ('COURSE_2', 2, '2015-11-18', '2015-11-19', 'false');
 INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (0, 0, -1, 'Empty');
 INSERT INTO student_course(student_id, course_id, mark, feedback)

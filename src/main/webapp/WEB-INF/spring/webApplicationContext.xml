@@ -26,8 +26,12 @@
 
     <bean id="tutorController" class="com.epam.lab.group1.facultative.controller.TutorController">
         <constructor-arg ref="userService"/>
+        <constructor-arg ref="courseService"/>
     </bean>
 
+    <bean id="courseController" class="com.epam.lab.group1.facultative.controller.CourseController">
+        <constructor-arg ref="courseService"/>
+    </bean>
     <bean id="authenticationController" class="com.epam.lab.group1.facultative.controller.AuthenticationController"/>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
@@ -44,6 +48,12 @@
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="courseService" class="com.epam.lab.group1.facultative.service.CourseService">
+        <constructor-arg ref="courseDAO"/>
+    </bean>
+    <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">
+        <constructor-arg ref="dataSource"/>
     </bean>
 
 </beans>

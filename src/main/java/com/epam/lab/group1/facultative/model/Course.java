@@ -8,9 +8,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+public
 class Course {
-    private int id;
-    private String name;
+    private int courseId;
+    private String courseName;
     private int tutorId;
     private LocalDate startingDate;
     private LocalDate finishingDate;
