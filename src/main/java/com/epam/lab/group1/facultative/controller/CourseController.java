@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class CourseController {
     private CourseService courseService;
     private final String viewName = "course";
+    private final String viewNameCourseInfo = "courseInfo";
 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
@@ -25,7 +26,9 @@ public class CourseController {
 
     @RequestMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView(viewName);
+        ModelAndView modelAndView = new ModelAndView(viewNameCourseInfo);
+        modelAndView.addObject("courseInfo", courseService.getById(courseId));
+        modelAndView.addObject("list", courseService.getStudentList(courseId));
         return modelAndView;
     }
 

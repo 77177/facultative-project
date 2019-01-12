@@ -9,7 +9,7 @@
 </head>
 <body>
 <h2>All Courses</h2>
-<a href="/logout">Logout</a>
+<a href="/logout/">Logout</a>
 <p></p>
 
 <table style="border: 2px double black; border-spacing: 7px 7px">
@@ -19,7 +19,6 @@
         <th>StartingDate</th>
         <th>FinishingDate</th>
         <th>isActive</th>
-
     </tr>
 
     <%
@@ -38,5 +37,6 @@
     %>
 </table>
 
+<a href="/course/1/">fddf</a>
 </body>
 </html>

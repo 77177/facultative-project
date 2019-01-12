@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.model.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -40,7 +41,6 @@ public class CourseDAO {
 
     public List<Course> getByStudentId(int id) {
         List<Course> courses = jdbcTemplate.query("SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";", new BeanPropertyRowMapper<>(Course.class));
-        System.out.println(courses.toString());
         return courses;
     }
 
@@ -52,6 +52,12 @@ public class CourseDAO {
     public List<Course> getList() {
         sql = "SELECT * FROM courses";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
+    }
+
+    public List<User> getStudentList(int id) {
+        sql = "SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + ";";
+        List<User> users = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+        return users;
     }
 
     public Course create(Course course) {
