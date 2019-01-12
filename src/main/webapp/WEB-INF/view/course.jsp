@@ -1,42 +1,53 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
-<%@ page import="org.apache.coyote.Request" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="org.springframework.security.core.userdetails.UserDetails" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String userName = null;
+    if (authentication instanceof UserDetails) {
+        userName = ((UserDetails)authentication).getUsername();
+    }
+%>
 <html>
-<head>
-    <title>Courses</title>
-</head>
-<body>
-<h2>All Courses</h2>
-<a href="/logout/">Logout</a>
-<p></p>
-
-<table style="border: 2px double black; border-spacing: 7px 7px">
-    <tr>
-        <th>CourseName</th>
-        <th>TutorId</th>
-        <th>StartingDate</th>
-        <th>FinishingDate</th>
-        <th>isActive</th>
-    </tr>
-
-    <%
-        List<Course> list = (List<Course>) request.getAttribute("list");
-        for (Course course : list) {
-    %>
-    <tr>
-        <td><% out.println(course.getCourseName());%></td>
-        <td><% out.println(course.getTutorId());%></td>
-        <td><% out.println(course.getStartingDate());%></td>
-        <td><% out.println(course.getFinishingDate());%></td>
-        <td><% out.println(course.isActive());%></td>
-    </tr>
-    <%
-        }
-    %>
-</table>
-
-<a href="/course/1/">Course_1</a>
-</body>
+    <head>
+        <title>Courses</title>
+    </head>
+    <body>
+        <h2>All Courses</h2>
+        <% if (userName != null) { %>
+        <h3>Hello, <%=userName%></h3>
+        <% } %>
+        <form method="post" action="/logout">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="submit" value="Logout"/>
+        </form>
+        <table style="border: 2px double black; border-spacing: 7px 7px">
+            <tr>
+                <th>CourseName</th>
+                <th>TutorId</th>
+                <th>StartingDate</th>
+                <th>FinishingDate</th>
+                <th>isActive</th>
+            </tr>
+            <%
+                List<Course> list = (List<Course>) request.getAttribute("list");
+                for (Course course : list) {
+            %>
+            <tr>
+                <td><%= course.getCourseName()%></td>
+                <td><%= course.getTutorId()%></td>
+                <td><%= course.getStartingDate()%></td>
+                <td><%= course.getFinishingDate()%></td>
+                <td><%= course.isActive()%></td>
+                <td><a href="/course/<%=course.getCourseId()%>">course info</a></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+    </body>
 </html>

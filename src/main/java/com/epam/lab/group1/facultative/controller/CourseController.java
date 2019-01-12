@@ -21,7 +21,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "")
     public ModelAndView getAllCourses() {
         ModelAndView modelAndView = new ModelAndView(viewName);
         modelAndView.addObject("list", courseService.getList());

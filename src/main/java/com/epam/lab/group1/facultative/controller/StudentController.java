@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +18,10 @@ public class StudentController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "get/{studentId}")
+    @RequestMapping(value = "/{studentId}")
     public ModelAndView getById(@PathVariable int studentId) {
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("student", userService.getById(studentId));
+        modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
         return modelAndView;
     }
 
