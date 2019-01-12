@@ -6,6 +6,17 @@
     <import resource="security.xml"/>
     <import resource="dataBaseConfig.xml"/>
 
+    <!--DTO-->
     <bean id="personRegistrationFormDTO" class="com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO"/>
+
+    <!--DAO-->
+    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO" >
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <!--Service-->
+    <bean id="userService" class="com.epam.lab.group1.facultative.service.UserService" >
+        <constructor-arg ref="userDAO"/>
+    </bean>
 
 </beans>

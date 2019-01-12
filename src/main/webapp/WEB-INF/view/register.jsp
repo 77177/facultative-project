@@ -8,7 +8,7 @@
     </head>
     <body>
         <fmt:message key="welcome"/><br/>
-        <form method="post" action="/authenticator/registration">
+        <form method="post" action="/login">
             <fmt:message key="firstName"/>:<input type="text"     name="firstName"  placeholder="first name"/><br>
             <fmt:message key="lastName"/>: <input type="text"     name="lastName"   placeholder="last name"/><br>
             <fmt:message key="email"/>:    <input type="text"     name="email"      placeholder="e-mail"/><br>
@@ -19,6 +19,7 @@
                 <option><fmt:message key="option.teacher"/></option>
             </select>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="hidden" name="registration" value="true"/>
             <button type="submit"><fmt:message key="button.register"/></button>
         </form>
         <br><br>

@@ -33,7 +33,9 @@
     <bean id="courseController" class="com.epam.lab.group1.facultative.controller.CourseController">
         <constructor-arg ref="courseService"/>
     </bean>
-    <bean id="authenticationController" class="com.epam.lab.group1.facultative.controller.AuthenticationController"/>
+    <bean id="authenticationController"
+          class="com.epam.lab.group1.facultative.controller.AuthenticationController">
+    </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
