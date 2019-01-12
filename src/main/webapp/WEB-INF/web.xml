@@ -42,6 +42,6 @@
     </filter-mapping>
 
     <error-page>
-        <location>/ups/somethingBad</location>
+        <location>/error</location>
     </error-page>
 </web-app>

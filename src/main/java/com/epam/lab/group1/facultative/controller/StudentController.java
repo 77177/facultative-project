@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+
     private UserService userService;
     private final String viewName = "StudentProfile";
 
