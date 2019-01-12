@@ -20,6 +20,7 @@
         <constructor-arg ref="userDAO"/>
     </bean>
 
+    <bean id="welcomeController" class="com.epam.lab.group1.facultative.controller.WelcomeController"/>
     <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController">
         <constructor-arg ref="userService"/>
     </bean>
