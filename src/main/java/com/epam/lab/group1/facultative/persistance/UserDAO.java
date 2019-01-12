@@ -59,7 +59,8 @@ public class UserDAO {
         session.persist(user);
         session.getTransaction().commit();
         session.beginTransaction();
-        User userReturn = session.load(User.class, user.getEmail());
+        Query<User> query = session.createQuery("select u from " + User.class.getName() + " u where u.email = '" + user.getEmail() + "'", User.class);
+        User userReturn = query.getSingleResult();
         session.getTransaction().commit();
         return userReturn;
     }
