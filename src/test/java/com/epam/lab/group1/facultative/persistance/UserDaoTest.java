@@ -33,7 +33,6 @@ public class UserDaoTest {
         populator.addScripts(
             new ClassPathResource("/userDaoTest/create_script.sql"),
             new ClassPathResource("/userDaoTest/fill_script.sql"));
-//        populator.setSeparator("@@");
         populator.execute(this.dataSource);
     }
 
@@ -110,7 +109,7 @@ public class UserDaoTest {
         assertEquals(lastName, user.getLastName());
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
-        assertNotEquals(position, user.getPosition());
+        assertEquals(position, user.getPosition());
 
         optionalUser = userDAO.getByEmail(email);
         assertNotNull(optionalUser);
@@ -121,7 +120,7 @@ public class UserDaoTest {
         assertEquals(lastName, user.getLastName());
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
-        assertNotEquals(position, user.getPosition());
+        assertEquals(position, user.getPosition());
     }
 
     @Test
