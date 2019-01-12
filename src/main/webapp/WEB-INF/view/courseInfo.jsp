@@ -39,7 +39,7 @@
                 <th>Last Name</th>
             </tr>
             <%
-                List<User> users = (List<User>) request.getAttribute("list");
+                List<User> users = (List<User>) request.getAttribute("studentList");
                 for (User user : users) {
             %>
             <tr>

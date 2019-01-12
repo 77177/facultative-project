@@ -24,7 +24,7 @@ public class CourseController {
     @RequestMapping(value = "")
     public ModelAndView getAllCourses() {
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("list", courseService.getAll());
+        modelAndView.addObject("courseList", courseService.getAll());
         return modelAndView;
     }
 
@@ -32,7 +32,7 @@ public class CourseController {
     public ModelAndView getById(@PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(viewNameCourseInfo);
         modelAndView.addObject("courseInfo", courseService.getById(courseId));
-        modelAndView.addObject("list", courseService.getStudentList(courseId));
+        modelAndView.addObject("studentList", courseService.getStudentList(courseId));
         return modelAndView;
     }
 

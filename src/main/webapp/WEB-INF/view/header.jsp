@@ -14,7 +14,7 @@
         <title>header</title>
     </head>
     <body>
-    <a href="/course">all courses</a>
+    <a href="/course">all courses</a> <br><br>
         <%
             if (userDetails != null) { %>
                 <h3>Hello, <%=userDetails.getUsername()%></h3>
@@ -25,7 +25,7 @@
                     <input type="submit" value="Logout"/>
                 </form><%
             } else {
-                %><a href="/authenticator/login">Login</a><%
+                %><a href="/authenticator/login">Login</a> <br><br> <%
             }
         %>
     </body>
