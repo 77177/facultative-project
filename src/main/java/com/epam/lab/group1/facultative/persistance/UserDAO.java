@@ -30,7 +30,13 @@ public class UserDAO {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Query<User> query = session.createQuery("select u from " + User.class.getName() + " u where u.email = '" + email + "'", User.class);
-        Optional<User> optionalUser = Optional.ofNullable(query.getSingleResult());
+        Optional<User> optionalUser;
+        try {
+            optionalUser = Optional.ofNullable(query.getSingleResult());
+        } catch (Exception e){
+            optionalUser = Optional.ofNullable(null);
+            System.err.println("Not found query, returning NULL");
+        }
         session.getTransaction().commit();
         return optionalUser;
     }
