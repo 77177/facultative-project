@@ -34,7 +34,7 @@ public class UserDAO {
         try {
             optionalUser = Optional.ofNullable(query.getSingleResult());
         } catch (Exception e){
-            optionalUser = Optional.ofNullable(null);
+            optionalUser = Optional.empty();
             System.err.println("Not found query, returning NULL");
         }
         session.getTransaction().commit();
