@@ -131,9 +131,14 @@ public class UserDaoTest {
         user.setEmail("email");
         user.setPassword("email");
         user.setPosition("position");
-
+        userDAO.getList().forEach(user1 -> System.out.println(user1));
         userDAO.create(user);
+        user.setEmail("asd");
+        userDAO.create(user);
+        userDAO.getList().forEach(user1 -> System.out.println(user1));
+        assertEquals(8, userDAO.getList().size());
         userDAO.deleteById(8);
+        userDAO.getList().forEach(user1 -> System.out.println(user1));
     }
 
     @Test

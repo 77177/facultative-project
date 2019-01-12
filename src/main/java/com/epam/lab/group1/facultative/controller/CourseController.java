@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
+
     private CourseService courseService;
     private final String viewName = "course";
     private final String viewNameCourseInfo = "courseInfo";

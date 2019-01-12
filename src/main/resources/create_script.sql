@@ -8,6 +8,7 @@ CREATE TABLE users
   position   VARCHAR(40),
   primary key (id)
 );
+
 CREATE TABLE courses
 (
   course_id      BIGINT AUTO_INCREMENT,
@@ -18,6 +19,7 @@ CREATE TABLE courses
   active         BOOLEAN,
   PRIMARY KEY (course_id)
 );
+
 CREATE TABLE student_course
 (
   student_id INT,

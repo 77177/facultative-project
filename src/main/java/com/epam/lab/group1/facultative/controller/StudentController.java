@@ -1,14 +1,10 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.UserService;
-import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/student")
@@ -31,7 +27,7 @@ public class StudentController {
     @RequestMapping(value = "getEmail/{studentId}/")
     public ModelAndView getById(@PathVariable Object studentId) {
         ModelAndView modelAndView = new ModelAndView("student");
-        modelAndView.addObject("student", userService.getByEmail((String)studentId));
+        modelAndView.addObject("student", userService.getByEmail((String) studentId));
         return modelAndView;
     }
 

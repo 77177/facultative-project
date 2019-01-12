@@ -12,8 +12,24 @@
         <jdbc:script location="classpath:fill_script.sql"/>
     </jdbc:embedded-database>
 
-    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO">
-        <constructor-arg name="dataSource" ref="dataSource"/>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.epam.lab.group1.facultative.model"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean class="com.epam.lab.group1.facultative.persistance.UserDAO">
+        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
 </beans>

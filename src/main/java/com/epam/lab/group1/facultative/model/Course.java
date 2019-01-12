@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public
 class Course {
+
     private int courseId;
     private String courseName;
     private int tutorId;

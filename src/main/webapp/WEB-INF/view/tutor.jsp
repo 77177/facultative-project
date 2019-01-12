@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
-<%@ page import="org.apache.coyote.Request" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -21,7 +20,6 @@
         <th>isActive</th>
 
     </tr>
-
     <%
         List<Course> list = (List<Course>) request.getAttribute("list");
         for (Course course : list) {

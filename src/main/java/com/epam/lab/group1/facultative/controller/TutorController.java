@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-
 @Controller
 @RequestMapping("/tutor")
 public class TutorController {
+
     private UserService userService;
-    private final String viewName = "tutor";
     private CourseService courseService;
+    private final String viewName = "tutor";
 
     public TutorController(UserService userService, CourseService courseService) {
         this.userService = userService;

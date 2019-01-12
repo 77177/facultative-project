@@ -33,7 +33,7 @@ public class UserDAO {
         Optional<User> optionalUser;
         try {
             optionalUser = Optional.ofNullable(query.getSingleResult());
-        } catch (Exception e){
+        } catch (Exception e) {
             optionalUser = Optional.ofNullable(null);
             System.err.println("Not found query, returning NULL");
         }
