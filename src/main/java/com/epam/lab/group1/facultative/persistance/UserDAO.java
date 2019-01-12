@@ -3,6 +3,7 @@ package com.epam.lab.group1.facultative.persistance;
 import com.epam.lab.group1.facultative.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -33,7 +34,8 @@ public class UserDAO {
     public Optional<User> getByEmail(String email) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Optional<User> optionalUser = Optional.ofNullable(session.load(User.class, email));
+        Query<User> query = session.createQuery("select u from " + User.class.getName() + " u where u.email = '" + email + "'", User.class);
+        Optional<User> optionalUser = Optional.ofNullable(query.getSingleResult());
         session.getTransaction().commit();
         return optionalUser;
     }
@@ -51,7 +53,7 @@ public class UserDAO {
     public List<User> getList() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<User> users = session.createSQLQuery("SELECT * FROM users").list();
+        List<User> users = session.createSQLQuery("SELECT * FROM users").addEntity(User.class).list();
         session.getTransaction().commit();
         return users;
     }

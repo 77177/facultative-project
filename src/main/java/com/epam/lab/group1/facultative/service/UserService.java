@@ -29,7 +29,7 @@ public class UserService {
         userDAO.deleteById(id);
     }
 
-    public List getList() {
+    public List<User> getList() {
         return userDAO.getList();
     }
 
