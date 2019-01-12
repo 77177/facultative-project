@@ -9,7 +9,7 @@
 </head>
 <body>
 <h2>Tutor page</h2>
-<a href="/logout">Logout</a>
+<a href="/logout/">Logout</a>
 <p></p>
 
 <table style="border: 2px double black; border-spacing: 7px 7px">
@@ -38,7 +38,7 @@
     %>
 </table>
 <a href="/course/">All courses</a>
-<a href="/tutor/createCourse">Create</a>
+<a href="/course/createCourse/">Create</a>
 
 </body>
 </html>
