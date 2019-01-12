@@ -17,6 +17,7 @@
         <javax.persistance.version>2.2</javax.persistance.version>
         <h2.version>1.4.197</h2.version>
         <hibernate.version>5.4.0.Final</hibernate.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -65,6 +66,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -91,6 +97,13 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
+        </dependency>
+
+        <!--Junit-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
         </dependency>
 
         <!--Lombok-->
