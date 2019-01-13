@@ -32,5 +32,6 @@
     <bean id="authenticationController"
           class="com.epam.lab.group1.facultative.controller.AuthenticationController">
     </bean>
+    <bean id="errorController" class="com.epam.lab.group1.facultative.controller.ErrorController"/>
 
 </beans>
