@@ -8,6 +8,6 @@
     Error info. <br>
     status:<%=request.getAttribute("errorStatus")%><br>
     reason:<%=request.getAttribute("errorReason")%><br><br>
-    <a href="/course">All courses</a>
+    <a href="/course">all courses</a>
 </body>
 </html>
