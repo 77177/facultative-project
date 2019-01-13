@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.service.CourseService;
+import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,12 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class CourseController {
 
     private CourseService courseService;
+    private UserService userService;
     private final String viewName = "course";
     private final String viewNameCourseInfo = "courseInfo";
     private final String viewNameCreateCourse = "createCourse";
 
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "")
