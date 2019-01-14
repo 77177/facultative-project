@@ -6,6 +6,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,24 +23,37 @@ public class UserDAO {
 
     public Optional<User> getById(int id) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Optional<User> optionalUser = Optional.ofNullable(session.load(User.class, id));
-        session.getTransaction().commit();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("id"), id));
+        Query<User> query1 = session.createQuery(query);
+        User user;
+        Optional<User> optionalUser;
+        try {
+            user = query1.getSingleResult();
+            optionalUser = Optional.ofNullable(user);
+        } catch (Exception e) {
+            optionalUser = Optional.empty();
+        }
         return optionalUser;
     }
 
     public Optional<User> getByEmail(String email) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Query<User> query = session.createQuery("select u from " + User.class.getName() + " u where u.email = '" + email + "'", User.class);
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("email"), email));
+        Query<User> query1 = session.createQuery(query);
+        User user;
         Optional<User> optionalUser;
         try {
-            optionalUser = Optional.ofNullable(query.getSingleResult());
-        } catch (Exception e){
-            optionalUser = Optional.ofNullable(null);
-            System.err.println("Not found query, returning NULL");
+            user = query1.getSingleResult();
+            optionalUser = Optional.ofNullable(user);
+        } catch (Exception e) {
+            optionalUser = Optional.empty();
         }
-        session.getTransaction().commit();
         return optionalUser;
     }
 
@@ -53,9 +69,13 @@ public class UserDAO {
 
     public List<User> getList() {
         Session session = sessionFactory.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u);
+        Query<User> query1 = session.createQuery(query);
         session.beginTransaction();
-        List<User> users = session.createSQLQuery("SELECT * FROM users").addEntity(User.class).list();
-        session.getTransaction().commit();
+        List<User> users = query1.getResultList();
         return users;
     }
 
@@ -65,8 +85,12 @@ public class UserDAO {
         session.save(user);
         session.getTransaction().commit();
         session.beginTransaction();
-        Query<User> query = session.createQuery("select u from " + User.class.getName() + " u where u.email = '" + user.getEmail() + "'", User.class);
-        User userReturn = query.getSingleResult();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("email"), user.getEmail()));
+        Query<User> query1 = session.createQuery(query);
+        User userReturn = query1.getSingleResult();
         session.getTransaction().commit();
         return userReturn;
     }
