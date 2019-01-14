@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -23,6 +24,12 @@ public class CourseDAO {
     public CourseDAO(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    public List<Integer> getAllCourseIdbyUserId(int tutorId) {
+        List<Integer> integers = jdbcTemplate.queryForList("SELECT course_id FROM courses where tutor_id = " + tutorId + ";"
+                , Integer.class);
+        return integers;
     }
 
     public Optional<Course> getById(int id) {
@@ -64,7 +71,7 @@ public class CourseDAO {
     }
 
     public void update(Course course) {
-        sql = "UPDATE courses SET course_name=:courseName, tutor_id=:tutorId, starting_date=:startingDate, finishing_date=:finishingDate, active=:active WHERE id = :id ";
+        sql = "UPDATE courses SET course_name=:courseName, tutor_id=:tutorId, starting_date=:startingDate, finishing_date=:finishingDate, active=:active WHERE course_id = :id ";
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", course.getCourseName());
         createMap(course, sqlParameterSource);
         sqlParameterSource.addValue("id", course.getCourseId());

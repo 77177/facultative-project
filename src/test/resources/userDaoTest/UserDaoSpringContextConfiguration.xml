@@ -28,8 +28,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean class="com.epam.lab.group1.facultative.persistance.UserDAO">
+    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO">
         <constructor-arg name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
 </beans>
