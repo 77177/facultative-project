@@ -1,12 +1,16 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.CourseDTO;
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDate;
+import java.time.Month;
+
+import static java.lang.Boolean.TRUE;
 
 @Controller
 @RequestMapping("/course")
@@ -44,8 +48,16 @@ public class CourseController {
 
     @PostMapping(value = "/createCourse")
     public ModelAndView CreateNewCourse() {
-        //TODO uses methdod courseService.create()
+        Course course1 = new Course();
+        course1.setCourseName("abc");
+        course1.setCourseId(1);
+        course1.setTutorId(1);
+        course1.setStartingDate(LocalDate.of(2017, Month.MAY, 15));
+        course1.setFinishingDate((LocalDate.of(2018, Month.MAY, 15)));
+        course1.setActive(TRUE);
+        System.out.println(course1.toString());
         ModelAndView modelAndView = new ModelAndView(viewNameCourseInfo);
+        modelAndView.addObject("courseInfoText", courseService.create(course1));
         return modelAndView;
     }
 }

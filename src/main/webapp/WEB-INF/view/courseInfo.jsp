@@ -11,6 +11,7 @@
 </head>
 <body>
 <h2>Course Info</h2>
+<h3><% out.println(((Course)request.getAttribute("courseInfoText")).toString()); %></h3>
 <a href="/logout/">Logout</a>
 <p></p>
 
