@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,9 +27,14 @@ public class CourseDAO {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public List<Integer> getAllCourseIdbyUserId(int tutorId) {
-        List<Integer> integers = jdbcTemplate.queryForList("SELECT course_id FROM courses where tutor_id = " + tutorId + ";"
-                , Integer.class);
+    public List<Integer> getAllCourseIdbyUserId(User user) {
+        List<Integer> integers = Collections.emptyList();
+        if (user.getPosition().equals("tutor")) {integers = jdbcTemplate.queryForList("SELECT course_id FROM courses where tutor_id = " + user.getId() + ";"
+                    , Integer.class);
+        } else {
+            integers = jdbcTemplate.queryForList("SELECT course_id FROM student_course where student_id = " + user.getId() + ";"
+                    , Integer.class);
+        }
         return integers;
     }
 
