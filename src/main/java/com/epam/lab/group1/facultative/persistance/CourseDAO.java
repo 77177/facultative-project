@@ -35,6 +35,12 @@ public class CourseDAO {
         }
     }
 
+    public List<Course> getAllByTutorID(int id) {
+        String sql = "SELECT * FROM courses WHERE tutor_id =" + id + ";";
+        List<Course> courses = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
+        return courses;
+    }
+
     public List<Course> getAllByUserID(int id) {
         String sql = "SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";";
         List<Course> courses = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));

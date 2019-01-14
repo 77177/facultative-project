@@ -23,7 +23,7 @@ public class TutorController {
     @RequestMapping(value = "/{tutorId}")
     public ModelAndView tutorProfile(@PathVariable int tutorId) {
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId));
+        modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
         return modelAndView;
     }
 

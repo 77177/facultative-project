@@ -24,6 +24,9 @@ public class CourseService {
         return courseDAO.getAllByUserID(studentId);
     }
 
+    public List<Course> getAllByTutorID(int id) {
+        return courseDAO.getAllByTutorID(id);
+    }
     public void deleteById(int id) {
         courseDAO.deleteById(id);
     }

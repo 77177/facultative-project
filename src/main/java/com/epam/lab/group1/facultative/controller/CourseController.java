@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+
 import static java.lang.Boolean.TRUE;
 
 @Controller
@@ -15,9 +17,10 @@ public class CourseController {
 
     private CourseService courseService;
     private UserService userService;
-    private final String viewName = "course";
-    private final String viewNameCourseInfo = "courseInfo";
-    private final String viewNameCreateCourse = "createCourse";
+    private final String courseView = "course";
+    private final String courseInfoView = "courseInfo";
+    private final String createCourseView = "createCourse";
+    private final String editCourseView = "editCourse";
 
     public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
@@ -26,33 +29,60 @@ public class CourseController {
 
     @RequestMapping(value = "")
     public ModelAndView getAllCourses() {
-        ModelAndView modelAndView = new ModelAndView(viewName);
+        ModelAndView modelAndView = new ModelAndView(courseView);
         modelAndView.addObject("courseList", courseService.getAll());
         return modelAndView;
     }
 
     @RequestMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView(viewNameCourseInfo);
+        ModelAndView modelAndView = new ModelAndView(courseInfoView);
         modelAndView.addObject("courseInfo", courseService.getById(courseId));
         modelAndView.addObject("studentList", userService.getAllByCourseId(courseId));
         return modelAndView;
     }
 
-    @GetMapping(value = "/createCourse")
-    public ModelAndView CreateCourse() {
-        ModelAndView modelAndView = new ModelAndView(viewNameCreateCourse);
+    @GetMapping(value = "action/createCourse")
+    public ModelAndView createCourse() {
+        ModelAndView modelAndView = new ModelAndView(createCourseView);
         return modelAndView;
     }
 
-    @PostMapping(value = "/createCourse")
-    public ModelAndView CreateNewCourse(@ModelAttribute Course course) {
-        ModelAndView modelAndView = new ModelAndView(viewNameCourseInfo);
-        course.setTutorId(5);
+    @PostMapping(value = "action/createCourse")
+    public ModelAndView createCourse(@ModelAttribute Course course) {
+        ModelAndView modelAndView = new ModelAndView(courseInfoView);
+        course.setTutorId(1);
         course.setActive(TRUE);
         modelAndView.addObject("courseInfo", courseService.create(course));
         modelAndView.addObject("studentList", userService.getAllByCourseId(1));
         return modelAndView;
+    }
 
+    @GetMapping(value = "action/delete/{courseId}")
+    public ModelAndView deleteCourse(@PathVariable int courseId) {
+        ModelAndView modelAndView = new ModelAndView(courseView);
+        courseService.deleteById(courseId);
+        modelAndView.addObject("courseList", courseService.getAll());
+        return modelAndView;
+    }
+
+    @GetMapping(value = "action/editCourse/{courseId}")
+    public ModelAndView editCourse() {
+        ModelAndView modelAndView = new ModelAndView(editCourseView);
+        return modelAndView;
+    }
+
+    @PostMapping(value = "action/editCourse/{courseId}")
+    public ModelAndView editCourse(@ModelAttribute Course course, @RequestParam int tutorId, @PathVariable int courseId) {
+        ModelAndView modelAndView = new ModelAndView(courseInfoView);
+        course.setTutorId(tutorId);
+        course.setCourseId(courseId);
+        course.setStartingDate(LocalDate.of(1999,01,01));
+        course.setFinishingDate(LocalDate.of(2000,01,01));
+        course.setActive(TRUE);
+        courseService.update(course);
+        modelAndView.addObject("course", courseService.getById(courseId));
+        modelAndView.addObject("studentList", userService.getAllByCourseId(1));
+        return modelAndView;
     }
 }
