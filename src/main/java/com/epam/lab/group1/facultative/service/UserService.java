@@ -47,6 +47,14 @@ public class UserService {
         userDAO.update(user);
     }
 
+    public void leaveCourse(int userId, int courseId) {
+
+    }
+
+    public void participateInCourse(int userId, int courseId) {
+
+    }
+
     public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {
         User user = new User();
         user.setFirstName(personRegistrationFormDTO.getFirstName());

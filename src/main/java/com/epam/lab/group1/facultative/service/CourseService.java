@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,19 +21,8 @@ public class CourseService {
         return courseDAO.getById(courseId);
     }
 
-    public List<Course> getAllByUserId(int studentId) {
-        return courseDAO.getAllByUserID(studentId);
-    }
-
-    public List<Course> getAllByTutorID(int id) {
-        return courseDAO.getAllByTutorID(id);
-    }
     public void deleteById(int id) {
         courseDAO.deleteById(id);
-    }
-
-    public List<Course> getAll() {
-        return courseDAO.getList();
     }
 
     public Optional<Course> create(Course course) {
@@ -43,4 +33,23 @@ public class CourseService {
         courseDAO.update(course);
     }
 
+    //getAll methods.
+    public List<Course> getAll() {
+        return isActiveCheck(courseDAO.getList());
+    }
+
+    public List<Course> getAllByUserId(int studentId) {
+        return isActiveCheck(courseDAO.getAllByUserID(studentId));
+    }
+
+    public List<Course> getAllByTutorID(int id) {
+        return isActiveCheck(courseDAO.getAllByTutorID(id));
+    }
+
+    private List<Course> isActiveCheck(List<Course> courseList) {
+        courseList.forEach(course -> {
+            course.setActive(!course.getStartingDate().isBefore(LocalDate.now()));
+        });
+        return courseList;
+    }
 }
