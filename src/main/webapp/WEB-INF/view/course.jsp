@@ -1,7 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    SecurityContextUser principal = null;
+%>
+<sec:authorize access="isAuthenticated()">
+    <%
+        principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    %>
+</sec:authorize>
 <html>
     <head>
         <title>Courses</title>
@@ -30,6 +41,26 @@
                             <td><%= course.getFinishingDate()%></td>
                             <td><%= course.isActive()%></td>
                             <td><a href="/course/<%=course.getCourseId()%>">course info</a></td>
+                            <sec:authorize access="isAuthenticated()">
+                                <%
+                                    if (principal.isStudent()) {
+                                        if (principal.getCourseIdList().contains(course.getCourseId())) {
+                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=leave">
+                                                        Leave</a>
+                                              </td><%
+                                        } else {
+                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=subscribe">
+                                                        Subscribe</a></td><%
+                                        }
+                                    } else {
+                                        if (principal.getCourseIdList().contains(course.getCourseId())) {
+                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=delete">
+                                                        Delete</a>
+                                            </td><%
+                                        }
+                                    }
+                                %>
+                            </sec:authorize>
                         </tr><%
                     }%>
                     </table><br><br> <%
