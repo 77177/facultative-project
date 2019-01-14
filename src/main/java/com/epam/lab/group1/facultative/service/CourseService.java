@@ -4,7 +4,6 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +24,9 @@ public class CourseService {
         return courseDAO.getAllByUserID(studentId);
     }
 
+    public List<Course> getAllByTutorID(int id) {
+        return courseDAO.getAllByTutorID(id);
+    }
     public void deleteById(int id) {
         courseDAO.deleteById(id);
     }
@@ -33,7 +35,7 @@ public class CourseService {
         return courseDAO.getList();
     }
 
-    public Course create(Course course) {
+    public Optional<Course> create(Course course) {
         return courseDAO.create(course);
     }
 

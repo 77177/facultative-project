@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -48,6 +47,12 @@ public class CourseDAO {
         }
     }
 
+    public List<Course> getAllByTutorID(int id) {
+        String sql = "SELECT * FROM courses WHERE tutor_id =" + id + ";";
+        List<Course> courses = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
+        return courses;
+    }
+
     public List<Course> getAllByUserID(int id) {
         String sql = "SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";";
         List<Course> courses = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
@@ -64,16 +69,17 @@ public class CourseDAO {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
     }
 
-    public Course create(Course course) {
+    public Optional<Course> create(Course course) {
         sql = "INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active) VALUES(:courseName,:tutorId,:startingDate,:finishingDate,:active);";
         MapSqlParameterSource sqlParameterSource;
         sqlParameterSource = new MapSqlParameterSource("courseName", course.getCourseName());
         createMap(course, sqlParameterSource);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
 
-        course = jdbcTemplate.queryForObject("SELECT * FROM courses WHERE course_name = ?;"
-                , new BeanPropertyRowMapper<>(Course.class), course.getCourseName());
-        return course;
+        Optional<Course> course1 = null;
+        course1 = Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM courses WHERE course_name = ?;"
+                , new BeanPropertyRowMapper<>(Course.class), course.getCourseName()));
+        return course1;
     }
 
     public void update(Course course) {
