@@ -1,5 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.model.User;
+import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,38 +13,20 @@ import org.springframework.web.servlet.ModelAndView;
 public class StudentController {
 
     private UserService userService;
+    private CourseService courseService;
     private final String viewName = "student";
 
-    public StudentController(UserService userService) {
+    public StudentController(UserService userService, CourseService courseService) {
         this.userService = userService;
+        this.courseService = courseService;
     }
 
-    @RequestMapping(value = "get/{studentId}")
-    public ModelAndView getById(@PathVariable int studentId) {
+    @RequestMapping(value = "/{studentId}")
+    public ModelAndView studentProfile(@PathVariable int studentId) {
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("student", userService.getById(studentId));
+        modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(studentId));
         return modelAndView;
     }
 
-    @RequestMapping(value = "getEmail/{studentId}/")
-    public ModelAndView getById(@PathVariable Object studentId) {
-        ModelAndView modelAndView = new ModelAndView("student");
-        modelAndView.addObject("student", userService.getByEmail((String) studentId));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/delete/{studentId}")
-    public ModelAndView deleteById(@PathVariable int studentId) {
-        ModelAndView modelAndView = new ModelAndView("users");
-        userService.deleteById(studentId);
-        modelAndView.addObject("users", userService.getList());
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/list")
-    public ModelAndView getList() {
-        ModelAndView modelAndView = new ModelAndView("users");
-        modelAndView.addObject("users", userService.getList());
-        return modelAndView;
-    }
 }

@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Repository
 public class CourseDAO {
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private String sql;
     private JdbcTemplate jdbcTemplate;
@@ -34,13 +35,9 @@ public class CourseDAO {
         }
     }
 
-    public List<Course> getByTutorId(int id) {
-        sql = String.format("SELECT * FROM courses WHERE tutor_id = %d;", id);
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
-    }
-
-    public List<Course> getByStudentId(int id) {
-        List<Course> courses = jdbcTemplate.query("SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";", new BeanPropertyRowMapper<>(Course.class));
+    public List<Course> getAllByUserID(int id) {
+        String sql = "SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";";
+        List<Course> courses = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
         return courses;
     }
 
@@ -54,12 +51,6 @@ public class CourseDAO {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
     }
 
-    public List<User> getStudentList(int id) {
-        sql = "SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + ";";
-        List<User> users = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
-        return users;
-    }
-
     public Course create(Course course) {
         sql = "INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active) VALUES(:courseName,:tutorId,:startingDate,:finishingDate,:active);";
         MapSqlParameterSource sqlParameterSource;
@@ -70,7 +61,6 @@ public class CourseDAO {
         course = jdbcTemplate.queryForObject("SELECT * FROM courses WHERE course_name = ?;"
                 , new BeanPropertyRowMapper<>(Course.class), course.getCourseName());
         return course;
-
     }
 
     public void update(Course course) {
@@ -88,5 +78,4 @@ public class CourseDAO {
         sqlParameterSource.addValue("finishingDate", course.getFinishingDate());
         sqlParameterSource.addValue("active", course.isActive());
     }
-
 }

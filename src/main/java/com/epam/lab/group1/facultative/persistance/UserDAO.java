@@ -4,8 +4,11 @@ import com.epam.lab.group1.facultative.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +16,11 @@ import java.util.Optional;
 public class UserDAO {
 
     private SessionFactory sessionFactory;
+    private JdbcTemplate jdbcTemplate;
 
-    public UserDAO(SessionFactory sessionFactory) {
+    public UserDAO(SessionFactory sessionFactory, DataSource dataSource) {
         this.sessionFactory = sessionFactory;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public Optional<User> getById(int id) {
@@ -76,5 +81,11 @@ public class UserDAO {
         session.beginTransaction();
         session.update(user);
         session.getTransaction().commit();
+    }
+
+    public List<User> getStudentList(int id) {
+        String sql = "SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + ";";
+        List<User> users = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+        return users;
     }
 }

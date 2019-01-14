@@ -2,7 +2,6 @@ package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.CourseDTO;
 import com.epam.lab.group1.facultative.model.Course;
-import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.springframework.stereotype.Service;
 
@@ -25,23 +24,15 @@ public class CourseService {
         return courseDAO.getById(courseId);
     }
 
-    public List<Course> getByTutorId(int tutorId) {
-        return courseDAO.getByTutorId(tutorId);
-    }
-
-    public List<Course> getByStudentId(int studentId) {
-        return courseDAO.getByStudentId(studentId);
-    }
-
-    public List<User> getStudentList(int id) {
-        return courseDAO.getStudentList(id);
+    public List<Course> getAllByUserId(int studentId) {
+        return courseDAO.getAllByUserID(studentId);
     }
 
     public void deleteById(int id) {
         courseDAO.deleteById(id);
     }
 
-    public List<Course> getList() {
+    public List<Course> getAll() {
         return courseDAO.getList();
     }
 

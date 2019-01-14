@@ -5,6 +5,7 @@ import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,11 @@ public class UserService {
 
     public List<User> getList() {
         return userDAO.getList();
+    }
+
+    public List<User> getAllByCourseId(int id) {
+        //TODO implement method
+        return Collections.emptyList();
     }
 
     public User create(User user) {

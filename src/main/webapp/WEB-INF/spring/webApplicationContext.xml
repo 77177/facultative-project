@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <mvc:annotation-driven/>
-    <tx:annotation-driven/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO">
-        <constructor-arg ref="sessionFactory"/>
+    <!--Controller-->
+    <bean id="welcomeController" class="com.epam.lab.group1.facultative.controller.WelcomeController">
+        <constructor-arg name="courseService" ref="courseService"/>
     </bean>
 
-    <bean id="userService" class="com.epam.lab.group1.facultative.service.UserService">
-        <constructor-arg ref="userDAO"/>
-    </bean>
+    <bean class="com.epam.lab.group1.facultative.controller.UserController"/>
 
-    <bean id="welcomeController" class="com.epam.lab.group1.facultative.controller.WelcomeController"/>
     <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController">
-        <constructor-arg ref="userService"/>
+        <constructor-arg name="courseService" ref="courseService"/>
+        <constructor-arg name="userService" ref="userService"/>
     </bean>
 
     <bean id="tutorController" class="com.epam.lab.group1.facultative.controller.TutorController">
@@ -31,30 +28,14 @@
     </bean>
 
     <bean id="courseController" class="com.epam.lab.group1.facultative.controller.CourseController">
-        <constructor-arg ref="courseService"/>
-    </bean>
-    <bean id="authenticationController" class="com.epam.lab.group1.facultative.controller.AuthenticationController"/>
-
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.epam.lab.group1.facultative.model"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-            </props>
-        </property>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="courseService" ref="courseService"/>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="authenticationController"
+          class="com.epam.lab.group1.facultative.controller.AuthenticationController">
     </bean>
-    <bean id="courseService" class="com.epam.lab.group1.facultative.service.CourseService">
-        <constructor-arg ref="courseDAO"/>
-    </bean>
-    <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">
-        <constructor-arg ref="dataSource"/>
-    </bean>
+
+    <bean id="errorController" class="com.epam.lab.group1.facultative.controller.ErrorController"/>
 
 </beans>
