@@ -60,7 +60,7 @@ public class CourseController {
         courseDTO.setActive(TRUE);
         courseService.createCourseFromDto(courseDTO);
         try {
-            response.sendRedirect("/course");
+            response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class CourseController {
         ModelAndView modelAndView = new ModelAndView(courseView);
         courseService.deleteById(courseId);
         try {
-            response.sendRedirect("/course");
+            response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,8 +89,9 @@ public class CourseController {
         courseDTO.setCourseId(courseId);
         courseDTO.setActive(TRUE);
         courseService.updateCourseFromDto(courseDTO);
+
         try {
-            response.sendRedirect("/tutor/" + tutorId);
+            response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }

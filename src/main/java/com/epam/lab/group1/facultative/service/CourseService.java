@@ -53,6 +53,7 @@ public class CourseService {
 
     public void updateCourseFromDto(CourseDTO courseDTO) {
         Course course = CourseDtoToCourse(courseDTO);
+        course.setCourseId(courseDTO.getCourseId());
         update(course);
     }
 
