@@ -81,7 +81,7 @@ public class UserDAO {
     public List<User> getAllStudentByCourseId(int id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<User> users = session.createSQLQuery("SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + ";").addEntity(User.class).list();
+        List<User> users = session.createSQLQuery("SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + " AND position = 'student';").addEntity(User.class).list();
         session.getTransaction().commit();
         return users;
     }

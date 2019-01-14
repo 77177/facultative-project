@@ -2,25 +2,19 @@ package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
-import org.hibernate.HibernateError;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -38,7 +32,7 @@ public class CourseDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Course> getAllCourseIdbyUserId(User user) {
+    public List<Integer> getAllCourseIdbyUserId(User user) {
         Session session = sessionFactory.openSession();
         List<Course> courses = Collections.emptyList();
         session.beginTransaction();
@@ -48,7 +42,10 @@ public class CourseDAO {
             courses = session.createSQLQuery("SELECT * FROM student_course join courses on student_course.course_id = courses.course_id where student_id = " + user.getId() + ";").addEntity(Course.class).getResultList();
         }
         session.getTransaction().commit();
-        return courses;
+
+        List<Integer> courseIds = new ArrayList<>();
+        courses.forEach(c->courseIds.add(c.getCourseId()));
+        return courseIds;
     }
 
     public Optional<Course> getById(int id) {
@@ -91,7 +88,7 @@ public class CourseDAO {
         return courses;
     }
 
-    public Course create(Course course) {
+    public Optional<Course> create(Course course) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.persist(course);
@@ -99,8 +96,9 @@ public class CourseDAO {
         session.beginTransaction();
         Query<Course> query = session.createSQLQuery("SELECT * FROM courses WHERE courses.course_name = '" + course.getCourseName()+"'").addEntity(Course.class);
         Course courseReturn = query.getSingleResult();
+        Optional<Course> optionalCourse = Optional.ofNullable(courseReturn);
         session.getTransaction().commit();
-        return courseReturn;
+        return optionalCourse;
     }
 
     public void update(Course course) {

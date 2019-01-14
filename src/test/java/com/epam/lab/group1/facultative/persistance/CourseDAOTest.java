@@ -71,12 +71,12 @@ public class CourseDAOTest {
         course.setStartingDate(LocalDate.of(1, 1, 1));
         course.setFinishingDate(LocalDate.of(2, 2, 2));
         course.setActive(false);
-        Course courseReturn = courseDAO.create(course);
-        assertEquals(course.getCourseName(), courseDAO.getById(courseReturn.getCourseId()).get().getCourseName());
-        assertEquals(course.getTutorId(), courseDAO.getById(courseReturn.getCourseId()).get().getTutorId());
-        assertEquals(course.getStartingDate(), courseDAO.getById(courseReturn.getCourseId()).get().getStartingDate());
-        assertEquals(course.getFinishingDate(), courseDAO.getById(courseReturn.getCourseId()).get().getFinishingDate());
-        assertEquals(course.isActive(), courseDAO.getById(courseReturn.getCourseId()).get().isActive());
+        Optional<Course> courseReturn = courseDAO.create(course);
+        assertEquals(course.getCourseName(), courseDAO.getById(courseReturn.get().getCourseId()).get().getCourseName());
+        assertEquals(course.getTutorId(), courseDAO.getById(courseReturn.get().getCourseId()).get().getTutorId());
+        assertEquals(course.getStartingDate(), courseDAO.getById(courseReturn.get().getCourseId()).get().getStartingDate());
+        assertEquals(course.getFinishingDate(), courseDAO.getById(courseReturn.get().getCourseId()).get().getFinishingDate());
+        assertEquals(course.isActive(), courseDAO.getById(courseReturn.get().getCourseId()).get().isActive());
     }
 
     @Test
@@ -92,10 +92,10 @@ public class CourseDAOTest {
         User user = new User();
         user.setId(1);
         user.setPosition("tutor");
-        List<Course> allCourseIdbyUserId = courseDAO.getAllCourseIdbyUserId(user);
-        assertEquals(1, allCourseIdbyUserId.get(0).getCourseId());
+        List<Integer> allCourseIdbyUserId = courseDAO.getAllCourseIdbyUserId(user);
+        assertEquals(1, allCourseIdbyUserId.get(0).longValue());
         user.setPosition("student");
-        List<Course> allCourseIdbyUserId1 = courseDAO.getAllCourseIdbyUserId(user);
-        assertEquals(1, allCourseIdbyUserId1.get(0).getCourseId());
+        List<Integer> allCourseIdbyUserId1 = courseDAO.getAllCourseIdbyUserId(user);
+        assertEquals(1, allCourseIdbyUserId1.get(0).longValue());
     }
 }
