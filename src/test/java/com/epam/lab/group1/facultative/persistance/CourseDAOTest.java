@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,7 +89,13 @@ public class CourseDAOTest {
 
     @Test
     public void testGetAllCourseIdbyUserId() {
-        List<Integer> allCourseIdbyUserId = courseDAO.getAllCourseIdbyUserId(1);
+        User user = new User();
+        user.setId(1);
+        user.setPosition("tutor");
+        List<Integer> allCourseIdbyUserId = courseDAO.getAllCourseIdbyUserId(user);
         assertEquals(1,allCourseIdbyUserId.get(0).longValue());
+        user.setPosition("student");
+        List<Integer> allCourseIdbyUserId1 = courseDAO.getAllCourseIdbyUserId(user);
+        assertEquals(1,allCourseIdbyUserId1.get(0).longValue());
     }
 }
