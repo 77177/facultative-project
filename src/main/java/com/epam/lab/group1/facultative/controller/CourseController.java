@@ -3,6 +3,7 @@ package com.epam.lab.group1.facultative.controller;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.lang.Boolean.TRUE;
 
@@ -51,21 +54,26 @@ public class CourseController {
     }
 
     @PostMapping(value = "action/createCourse")
-    public ModelAndView createCourse(@ModelAttribute Course course) {
-        ModelAndView modelAndView = new ModelAndView(courseInfoView);
+    public void createCourse(@ModelAttribute Course course, HttpServletResponse response) {
         course.setTutorId(1);
         course.setActive(TRUE);
-        modelAndView.addObject("courseInfo", courseService.create(course));
-        modelAndView.addObject("studentList", userService.getAllByCourseId(1));
-        return modelAndView;
+        courseService.create(course);
+        try {
+            response.sendRedirect("/course");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping(value = "action/delete/{courseId}")
-    public ModelAndView deleteCourse(@PathVariable int courseId) {
+    public void deleteCourse(@PathVariable int courseId, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView(courseView);
         courseService.deleteById(courseId);
-        modelAndView.addObject("courseList", courseService.getAll());
-        return modelAndView;
+        try {
+            response.sendRedirect("/course");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping(value = "action/editCourse")

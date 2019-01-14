@@ -8,8 +8,8 @@
 <form method="post" action="/course/action/createCourse/">
     Course Name:
     <input type="text" name="courseName"><br>
-    <%--Starting date:
-    <input type="date" name="startingDate"><br>
+   <%-- Starting date:
+    <input type="date" name="startingDate" pattern="yyyy-MMM-dd"><br>
     Finishing date:
     <input type="date" name="finishingDate" pattern="yyyy-MMM-dd"><br>--%>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
