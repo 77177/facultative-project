@@ -23,10 +23,10 @@ VALUES ('Ken', 'Ham', '4student@gmail.com', '4', 'student');
 
 --courses
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
-VALUES ('COURSE_1', 0, '2015-11-10', '2015-11-12', 'true');
+VALUES ('COURSE_1', 1, '2015-11-10', '2015-11-12', 'true');
 
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
-VALUES ('COURSE_2', 1, '2015-11-18', '2015-11-19', 'false');
+VALUES ('COURSE_2', 2, '2015-11-18', '2015-11-19', 'false');
 
 
 --srudent_course

@@ -16,11 +16,9 @@ import java.util.Optional;
 public class UserDAO {
 
     private SessionFactory sessionFactory;
-    private JdbcTemplate jdbcTemplate;
 
-    public UserDAO(SessionFactory sessionFactory, DataSource dataSource) {
+    public UserDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public Optional<User> getById(int id) {
@@ -83,9 +81,11 @@ public class UserDAO {
         session.getTransaction().commit();
     }
 
-    public List<User> getStudentList(int id) {
-        String sql = "SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + ";";
-        List<User> users = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+    public List<User> getAllStudentByCourseId(int id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<User> users = session.createSQLQuery("SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + ";").addEntity(User.class).list();
+        session.getTransaction().commit();
         return users;
     }
 }
