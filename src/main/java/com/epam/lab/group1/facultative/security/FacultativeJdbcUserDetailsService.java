@@ -50,7 +50,9 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
             }
         }
         List<GrantedAuthority> authorities = Arrays.asList(grantedAuthority);
-        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
+        SecurityContextUser securityContextUser = new SecurityContextUser(username, user.getPassword(), authorities);
+        securityContextUser.setUserId(user.getId());
+        return securityContextUser;
 
     }
 }

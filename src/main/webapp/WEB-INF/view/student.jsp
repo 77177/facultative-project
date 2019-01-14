@@ -1,7 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Object courseListObject = request.getParameter("courseList");
@@ -16,6 +19,11 @@
         pageContext.setAttribute("student", student);
     }
 %>
+<sec:authorize access="isAuthenticated()">
+    <%
+        SecurityContextUser principal = (SecurityContextUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    %>
+</sec:authorize>
 <html>
     <head>
         <title>Students</title>
