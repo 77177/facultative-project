@@ -4,12 +4,11 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static java.lang.Boolean.TRUE;
@@ -69,23 +68,25 @@ public class CourseController {
         return modelAndView;
     }
 
-    @GetMapping(value = "action/editCourse/{courseId}")
+    @GetMapping(value = "action/editCourse")
     public ModelAndView editCourse() {
         ModelAndView modelAndView = new ModelAndView(editCourseView);
         return modelAndView;
     }
 
-    @PostMapping(value = "action/editCourse/{courseId}")
-    public ModelAndView editCourse(@ModelAttribute Course course, @RequestParam int tutorId, @PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView(courseInfoView);
+    @PostMapping(value = "action/editCourse")
+    public void editCourse(@ModelAttribute Course course, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
         course.setTutorId(tutorId);
         course.setCourseId(courseId);
-        course.setStartingDate(LocalDate.of(1999,01,01));
-        course.setFinishingDate(LocalDate.of(2000,01,01));
+        course.setStartingDate(LocalDate.of(2019, 10,10));
+        course.setFinishingDate(LocalDate.of(2020, 10,10));
         course.setActive(TRUE);
         courseService.update(course);
-        modelAndView.addObject("course", courseService.getById(courseId));
-        modelAndView.addObject("studentList", userService.getAllByCourseId(1));
-        return modelAndView;
+        //modelAndView.addObject("studentList", userService.getAllByCourseId(courseId));
+        try {
+            response.sendRedirect("/tutor/" + tutorId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

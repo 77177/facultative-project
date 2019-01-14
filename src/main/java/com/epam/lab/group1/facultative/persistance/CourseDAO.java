@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,11 +82,11 @@ public class CourseDAO {
         return course1;
     }
 
-    public void update(Optional<Course> course) {
-        sql = "UPDATE courses SET course_name=:courseName, tutor_id=:tutorId, starting_date=:startingDate, finishing_date=:finishingDate, active=:active WHERE id = :id ";
-        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", course.get().getCourseName());
-        createMap(course.get(), sqlParameterSource);
-        sqlParameterSource.addValue("id", course.get().getCourseId());
+    public void update(Course course) {
+        sql = "UPDATE courses SET course_name=:courseName, tutor_id=:tutorId, starting_date=:startingDate, finishing_date=:finishingDate, active=:active WHERE course_id = :id ";
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", course.getCourseName());
+        createMap(course, sqlParameterSource);
+        sqlParameterSource.addValue("id", course.getCourseId());
 
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }

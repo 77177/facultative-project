@@ -29,7 +29,7 @@
                 <td><% out.println(course.getStartingDate());%></td>
                 <td><% out.println(course.getFinishingDate());%></td>
                 <td><% out.println(course.isActive());%></td>
-                <td><a href="/course/action/editCourse/<%out.print(course.getCourseId());%>">Edit</a></td>
+                <td><a href="/course/action/editCourse/">Edit</a></td>
                 <td><a href="/course/action/delete/<%out.print(course.getCourseId());%>/">delete</a></td>
             </tr>
             <%
