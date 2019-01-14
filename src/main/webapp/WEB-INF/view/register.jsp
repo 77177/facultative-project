@@ -18,7 +18,7 @@
             <fmt:message key="position"/>:
             <select name="position">
                 <option><fmt:message key="option.student"/></option>
-                <option><fmt:message key="option.teacher"/></option>
+                <option><fmt:message key="option.tutor"/></option>
             </select>
             <input type="hidden" name="registration" value="true"/>
             <button type="submit"><fmt:message key="button.register"/></button>

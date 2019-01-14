@@ -35,7 +35,8 @@
 
     <!--DAO-->
     <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO">
-        <constructor-arg ref="sessionFactory"/>
+        <constructor-arg name="dataSource" ref="dataSource"/>
+        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">

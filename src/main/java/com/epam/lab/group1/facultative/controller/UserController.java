@@ -11,7 +11,7 @@ public class UserController {
     private final String studentPosition = "student";
     private final String tutorPosition = "tutor";
 
-    @RequestMapping("/profile")
+    @RequestMapping("/profile/{userId}")
     public String sendRedirectToProfile(@RequestParam String position) {
         switch (position) {
             case studentPosition: {

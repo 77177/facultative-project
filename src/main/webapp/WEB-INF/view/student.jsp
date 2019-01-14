@@ -19,11 +19,6 @@
         pageContext.setAttribute("student", student);
     }
 %>
-<sec:authorize access="isAuthenticated()">
-    <%
-        SecurityContextUser principal = (SecurityContextUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    %>
-</sec:authorize>
 <html>
     <head>
         <title>Students</title>
