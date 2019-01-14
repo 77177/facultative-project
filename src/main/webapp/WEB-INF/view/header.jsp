@@ -8,7 +8,7 @@
     <a href="/course">all courses</a> <br><br>
         <sec:authorize access="isAuthenticated()">
             <h3>Hello, <sec:authentication property="name"/></h3>
-            <a href="/myprofile">my profile</a>
+            <a href="/profile">my profile</a>
             <br><br>
             <form method="post" action="/logout">
                 <sec:csrfInput/>
