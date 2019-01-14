@@ -25,25 +25,4 @@ public class StudentController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "getEmail/{studentId}/")
-    public ModelAndView getById(@PathVariable Object studentId) {
-        ModelAndView modelAndView = new ModelAndView("student");
-        modelAndView.addObject("student", userService.getByEmail((String) studentId));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/delete/{studentId}")
-    public ModelAndView deleteById(@PathVariable int studentId) {
-        ModelAndView modelAndView = new ModelAndView("users");
-        userService.deleteById(studentId);
-        modelAndView.addObject("users", userService.getList());
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/list")
-    public ModelAndView getList() {
-        ModelAndView modelAndView = new ModelAndView("users");
-        modelAndView.addObject("users", userService.getList());
-        return modelAndView;
-    }
 }
