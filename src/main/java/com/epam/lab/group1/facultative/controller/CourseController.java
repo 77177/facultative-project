@@ -62,5 +62,6 @@ public class CourseController {
         ModelAndView modelAndView = new ModelAndView(viewNameCourseInfo);
         modelAndView.addObject("courseInfoText", courseService.create(course1));
         return modelAndView;
+
     }
 }
