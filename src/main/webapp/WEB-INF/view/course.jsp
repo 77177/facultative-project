@@ -26,7 +26,7 @@
         for (Course course : list) {
     %>
     <tr>
-        <td><% out.println(course.getCourseName());%></td>
+        <td><a href="/course/<%out.print(course.getCourseId());%>"><% out.println(course.getCourseName());%></a></td>
         <td><% out.println(course.getTutorId());%></td>
         <td><% out.println(course.getStartingDate());%></td>
         <td><% out.println(course.getFinishingDate());%></td>
@@ -37,6 +37,5 @@
     %>
 </table>
 
-<a href="/course/1/">Course_1</a>
 </body>
 </html>
