@@ -58,8 +58,9 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = Arrays.asList(grantedAuthority);
         SecurityContextUser securityContextUser = new SecurityContextUser(username, user.getPassword(), authorities);
         securityContextUser.setUserId(user.getId());
-        //securityContextUser.setCourseIdList();
+        securityContextUser.setCourseIdList(courseDAO.getAllCourseIdbyUserId(user));
         securityContextUser.setStudent(isStudent);
+        securityContextUser.getCourseIdList().forEach(id-> System.out.println(id));
         return securityContextUser;
 
     }
