@@ -60,7 +60,6 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         securityContextUser.setUserId(user.getId());
         securityContextUser.setCourseIdList(courseDAO.getAllCourseIdbyUserId(user));
         securityContextUser.setStudent(isStudent);
-        securityContextUser.getCourseIdList().forEach(id-> System.out.println(id));
         return securityContextUser;
 
     }

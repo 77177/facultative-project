@@ -7,7 +7,10 @@ import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -43,16 +46,36 @@ public class UserController {
         return modelAndView;
     }
 
-    public ModelAndView studentProfile(int studentId) {
+    @RequestMapping("/{userId}/course/{courseId}")
+    public ModelAndView action(@PathVariable int userId, @PathVariable int courseId,
+                                     @RequestParam(name = "action") String action) {
+        ModelAndView modelAndView = null;
+        switch (action) {
+            case "leave": {
+                modelAndView = studentProfile(userId);
+                break;
+            }
+            case "subscribe": {
+                modelAndView = studentProfile(userId);
+                break;
+            } default: {
+                modelAndView = new ModelAndView("course");
+            }
+        }
+        return modelAndView;
+    }
+
+    private ModelAndView studentProfile(int studentId) {
         ModelAndView modelAndView = new ModelAndView(studentViewName);
         modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
         modelAndView.addObject("courseList", courseService.getAllByUserId(studentId));
         return modelAndView;
     }
 
-    public ModelAndView tutorProfile(int tutorId) {
+    private ModelAndView tutorProfile(int tutorId) {
         ModelAndView modelAndView = new ModelAndView(tutorViewName);
-        modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId));
+        courseService.getAllByUserId(tutorId).forEach(couser -> System.out.println(couser));
+        modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
         modelAndView.addObject("tutor", userService.getById(tutorId));
         return modelAndView;
     }

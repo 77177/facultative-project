@@ -40,26 +40,6 @@
                 <td><% out.println(course.getStartingDate());%></td>
                 <td><% out.println(course.getFinishingDate());%></td>
                 <td><% out.println(course.isActive());%></td>
-                <sec:authorize access="isAuthenticated()">
-                    <%
-                        if (principal.isStudent()) {
-                            if (principal.getCourseIdList().contains(course.getCourseId())) {
-                    %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=leave">
-                    Leave</a>
-                </td><%
-                } else {
-                %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=subscribe">
-                    Subscribe</a></td><%
-                    }
-                } else {
-                    if (principal.getCourseIdList().contains(course.getCourseId())) {
-                %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=delete">
-                    Delete</a>
-                </td><%
-                        }
-                    }
-                %>
-                </sec:authorize>
             </tr>
         </table>
         <br><br>

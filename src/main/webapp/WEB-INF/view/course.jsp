@@ -52,12 +52,6 @@
                                             %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=subscribe">
                                                         Subscribe</a></td><%
                                         }
-                                    } else {
-                                        if (principal.getCourseIdList().contains(course.getCourseId())) {
-                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=delete">
-                                                        Delete</a>
-                                            </td><%
-                                        }
                                     }
                                 %>
                             </sec:authorize>
