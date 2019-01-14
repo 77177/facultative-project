@@ -26,4 +26,5 @@ public class TutorController {
         modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId));
         return modelAndView;
     }
+
 }

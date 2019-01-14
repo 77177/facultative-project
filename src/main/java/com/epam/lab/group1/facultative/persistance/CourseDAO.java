@@ -51,23 +51,24 @@ public class CourseDAO {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
     }
 
-    public Course create(Course course) {
+    public Optional<Course> create(Course course) {
         sql = "INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active) VALUES(:courseName,:tutorId,:startingDate,:finishingDate,:active);";
         MapSqlParameterSource sqlParameterSource;
         sqlParameterSource = new MapSqlParameterSource("courseName", course.getCourseName());
         createMap(course, sqlParameterSource);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
 
-        course = jdbcTemplate.queryForObject("SELECT * FROM courses WHERE course_name = ?;"
-                , new BeanPropertyRowMapper<>(Course.class), course.getCourseName());
-        return course;
+        Optional<Course> course1 = null;
+        course1 = Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM courses WHERE course_name = ?;"
+                , new BeanPropertyRowMapper<>(Course.class), course.getCourseName()));
+        return course1;
     }
 
-    public void update(Course course) {
+    public void update(Optional<Course> course) {
         sql = "UPDATE courses SET course_name=:courseName, tutor_id=:tutorId, starting_date=:startingDate, finishing_date=:finishingDate, active=:active WHERE id = :id ";
-        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", course.getCourseName());
-        createMap(course, sqlParameterSource);
-        sqlParameterSource.addValue("id", course.getCourseId());
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", course.get().getCourseName());
+        createMap(course.get(), sqlParameterSource);
+        sqlParameterSource.addValue("id", course.get().getCourseId());
 
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
