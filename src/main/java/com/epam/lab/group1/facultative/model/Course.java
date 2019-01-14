@@ -17,6 +17,6 @@ class Course {
     private LocalDate startingDate;
     private LocalDate finishingDate;
     private boolean active;
-    private List<User> usersList;
+    //private List<User> usersList;
 
 }

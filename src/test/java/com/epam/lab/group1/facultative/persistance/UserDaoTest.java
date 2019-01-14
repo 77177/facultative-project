@@ -11,7 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +30,8 @@ public class UserDaoTest {
     public void init() {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScripts(
-            new ClassPathResource("/userDaoTest/create_script.sql"),
-            new ClassPathResource("/userDaoTest/fill_script.sql"));
+                new ClassPathResource("/userDaoTest/create_script.sql"),
+                new ClassPathResource("/userDaoTest/fill_script.sql"));
         populator.execute(this.dataSource);
     }
 
@@ -97,9 +96,7 @@ public class UserDaoTest {
         user.setEmail(email);
         user.setPassword(password);
         user.setPosition(position);
-
         userDAO.update(user);
-
         Optional<User> optionalUser = userDAO.getById(id);
         assertNotNull(optionalUser);
         assertTrue(optionalUser.isPresent());
@@ -110,7 +107,6 @@ public class UserDaoTest {
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
         assertEquals(position, user.getPosition());
-
         optionalUser = userDAO.getByEmail(email);
         assertNotNull(optionalUser);
         assertTrue(optionalUser.isPresent());
@@ -133,6 +129,7 @@ public class UserDaoTest {
         user.setPosition("position");
         userDAO.create(user);
         userDAO.deleteById(8);
+        assertFalse(userDAO.getByEmail("email").isPresent());
     }
 
     @Test
@@ -140,6 +137,11 @@ public class UserDaoTest {
         User user = new User();
         user.setEmail("anithing@something.com");
         userDAO.create(user);
-        assertTrue(true);
+        Optional<User> userFromDB = userDAO.getByEmail(user.getEmail());
+        assertEquals(user.getFirstName(), userFromDB.get().getFirstName());
+        assertEquals(user.getLastName(), userFromDB.get().getLastName());
+        assertEquals(user.getEmail(), userFromDB.get().getEmail());
+        assertEquals(user.getPassword(), userFromDB.get().getPassword());
+        assertEquals(user.getPosition(), userFromDB.get().getPosition());
     }
 }
