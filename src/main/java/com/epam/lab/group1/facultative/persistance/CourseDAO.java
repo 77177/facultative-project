@@ -25,6 +25,17 @@ public class CourseDAO {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+    public List<Integer> getAllCourseIdbyUserId(User user) {
+        List<Integer> integers = Collections.emptyList();
+        if (user.getPosition().equals("tutor")) {integers = jdbcTemplate.queryForList("SELECT course_id FROM courses where tutor_id = " + user.getId() + ";"
+                    , Integer.class);
+        } else {
+            integers = jdbcTemplate.queryForList("SELECT course_id FROM student_course where student_id = " + user.getId() + ";"
+                    , Integer.class);
+        }
+        return integers;
+    }
+
     public Optional<Course> getById(int id) {
         sql = String.format("SELECT * FROM courses WHERE course_id = %d;", id);
         Course course = null;

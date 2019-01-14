@@ -43,4 +43,13 @@ public class CourseService {
         courseDAO.update(Optional.ofNullable(course));
     }
 
+    public Course createCourseFromDto(CourseDTO courseDTO) {
+        Course course = new Course();
+        course.setCourseName(courseDTO.getCourseName());
+        course.setTutorId(courseDTO.getTutorId());
+        course.setStartingDate(courseDTO.getStartingDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        course.setFinishingDate(courseDTO.getFinishingDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        course.setActive(courseDTO.isActive());
+        return create(course);
+    }
 }

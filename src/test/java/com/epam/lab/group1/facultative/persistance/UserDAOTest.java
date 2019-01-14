@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/userDaoTest/UserDaoSpringContextConfiguration.xml")
-public class UserDaoTest {
+public class UserDAOTest {
 
     @Autowired
     private UserDAO userDAO;
@@ -143,5 +143,12 @@ public class UserDaoTest {
         assertEquals(user.getEmail(), userFromDB.get().getEmail());
         assertEquals(user.getPassword(), userFromDB.get().getPassword());
         assertEquals(user.getPosition(), userFromDB.get().getPosition());
+    }
+
+    @Test
+    public void getAllStudentByCourseId() {
+        int courseId = 1;
+        List<User> allStudentByCourseId = userDAO.getAllStudentByCourseId(courseId);
+        assertEquals(1, allStudentByCourseId.size());
     }
 }
