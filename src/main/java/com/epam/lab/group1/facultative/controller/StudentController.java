@@ -22,10 +22,10 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/{studentId}")
-    public ModelAndView getById(@PathVariable int studentId) {
+    public ModelAndView studentProfile(@PathVariable int studentId) {
         ModelAndView modelAndView = new ModelAndView(viewName);
         modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
-        modelAndView.addObject("courseList", courseService.getAllByStudentId(studentId));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(studentId));
         return modelAndView;
     }
 

@@ -35,7 +35,7 @@ public class CourseController {
     public ModelAndView getById(@PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(viewNameCourseInfo);
         modelAndView.addObject("courseInfo", courseService.getById(courseId));
-        modelAndView.addObject("studentList", courseService.getStudentList(courseId));
+        modelAndView.addObject("studentList", userService.getAllByCourseId(courseId));
         return modelAndView;
     }
 

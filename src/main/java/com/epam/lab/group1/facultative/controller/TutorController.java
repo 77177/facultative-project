@@ -21,9 +21,9 @@ public class TutorController {
     }
 
     @RequestMapping(value = "/{tutorId}")
-    public ModelAndView getListByTutorId(@PathVariable int tutorId) {
+    public ModelAndView tutorProfile(@PathVariable int tutorId) {
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("list", courseService.getByTutorId(tutorId));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId));
         return modelAndView;
     }
 }

@@ -20,7 +20,7 @@ public class CourseService {
         return courseDAO.getById(courseId);
     }
 
-    public List<Course> getAllByStudentId(int studentId) {
+    public List<Course> getAllByUserId(int studentId) {
         return courseDAO.getAllByUserID(studentId);
     }
 
