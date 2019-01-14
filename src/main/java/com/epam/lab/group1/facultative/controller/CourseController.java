@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.CourseDTO;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -54,12 +55,12 @@ public class CourseController {
     }
 
     @PostMapping(value = "action/createCourse")
-    public void createCourse(@ModelAttribute Course course, HttpServletResponse response) {
-        course.setTutorId(1);
-        course.setActive(TRUE);
-        courseService.create(course);
+    public void createCourse(@ModelAttribute CourseDTO courseDTO, HttpServletResponse response) {
+        courseDTO.setTutorId(1);
+        courseDTO.setActive(TRUE);
+        courseService.createCourseFromDto(courseDTO);
         try {
-            response.sendRedirect("/course");
+            response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,7 +71,7 @@ public class CourseController {
         ModelAndView modelAndView = new ModelAndView(courseView);
         courseService.deleteById(courseId);
         try {
-            response.sendRedirect("/course");
+            response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,16 +84,14 @@ public class CourseController {
     }
 
     @PostMapping(value = "action/editCourse")
-    public void editCourse(@ModelAttribute Course course, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
-        course.setTutorId(tutorId);
-        course.setCourseId(courseId);
-        course.setStartingDate(LocalDate.of(2019, 10,10));
-        course.setFinishingDate(LocalDate.of(2020, 10,10));
-        course.setActive(TRUE);
-        courseService.update(course);
-        //modelAndView.addObject("studentList", userService.getAllByCourseId(courseId));
+    public void editCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
+        courseDTO.setTutorId(tutorId);
+        courseDTO.setCourseId(courseId);
+        courseDTO.setActive(TRUE);
+        courseService.updateCourseFromDto(courseDTO);
+
         try {
-            response.sendRedirect("/tutor/" + tutorId);
+            response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }
