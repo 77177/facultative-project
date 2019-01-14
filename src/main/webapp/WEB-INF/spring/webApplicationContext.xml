@@ -15,17 +15,11 @@
         <constructor-arg name="courseService" ref="courseService"/>
     </bean>
 
-    <bean class="com.epam.lab.group1.facultative.controller.UserController"/>
-
-    <bean id="studentController" class="com.epam.lab.group1.facultative.controller.StudentController">
+    <bean class="com.epam.lab.group1.facultative.controller.UserController">
         <constructor-arg name="courseService" ref="courseService"/>
         <constructor-arg name="userService" ref="userService"/>
     </bean>
 
-    <bean id="tutorController" class="com.epam.lab.group1.facultative.controller.TutorController">
-        <constructor-arg ref="userService"/>
-        <constructor-arg ref="courseService"/>
-    </bean>
 
     <bean id="courseController" class="com.epam.lab.group1.facultative.controller.CourseController">
         <constructor-arg name="userService" ref="userService"/>

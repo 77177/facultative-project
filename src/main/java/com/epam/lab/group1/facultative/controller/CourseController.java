@@ -1,8 +1,10 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.CourseDTO;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.lang.Boolean.TRUE;
 
@@ -51,21 +55,26 @@ public class CourseController {
     }
 
     @PostMapping(value = "action/createCourse")
-    public ModelAndView createCourse(@ModelAttribute Course course) {
-        ModelAndView modelAndView = new ModelAndView(courseInfoView);
-        course.setTutorId(1);
-        course.setActive(TRUE);
-        modelAndView.addObject("courseInfo", courseService.create(course));
-        modelAndView.addObject("studentList", userService.getAllByCourseId(1));
-        return modelAndView;
+    public void createCourse(@ModelAttribute CourseDTO courseDTO, HttpServletResponse response) {
+        courseDTO.setTutorId(1);
+        courseDTO.setActive(TRUE);
+        courseService.createCourseFromDto(courseDTO);
+        try {
+            response.sendRedirect("/user/profile");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping(value = "action/delete/{courseId}")
-    public ModelAndView deleteCourse(@PathVariable int courseId) {
+    public void deleteCourse(@PathVariable int courseId, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView(courseView);
         courseService.deleteById(courseId);
-        modelAndView.addObject("courseList", courseService.getAll());
-        return modelAndView;
+        try {
+            response.sendRedirect("/user/profile");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping(value = "action/editCourse")
@@ -75,16 +84,14 @@ public class CourseController {
     }
 
     @PostMapping(value = "action/editCourse")
-    public void editCourse(@ModelAttribute Course course, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
-        course.setTutorId(tutorId);
-        course.setCourseId(courseId);
-        course.setStartingDate(LocalDate.of(2019, 10,10));
-        course.setFinishingDate(LocalDate.of(2020, 10,10));
-        course.setActive(TRUE);
-        courseService.update(course);
-        //modelAndView.addObject("studentList", userService.getAllByCourseId(courseId));
+    public void editCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
+        courseDTO.setTutorId(tutorId);
+        courseDTO.setCourseId(courseId);
+        courseDTO.setActive(TRUE);
+        courseService.updateCourseFromDto(courseDTO);
+
         try {
-            response.sendRedirect("/tutor/" + tutorId);
+            response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }

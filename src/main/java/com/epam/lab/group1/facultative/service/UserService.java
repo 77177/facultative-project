@@ -1,7 +1,6 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
-import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.springframework.stereotype.Service;
@@ -46,6 +45,14 @@ public class UserService {
 
     public void update(User user) {
         userDAO.update(user);
+    }
+
+    public void leaveCourse(int userId, int courseId) {
+
+    }
+
+    public void participateInCourse(int userId, int courseId) {
+
     }
 
     public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {

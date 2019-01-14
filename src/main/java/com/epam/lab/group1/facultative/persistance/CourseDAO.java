@@ -116,4 +116,5 @@ public class CourseDAO {
         sqlParameterSource.addValue("finishingDate", course.getFinishingDate());
         sqlParameterSource.addValue("active", course.isActive());
     }
+    
 }

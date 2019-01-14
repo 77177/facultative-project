@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.security;
 
 import com.epam.lab.group1.facultative.model.User;
+import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,9 +24,11 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
     private final String studentRole = "student";
     private final String tutorRole = "tutor";
     private UserDAO userDAO;
+    private CourseDAO courseDAO;
 
-    public FacultativeJdbcUserDetailsService(UserDAO userDAO) {
+    public FacultativeJdbcUserDetailsService(UserDAO userDAO, CourseDAO courseDAO) {
         this.userDAO = userDAO;
+        this.courseDAO = courseDAO;
     }
 
     /**
@@ -39,9 +43,11 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         Optional<User> optionalUser = userDAO.getByEmail(username);
         User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User " + username + " does not exist"));
         SimpleGrantedAuthority grantedAuthority = null;
+        boolean isStudent = false;
         switch (user.getPosition()) {
             case studentRole: {
                 grantedAuthority = new SimpleGrantedAuthority(studentRole);
+                isStudent = true;
                 break;
             }
             case tutorRole: {
@@ -52,6 +58,8 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = Arrays.asList(grantedAuthority);
         SecurityContextUser securityContextUser = new SecurityContextUser(username, user.getPassword(), authorities);
         securityContextUser.setUserId(user.getId());
+        securityContextUser.setCourseIdList(courseDAO.getAllCourseIdbyUserId(user));
+        securityContextUser.setStudent(isStudent);
         return securityContextUser;
 
     }

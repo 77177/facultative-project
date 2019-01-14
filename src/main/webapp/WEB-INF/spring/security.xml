@@ -33,6 +33,7 @@
     <beans:bean id="facultativeJdbcUserDetailsService"
                 class="com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService">
         <beans:constructor-arg name="userDAO" ref="userDAO"/>
+        <beans:constructor-arg name="courseDAO" ref="courseDAO"/>
     </beans:bean>
 
     <beans:bean id="authenticationService" class="com.epam.lab.group1.facultative.service.AuthenticationService">
