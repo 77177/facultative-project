@@ -1,9 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Optional" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    SecurityContextUser principal = null;
+%>
+<sec:authorize access="isAuthenticated()">
+    <%
+        principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    %>
+</sec:authorize>
 <html>
     <head>
         <title>Course Info</title>
@@ -20,14 +31,15 @@
                 <th>isActive</th>
             </tr>
             <%
-                Optional<Course> courseInfo = (Optional<Course>) request.getAttribute("courseInfo");
+                Optional<Course> courseOptional = (Optional<Course>) request.getAttribute("course");
+                Course course = courseOptional.get();
             %>
             <tr>
-                <td><% out.println(courseInfo.get().getCourseName());%></td>
-                <td><% out.println(courseInfo.get().getTutorId());%></td>
-                <td><% out.println(courseInfo.get().getStartingDate());%></td>
-                <td><% out.println(courseInfo.get().getFinishingDate());%></td>
-                <td><% out.println(courseInfo.get().isActive());%></td>
+                <td><% out.println(course.getCourseName());%></td>
+                <td><% out.println(course.getTutorId());%></td>
+                <td><% out.println(course.getStartingDate());%></td>
+                <td><% out.println(course.getFinishingDate());%></td>
+                <td><% out.println(course.isActive());%></td>
             </tr>
         </table>
         <br><br>
