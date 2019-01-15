@@ -57,6 +57,17 @@ public class UserDAO {
         return optionalUser;
     }
 
+    public List<User> getAllStudents() {
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("position"), "student"));
+        Query<User> query1 = session.createQuery(query);
+        List<User> user = query1.getResultList();
+        return user;
+    }
+
     public void deleteById(int id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
