@@ -14,26 +14,28 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("/controller/authenticationControllerTestContext.xml")
-public class AuthenticationControllerTest {
+@ContextConfiguration("/controller/errorControllerTestContext.xml")
+public class ErrorControllerTest {
 
     private MockMvc mockMvc;
 
-    public AuthenticationControllerTest() {
+    public ErrorControllerTest() {
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new AuthenticationController())
+                .standaloneSetup(new ErrorController())
                 .build();
     }
 
     @Test
-    public void testLogin() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/authenticator/login"))
-                .andExpect(MockMvcResultMatchers.view().name("loginPage"));
+    public void testErrorNotExists() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/error"))
+                .andExpect(MockMvcResultMatchers.view().name("errorPage"));
     }
 
-    @Test
-    public void TestRegistration() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/authenticator/registration"))
-                .andExpect(MockMvcResultMatchers.view().name("register"));
+//    @Test
+    public void testErrorExists() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/error"))
+                .andExpect(MockMvcResultMatchers.view().name("errorPage"))
+                .andExpect(MockMvcResultMatchers.model()
+                        .attributeExists("errorStatus", "errorReason"));
     }
 }

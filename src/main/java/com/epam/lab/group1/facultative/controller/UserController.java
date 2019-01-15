@@ -78,7 +78,6 @@ public class UserController {
 
     private ModelAndView tutorProfile(int tutorId) {
         ModelAndView modelAndView = new ModelAndView(tutorViewName);
-        courseService.getAllByUserId(tutorId).forEach(couser -> System.out.println(couser));
         modelAndView.addObject("tutor", userService.getById(tutorId));
         modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
         return modelAndView;
