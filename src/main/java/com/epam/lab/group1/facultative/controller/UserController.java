@@ -32,7 +32,7 @@ public class UserController {
     public ModelAndView sendRedirectToProfile() {
         ModelAndView modelAndView = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated()) {
             SecurityContextUser principal = (SecurityContextUser)authentication.getPrincipal();
             if (principal.isStudent()) {
                 modelAndView = studentProfile(principal.getUserId());
@@ -48,19 +48,23 @@ public class UserController {
 
     @RequestMapping("/{userId}/course/{courseId}")
     public ModelAndView action(@PathVariable int userId, @PathVariable int courseId,
-                                     @RequestParam(name = "action") String action) {
+                               @RequestParam(name = "action", required = false) String action) {
         ModelAndView modelAndView = null;
-        switch (action) {
-            case "leave": {
-                modelAndView = studentProfile(userId);
-                break;
+        if (action != null) {
+            switch (action) {
+                case "leave": {
+                    //TODO userService.leaveCourse(userId, courseId)
+                    modelAndView = studentProfile(userId);
+                    break;
+                }
+                case "subscribe": {
+                    //TODO userService.subscribeCourse(userId, courseId)
+                    modelAndView = studentProfile(userId);
+                    break;
+                }
             }
-            case "subscribe": {
-                modelAndView = studentProfile(userId);
-                break;
-            } default: {
-                modelAndView = new ModelAndView("course");
-            }
+        } else {
+            modelAndView = new ModelAndView("course");
         }
         return modelAndView;
     }
@@ -75,8 +79,8 @@ public class UserController {
     private ModelAndView tutorProfile(int tutorId) {
         ModelAndView modelAndView = new ModelAndView(tutorViewName);
         courseService.getAllByUserId(tutorId).forEach(couser -> System.out.println(couser));
-        modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
         modelAndView.addObject("tutor", userService.getById(tutorId));
+        modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
         return modelAndView;
     }
 }

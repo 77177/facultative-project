@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/userDaoTest/UserDaoSpringContextConfiguration.xml")
+@ContextConfiguration("/dao/userDaoTestContext.xml")
 public class UserDAOTest {
 
     @Autowired
@@ -30,8 +30,8 @@ public class UserDAOTest {
     public void init() {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScripts(
-                new ClassPathResource("/userDaoTest/create_script.sql"),
-                new ClassPathResource("/userDaoTest/fill_script.sql"));
+                new ClassPathResource("/dao/sql/create_script.sql"),
+                new ClassPathResource("/dao/sql/fill_script.sql"));
         populator.execute(this.dataSource);
     }
 
