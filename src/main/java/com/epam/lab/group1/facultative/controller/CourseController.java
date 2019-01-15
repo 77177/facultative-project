@@ -3,14 +3,20 @@ package com.epam.lab.group1.facultative.controller;
 import com.epam.lab.group1.facultative.dto.CourseDTO;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
+import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static java.lang.Boolean.TRUE;
 
@@ -96,5 +102,25 @@ public class CourseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+
+        class LocalDateFormatter implements Formatter<LocalDate> {
+
+            @Override
+            public LocalDate parse(String date, Locale locale) {
+                LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+                return localDate;
+            }
+
+            @Override
+            public String print(LocalDate localDate, Locale locale) {
+                return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            }
+        }
+
+        binder.addCustomFormatter(new LocalDateFormatter());
     }
 }
