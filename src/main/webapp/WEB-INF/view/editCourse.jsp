@@ -1,16 +1,20 @@
 <%@ page import="org.apache.tomcat.jni.Local" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="javafx.util.Pair" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    int tutorId = 1;
-    int courseId = 1;
-%>
+
 <html>
 <head>
-    <title>Create Course Page</title>
+    <title>Edit Course Page</title>
 </head>
 <body>
-<h2>Create Course Page</h2>
+<%
+    List listInt = (List) request.getAttribute("listInt");
+    int tutorId = (int) listInt.get(0);
+    int courseId = (int) listInt.get(1);
+%>
+<h2>Edit Course Page</h2>
 <form method="post" action="/course/action/editCourse/">
     Course Name:
     <input type="text" name="courseName"><br>

@@ -1,19 +1,16 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.CourseDTO;
-import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Boolean.TRUE;
 
@@ -48,15 +45,16 @@ public class CourseController {
         return modelAndView;
     }
 
-    @GetMapping(value = "action/createCourse")
-    public ModelAndView createCourse() {
+    @GetMapping(value = "action/createCourse/{tutorId}")
+    public ModelAndView createCourse(@PathVariable int tutorId) {
         ModelAndView modelAndView = new ModelAndView(createCourseView);
+        modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
 
     @PostMapping(value = "action/createCourse")
-    public void createCourse(@ModelAttribute CourseDTO courseDTO, HttpServletResponse response) {
-        courseDTO.setTutorId(1);
+    public void createCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, HttpServletResponse response) {
+        courseDTO.setTutorId(tutorId);
         courseDTO.setActive(TRUE);
         courseService.createCourseFromDto(courseDTO);
         try {
@@ -77,23 +75,27 @@ public class CourseController {
         }
     }
 
-    @GetMapping(value = "action/editCourse")
-    public ModelAndView editCourse() {
+    @GetMapping(value = "{courseId}/action/editCourse/{tutorId}")
+    public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(editCourseView);
+        List<Integer> listInt = new ArrayList<>();
+        listInt.add(tutorId);
+        listInt.add(courseId);
+        modelAndView.addObject("listInt", listInt);
         return modelAndView;
     }
 
-    @PostMapping(value = "action/editCourse")
+    @PostMapping(value = "action/editCourse/")
     public void editCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
         courseDTO.setTutorId(tutorId);
         courseDTO.setCourseId(courseId);
-        courseDTO.setActive(TRUE);
+        courseDTO.setActive(courseService.isDateActive(courseService.courseDtoToCourse(courseDTO)));
         courseService.updateCourseFromDto(courseDTO);
-
         try {
             response.sendRedirect("/user/profile");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }
