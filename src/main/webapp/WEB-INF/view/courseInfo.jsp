@@ -31,11 +31,11 @@
                 <th>isActive</th>
             </tr>
             <%
-                Optional<Course> courseOptional = (Optional<Course>) request.getAttribute("course");
+                Optional<Course> courseOptional = (Optional<Course>) request.getAttribute("courseInfo");
                 Course course = courseOptional.get();
             %>
             <tr>
-                <td><% out.println(course.getCourseName());%></td>
+                <td><% out.println(course.getName());%></td>
                 <td><% out.println(course.getTutorId());%></td>
                 <td><% out.println(course.getStartingDate());%></td>
                 <td><% out.println(course.getFinishingDate());%></td>

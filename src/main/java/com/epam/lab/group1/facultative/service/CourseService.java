@@ -35,24 +35,35 @@ public class CourseService {
     }
 
     public Optional<Course> createCourseFromDto(CourseDTO courseDTO) {
-        Course course = CourseDtoToCourse(courseDTO);
+        Course course = courseDtoToCourse(courseDTO);
         return create(course);
     }
 
     public void updateCourseFromDto(CourseDTO courseDTO) {
-        Course course = CourseDtoToCourse(courseDTO);
-        course.setCourseId(courseDTO.getCourseId());
+        Course course = courseDtoToCourse(courseDTO);
+        course.setId(courseDTO.getCourseId());
         update(course);
     }
 
-    private Course CourseDtoToCourse(CourseDTO courseDTO) {
+    public Course courseDtoToCourse(CourseDTO courseDTO) {
         Course course = new Course();
-        course.setCourseName(courseDTO.getCourseName());
+        course.setName(courseDTO.getCourseName());
         course.setTutorId(courseDTO.getTutorId());
         course.setStartingDate(LocalDate.parse(courseDTO.getStartingDate()));
         course.setFinishingDate(LocalDate.parse(courseDTO.getFinishingDate()));
         course.setActive(courseDTO.isActive());
         return course;
+    }
+
+    public boolean isDateActive(Course course) {
+        LocalDate today = LocalDate.now();
+        boolean state;
+        if (today.isBefore(course.getFinishingDate()) && today.isAfter(course.getStartingDate())) {
+            state = true;
+        } else {
+            state = false;
+        }
+        return state;
     }
 
     //getAll methods.
@@ -70,7 +81,7 @@ public class CourseService {
 
     private List<Course> isActiveCheck(List<Course> courseList) {
         courseList.forEach(course -> {
-            course.setActive(!course.getStartingDate().isBefore(LocalDate.now()));
+            course.setActive(isDateActive(course));
         });
         return courseList;
     }
