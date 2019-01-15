@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.CourseDTO;
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.format.Formatter;
@@ -59,10 +60,10 @@ public class CourseController {
     }
 
     @PostMapping(value = "/action/create")
-    public void createCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, HttpServletResponse response) {
-        courseDTO.setTutorId(tutorId);
-        courseDTO.setActive(TRUE);
-        courseService.createCourseFromDto(courseDTO);
+    public void createCourse(@ModelAttribute Course course, @RequestParam int tutorId, HttpServletResponse response) {
+        course.setActive(true);
+        course.setTutorId(tutorId);
+        courseService.create(course);
         try {
             response.sendRedirect("/user/profile");
         } catch (IOException e) {

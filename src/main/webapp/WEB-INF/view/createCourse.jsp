@@ -23,7 +23,7 @@
     <h2>Create Course Page</h2>
     <form method="post" action="/course/action/create/">
         Course Name:
-        <input type="text" name="courseName"><br>
+        <input type="text" name="name"><br>
         Starting date yyyy-mm-dd:
         <input type="date" name="startingDate"><br>
         Finishing date yyyy-mm-dd:
