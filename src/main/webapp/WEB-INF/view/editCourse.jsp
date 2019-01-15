@@ -15,7 +15,7 @@
     int courseId = (int) listInt.get(1);
 %>
 <h2>Edit Course Page</h2>
-<form method="post" action="/course/action/editCourse/">
+<form method="post" action="/course/action/edit/">
     Course Name:
     <input type="text" name="courseName"><br>
     Starting date yyyy-mm-dd:

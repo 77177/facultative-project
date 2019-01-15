@@ -45,14 +45,14 @@ public class CourseController {
         return modelAndView;
     }
 
-    @GetMapping(value = "action/createCourse/{tutorId}")
+    @GetMapping(value = "action/create/{tutorId}")
     public ModelAndView createCourse(@PathVariable int tutorId) {
         ModelAndView modelAndView = new ModelAndView(createCourseView);
         modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
 
-    @PostMapping(value = "action/createCourse")
+    @PostMapping(value = "action/create")
     public void createCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, HttpServletResponse response) {
         courseDTO.setTutorId(tutorId);
         courseDTO.setActive(TRUE);
@@ -75,7 +75,7 @@ public class CourseController {
         }
     }
 
-    @GetMapping(value = "{courseId}/action/editCourse/{tutorId}")
+    @GetMapping(value = "{courseId}/action/edit/{tutorId}")
     public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(editCourseView);
         List<Integer> listInt = new ArrayList<>();
@@ -85,7 +85,7 @@ public class CourseController {
         return modelAndView;
     }
 
-    @PostMapping(value = "action/editCourse/")
+    @PostMapping(value = "action/edit/")
     public void editCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
         courseDTO.setTutorId(tutorId);
         courseDTO.setCourseId(courseId);

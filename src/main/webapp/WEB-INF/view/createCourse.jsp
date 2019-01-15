@@ -10,7 +10,7 @@
 <body>
 <%int tutorId = (int) request.getAttribute("tutorId"); %>
 <h2>Create Course Page</h2>
-<form method="post" action="/course/action/createCourse/">
+<form method="post" action="/course/action/create/">
     Course Name:
     <input type="text" name="courseName"><br>
     Starting date yyyy-mm-dd:
