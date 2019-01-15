@@ -146,7 +146,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void getAllStudentByCourseId() {
+    public void testGetAllStudentByCourseId() {
         int courseId = 1;
         List<User> allStudentByCourseId = userDAO.getAllStudentByCourseId(courseId);
         assertEquals(1, allStudentByCourseId.size());

@@ -107,12 +107,4 @@ public class CourseDAO {
         session.update(course);
         session.getTransaction().commit();
     }
-
-    private void createMap(Course course, MapSqlParameterSource sqlParameterSource) {
-        sqlParameterSource.addValue("tutorId", course.getTutorId());
-        sqlParameterSource.addValue("startingDate", course.getStartingDate());
-        sqlParameterSource.addValue("finishingDate", course.getFinishingDate());
-        sqlParameterSource.addValue("active", course.isActive());
-    }
-    
 }
