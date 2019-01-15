@@ -15,22 +15,20 @@
                 <th>StartingDate</th>
                 <th>FinishingDate</th>
                 <th>isActive</th>
-                <th>Edit</th>
-                <th>Delete</th>
-
+                <th>Options</th>
+                <th></th>
             </tr>
             <%
                 List<Course> list = (List<Course>) request.getAttribute("courseList");
                 for (Course course : list) {
             %>
             <tr>
-                <td><% out.println(course.getCourseName());%></td>
-                <td><% out.println(course.getTutorId());%></td>
+                <td><% out.println(course.getName());%></td>
                 <td><% out.println(course.getStartingDate());%></td>
                 <td><% out.println(course.getFinishingDate());%></td>
                 <td><% out.println(course.isActive());%></td>
                 <td><a href="/course/action/editCourse/">Edit</a></td>
-                <td><a href="/course/action/delete/<%out.print(course.getCourseId());%>/">delete</a></td>
+                <td><a href="/course/action/delete/<%out.print(course.getId());%>/">delete</a></td>
             </tr>
             <%
                 }

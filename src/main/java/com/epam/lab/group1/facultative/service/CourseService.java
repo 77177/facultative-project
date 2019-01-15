@@ -41,13 +41,13 @@ public class CourseService {
 
     public void updateCourseFromDto(CourseDTO courseDTO) {
         Course course = CourseDtoToCourse(courseDTO);
-        course.setCourseId(courseDTO.getCourseId());
+        course.setId(courseDTO.getCourseId());
         update(course);
     }
 
     private Course CourseDtoToCourse(CourseDTO courseDTO) {
         Course course = new Course();
-        course.setCourseName(courseDTO.getCourseName());
+        course.setName(courseDTO.getCourseName());
         course.setTutorId(courseDTO.getTutorId());
         course.setStartingDate(LocalDate.parse(courseDTO.getStartingDate()));
         course.setFinishingDate(LocalDate.parse(courseDTO.getFinishingDate()));

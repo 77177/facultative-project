@@ -35,21 +35,21 @@
                     List<Course> list = (List<Course>) listObject;
                     for (Course course : list) { %>
                         <tr>
-                            <td><%= course.getCourseName()%></td>
+                            <td><%= course.getName()%></td>
                             <td><%= course.getTutorId()%></td>
                             <td><%= course.getStartingDate()%></td>
                             <td><%= course.getFinishingDate()%></td>
                             <td><%= course.isActive()%></td>
-                            <td><a href="/course/<%=course.getCourseId()%>">course info</a></td>
+                            <td><a href="/course/<%=course.getId()%>">course info</a></td>
                             <sec:authorize access="isAuthenticated()">
                                 <%
                                     if (principal.isStudent()) {
-                                        if (principal.getCourseIdList().contains(course.getCourseId())) {
-                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=leave">
+                                        if (principal.getCourseIdList().contains(course.getId())) {
+                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>?action=leave">
                                                         Leave</a>
                                               </td><%
                                         } else {
-                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getCourseId()%>?action=subscribe">
+                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>?action=subscribe">
                                                         Subscribe</a></td><%
                                         }
                                     }

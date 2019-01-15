@@ -40,6 +40,7 @@
 
     <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">
         <constructor-arg ref="dataSource"/>
+        <constructor-arg ref="sessionFactory"/>
     </bean>
 
 </beans>

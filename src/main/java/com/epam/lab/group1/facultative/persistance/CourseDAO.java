@@ -7,10 +7,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +46,7 @@ public class CourseDAO {
         session.getTransaction().commit();
 
         List<Integer> courseIds = new ArrayList<>();
-        courses.forEach(c->courseIds.add(c.getCourseId()));
+        courses.forEach(c->courseIds.add(c.getId()));
         return courseIds;
     }
 
@@ -83,9 +85,14 @@ public class CourseDAO {
     }
 
     public List<Course> getAllByTutorID(int id) {
-        String sql = "SELECT * FROM courses WHERE tutor_id =" + id + ";";
-        List<Course> courses = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
-        return courses;
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
+        Root<Course> courseRoot = criteriaQuery.from(Course.class);
+        criteriaQuery.select(courseRoot).where(criteriaBuilder.equal(courseRoot.get("tutorId"), id));
+        Query<Course> query1 = session.createQuery(criteriaQuery);
+        List<Course> courseList = query1.getResultList();
+        return courseList;
     }
 
     public Optional<Course> create(Course course) {
@@ -94,7 +101,7 @@ public class CourseDAO {
         session.persist(course);
         session.getTransaction().commit();
         session.beginTransaction();
-        Query<Course> query = session.createSQLQuery("SELECT * FROM courses WHERE courses.course_name = '" + course.getCourseName()+"'").addEntity(Course.class);
+        Query<Course> query = session.createSQLQuery("SELECT * FROM courses WHERE courses.course_name = '" + course.getName()+"'").addEntity(Course.class);
         Course courseReturn = query.getSingleResult();
         Optional<Course> optionalCourse = Optional.ofNullable(courseReturn);
         session.getTransaction().commit();
