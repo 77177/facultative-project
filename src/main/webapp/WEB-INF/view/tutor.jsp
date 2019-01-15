@@ -1,7 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    SecurityContextUser principal = null;
+%>
+<sec:authorize access="isAuthenticated()">
+    <%
+        principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    %>
+</sec:authorize>
 <html>
     <head>
         <title>Profile</title>
@@ -36,6 +46,6 @@
                 }
             %>
         </table>
-        <a href="/course/action/create/<%=list.get(0).getTutorId()%>">Create</a>
+        <a href="/course/action/create/<%=principal.getUserId()%>/">Create</a>
     </body>
 </html>
