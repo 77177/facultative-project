@@ -31,7 +31,7 @@
                 <th>isActive</th>
             </tr>
             <%
-                Optional<Course> courseOptional = (Optional<Course>) request.getAttribute("course");
+                Optional<Course> courseOptional = (Optional<Course>) request.getAttribute("courseInfo");
                 Course course = courseOptional.get();
             %>
             <tr>

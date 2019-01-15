@@ -35,8 +35,7 @@ public class UserService {
     }
 
     public List<User> getAllByCourseId(int id) {
-        //TODO implement method
-        return Collections.emptyList();
+        return userDAO.getAllStudentByCourseId(id);
     }
 
     public User create(User user) {
