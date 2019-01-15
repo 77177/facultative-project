@@ -48,13 +48,13 @@ public class CourseController {
         return modelAndView;
     }
 
-    @GetMapping(value = "action/createCourse")
+    @GetMapping(value = "/action/create")
     public ModelAndView createCourse() {
         ModelAndView modelAndView = new ModelAndView(createCourseView);
         return modelAndView;
     }
 
-    @PostMapping(value = "action/createCourse")
+    @PostMapping(value = "/action/create")
     public void createCourse(@ModelAttribute CourseDTO courseDTO, HttpServletResponse response) {
         courseDTO.setTutorId(1);
         courseDTO.setActive(TRUE);
@@ -77,13 +77,13 @@ public class CourseController {
         }
     }
 
-    @GetMapping(value = "action/editCourse")
+    @GetMapping(value = "action/edit")
     public ModelAndView editCourse() {
         ModelAndView modelAndView = new ModelAndView(editCourseView);
         return modelAndView;
     }
 
-    @PostMapping(value = "action/editCourse")
+    @PostMapping(value = "action/edit")
     public void editCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
         courseDTO.setTutorId(tutorId);
         courseDTO.setCourseId(courseId);

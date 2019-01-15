@@ -52,14 +52,13 @@ public class CourseControllerTest {
 
     @Test
     public void testGetCreateCourse() throws Exception {
-        //TODO resolve
-//        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/createCourse"))
-//            .andExpect(MockMvcResultMatchers.view().name(createCourseView));
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/create"))
+            .andExpect(MockMvcResultMatchers.view().name(createCourseView));
     }
 
     @Test
     public void testPostCreateCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/createCourse"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/create"))
             .andExpect(MockMvcResultMatchers.redirectedUrl("/user/profile"));
     }
 
@@ -71,16 +70,15 @@ public class CourseControllerTest {
 
     @Test
     public void tesEditCourse() throws Exception {
-        //TODO resolve
-//        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/editCourse"))
-//            .andExpect(MockMvcResultMatchers.view().name(editCourseView));
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/edit"))
+            .andExpect(MockMvcResultMatchers.view().name(editCourseView));
     }
 
     @Test
     public void tesPostEditCourse() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-            .post("/course/action/editCourse")
-            .param("tutorId","1")
+            .post("/course/action/edit")
+            .param("tutorId", "1")
             .param("courseId", "1"))
             .andExpect(MockMvcResultMatchers.redirectedUrl("/user/profile"));
     }
