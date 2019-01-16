@@ -57,6 +57,7 @@
             <tr>
                 <td><% out.println(user.getFirstName());%></td>
                 <td><% out.println(user.getLastName());%></td>
+                <td><a href="/feedback/<%=user.getId()%>/<%=course.getId()%>">feedback</a> </td>
             </tr>
             <%
                 }
