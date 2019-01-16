@@ -32,4 +32,7 @@ INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (1, 1, -1, 'Empty');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)
+VALUES (3, 1, -1, 'Empty');
+
+INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (4, 2, 4, 'Good performance');

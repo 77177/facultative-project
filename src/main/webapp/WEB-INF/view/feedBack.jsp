@@ -1,21 +1,18 @@
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="java.io.IOException" %>
+<%@ page import="com.epam.lab.group1.facultative.model.FeedBack" %>
+<%@ page import="java.security.Principal" %>
+<%@ page import="com.epam.lab.group1.facultative.model.User" %>
+<%@ page import="com.epam.lab.group1.facultative.model.Course" %>
+<%@ page import="java.util.function.IntPredicate" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SecurityContextUser principal = null;
-    String courseIdObject = request.getParameter("courseId");
-    int courseId = courseIdObject == null ? 0 : Integer.parseInt(courseIdObject.toString());
-%>
-<%!
-    void printFeedback(Object request, JspWriter out) throws IOException {
-        if (request != null) {
-            out.print(request);
-        }
-    }
 %>
 <sec:authorize access="isAuthenticated()">
     <%
@@ -23,44 +20,37 @@
     %>
 </sec:authorize>
 <html>
-    <head>
-        <title>Feedbacks</title>
-    </head>
-    <body>
-        Feedbacks page
-        <c:import url="header.jsp"/>
-        <br/>
-        <form action="/feedback" method="post">
-            <sec:authorize access="isAuthenticated()">
-                <%
-                    if (principal.isStudent()) {
-                        %>
-                            <textarea rows="4" cols="100" readonly>
-                            <%
-                               printFeedback(request.getAttribute("feedback"), out);
-                            %>
-                            </textarea><br><br>
-                        <%
-                    } else if (principal.getCourseIdList().contains(courseId)){
-                        %>
-                            <textarea rows="4" cols="100">
-                            <%
-                                printFeedback(request.getAttribute("feedback"), out);
-                            %>
-                            </textarea><br><br>
-                        <%
-                    } else {
-                        %>
-                            <textarea rows="4" cols="100" readonly>
-                            <%
-                                printFeedback(request.getAttribute("feedback"), out);
-                            %>
-                            </textarea><br><br>
-                        <%
-                    }
-                %>
-            </sec:authorize>
-            <input type="submit" value="submit"/>
-        </form>
-    </body>
+<head>
+    <title>Feedbacks</title>
+</head>
+<body>
+
+<%
+    FeedBack feedBack = (FeedBack) request.getAttribute("feedback");
+    User user = (User) request.getAttribute("student");
+%>
+<%!
+    public boolean isNotCourseTutor(User user, SecurityContextUser securityContextUser,FeedBack feedBack) {
+        for (Course c : user.getCourseList()) {
+            for (User u: c.getUsersList()) {
+                if (!securityContextUser.isStudent() && u.getId() == securityContextUser.getUserId() && feedBack.getCourseId() == c.getId()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+%>
+Feedbacks page
+<c:import url="header.jsp"/>
+<br/>
+<sec:authorize access="isAuthenticated()">
+    <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>
+    <form:form action="/feedback" method="post" modelAttribute="feedback">
+        <form:textarea path="text" rows="4" cols="50"
+                       readonly="<%=isNotCourseTutor(user,principal,feedBack)%>"></form:textarea>
+        <input type="submit" value="submit"/>
+    </form:form>
+</sec:authorize>
+</body>
 </html>
