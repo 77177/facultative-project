@@ -1,8 +1,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    String tutorIdObject = request.getParameter("tutorId");
-    int tutorId = tutorIdObject == null ? 0 : Integer.parseInt(tutorIdObject);
+    int tutorId = (int) request.getAttribute("tutorId");
 %>
 <html>
 <head>

@@ -106,9 +106,8 @@ public class UserDAO {
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> u = query.from(User.class);
-        query.select(u);
+        query.select(u).where(criteriaBuilder.equal(u.get("position"), "tutor"));
         Query<User> query1 = session.createQuery(query);
-        session.beginTransaction();
         List<User> users = query1.getResultList();
         return users;
     }

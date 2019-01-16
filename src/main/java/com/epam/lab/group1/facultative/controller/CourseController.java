@@ -71,7 +71,7 @@ public class CourseController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/action/edit/")
+    @PostMapping(value = "/action/edit")
     public String editCourse(@ModelAttribute Course course) {
         courseService.update(course);
         return "redirect:/user/profile";

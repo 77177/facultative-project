@@ -52,7 +52,7 @@ public class CourseControllerTest {
 
     @Test
     public void testGetCreateCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/create"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/create/1"))
             .andExpect(MockMvcResultMatchers.view().name(createCourseView));
     }
 
@@ -70,7 +70,7 @@ public class CourseControllerTest {
 
     @Test
     public void tesEditCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/edit"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/1/action/edit/1"))
             .andExpect(MockMvcResultMatchers.view().name(editCourseView));
     }
 
@@ -79,7 +79,7 @@ public class CourseControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
             .post("/course/action/edit")
             .param("tutorId", "1")
-            .param("courseId", "1"))
+            .param("id", "1"))
             .andExpect(MockMvcResultMatchers.redirectedUrl("/user/profile"));
     }
 }
