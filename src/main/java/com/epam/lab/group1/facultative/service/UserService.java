@@ -1,11 +1,12 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.exception.external.EmailAlreadyExistsException;
+import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExist;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,15 +28,19 @@ public class UserService {
     }
 
     public User create(User user) {
+        userDAO.getById(user.getId())
+                .ifPresent(user1 -> new EmailAlreadyExistsException("user with this email already exists"));
         return userDAO.create(user);
     }
 
     public void update(User user) {
+        userDAO.getByEmail(user.getEmail())
+                .ifPresent(user1 -> new EmailAlreadyExistsException("Email already exists"));
         userDAO.update(user);
     }
 
     public void deleteById(int id) {
-        userDAO.deleteById(id);
+        userDAO.deleteById(userDAO.getById(id).orElseThrow(UserWithIdDoesNotExist::new).getId());
     }
 
     public List<User> getAllStudents() {
@@ -51,6 +56,7 @@ public class UserService {
     }
 
     public void leaveCourse(int userId, int courseId) {
+
     }
 
     public void participateInCourse(int userId, int courseId) {

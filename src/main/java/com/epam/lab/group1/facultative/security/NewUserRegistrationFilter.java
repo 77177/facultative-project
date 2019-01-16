@@ -18,9 +18,7 @@ public class NewUserRegistrationFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
@@ -33,9 +31,7 @@ public class NewUserRegistrationFilter implements Filter {
     }
 
     @Override
-    public void destroy() {
-
-    }
+    public void destroy() {}
 
     private PersonRegistrationFormDTO formDtoFromRequest(ServletRequest req) {
         PersonRegistrationFormDTO dto = new PersonRegistrationFormDTO();
