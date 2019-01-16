@@ -4,8 +4,9 @@ import lombok.Data;
 
 @Data
 public class FeedBack {
+
     private int studentId;
     private int courseId;
-    private String string;
     private int Mark;
+    private String text;
 }
