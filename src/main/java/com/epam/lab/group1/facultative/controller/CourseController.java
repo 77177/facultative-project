@@ -79,7 +79,6 @@ public class CourseController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-
         class LocalDateFormatter implements Formatter<LocalDate> {
 
             @Override
@@ -93,7 +92,6 @@ public class CourseController {
                 return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
             }
         }
-
         binder.addCustomFormatter(new LocalDateFormatter());
     }
 }
