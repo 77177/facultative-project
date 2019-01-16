@@ -1,6 +1,5 @@
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
-<%@ page import="java.io.PrintWriter" %>
 <%@ page import="java.io.IOException" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>

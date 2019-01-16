@@ -1,14 +1,14 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
-<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%
+    String tutorIdObject = request.getParameter("tutorId");
+    int tutorId = tutorIdObject == null ? 0 : Integer.parseInt(tutorIdObject);
+%>
 <html>
 <head>
     <title>Create Course Page</title>
 </head>
 <body>
-<%int tutorId = (int) request.getAttribute("tutorId"); %>
     <h2>Create Course Page</h2>
     <form method="post" action="/course/action/create/">
         Course Name:
