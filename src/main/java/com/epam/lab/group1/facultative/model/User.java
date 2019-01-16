@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Getter
+@EqualsAndHashCode
 @Setter
 @Table(name = "users")
 public class User implements Serializable {

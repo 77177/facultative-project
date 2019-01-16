@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 @Table(name = "courses")
 public class Course implements Serializable {
 

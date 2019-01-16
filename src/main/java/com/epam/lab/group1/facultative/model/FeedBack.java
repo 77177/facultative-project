@@ -16,11 +16,14 @@ public class FeedBack implements Serializable {
     @Id
     @Column(name = "student_id")
     private int studentId;
+
     @Id
     @Column(name = "course_id")
     private int courseId;
+
     @Column(name = "feedback")
     private String text;
+
     @Column(name = "mark")
     private int mark;
 }
