@@ -22,23 +22,8 @@ public class UserService {
         return userDAO.getById(id);
     }
 
-    public List<User> getAllStudents(){
-        return userDAO.getAllStudents();
-    }
     public Optional<User> getByEmail(String string) {
         return userDAO.getByEmail(string);
-    }
-    
-    public void deleteById(int id) {
-        userDAO.deleteById(id);
-    }
-
-    public List<User> getList() {
-        return userDAO.getList();
-    }
-
-    public List<User> getAllByCourseId(int id) {
-        return userDAO.getAllStudentByCourseId(id);
     }
 
     public User create(User user) {
@@ -49,12 +34,26 @@ public class UserService {
         userDAO.update(user);
     }
 
-    public void leaveCourse(int userId, int courseId) {
+    public void deleteById(int id) {
+        userDAO.deleteById(id);
+    }
 
+    public List<User> getAllStudents() {
+        return userDAO.getAllStudents();
+    }
+
+    public List<User> getAllTutors() {
+        return userDAO.getAllTutors();
+    }
+
+    public List<User> getAllStudentByCourseId(int id) {
+        return userDAO.getAllStudentByCourseId(id);
+    }
+
+    public void leaveCourse(int userId, int courseId) {
     }
 
     public void participateInCourse(int userId, int courseId) {
-
     }
 
     public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {

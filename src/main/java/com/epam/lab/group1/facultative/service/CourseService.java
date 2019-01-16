@@ -1,6 +1,5 @@
 package com.epam.lab.group1.facultative.service;
 
-import com.epam.lab.group1.facultative.dto.CourseDTO;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.springframework.stereotype.Service;
@@ -22,37 +21,32 @@ public class CourseService {
         return courseDAO.getById(courseId);
     }
 
-    public void deleteById(int id) {
-        courseDAO.deleteById(id);
-    }
-
     public Optional<Course> create(Course course) {
+        course.setActive(isDateActive(course));
         return courseDAO.create(course);
     }
 
     public void update(Course course) {
+        course.setActive(isDateActive(course));
         courseDAO.update(course);
     }
 
-    public Optional<Course> createCourseFromDto(CourseDTO courseDTO) {
-        Course course = courseDtoToCourse(courseDTO);
-        return create(course);
+    public void deleteById(int id) {
+        courseDAO.deleteById(id);
     }
 
-    public void updateCourseFromDto(CourseDTO courseDTO) {
-        Course course = courseDtoToCourse(courseDTO);
-        course.setId(courseDTO.getCourseId());
-        update(course);
+    //findAll methods.
+
+    public List<Course> findAll() {
+        return isActiveCheck(courseDAO.findAll());
     }
 
-    public Course courseDtoToCourse(CourseDTO courseDTO) {
-        Course course = new Course();
-        course.setName(courseDTO.getCourseName());
-        course.setTutorId(courseDTO.getTutorId());
-        course.setStartingDate(LocalDate.parse(courseDTO.getStartingDate()));
-        course.setFinishingDate(LocalDate.parse(courseDTO.getFinishingDate()));
-        course.setActive(courseDTO.isActive());
-        return course;
+    public List<Course> findAllByUserId(int id) {
+        return isActiveCheck(courseDAO.getAllByUserID(id));
+    }
+
+    public List<Course> getAllByTutorID(int id) {
+        return isActiveCheck(courseDAO.getAllByTutorID(id));
     }
 
     public boolean isDateActive(Course course) {
@@ -64,19 +58,6 @@ public class CourseService {
             state = false;
         }
         return state;
-    }
-
-    //getAll methods.
-    public List<Course> getAll() {
-        return isActiveCheck(courseDAO.getList());
-    }
-
-    public List<Course> getAllByUserId(int studentId) {
-        return isActiveCheck(courseDAO.getAllByUserID(studentId));
-    }
-
-    public List<Course> getAllByTutorID(int id) {
-        return isActiveCheck(courseDAO.getAllByTutorID(id));
     }
 
     private List<Course> isActiveCheck(List<Course> courseList) {

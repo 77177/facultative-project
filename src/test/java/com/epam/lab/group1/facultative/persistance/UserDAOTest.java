@@ -36,10 +36,16 @@ public class UserDAOTest {
     }
 
     @Test
-    public void testGetList() {
-        List<User> allUsers = userDAO.getList();
-        assertNotNull(allUsers);
-        assertEquals(7, allUsers.size());
+    public void testGetAllStudents() {
+        List<User> allStudents = userDAO.getAllStudents();
+        assertNotNull(allStudents);
+        assertEquals(5, allStudents.size());
+    }
+    @Test
+    public void testGetAllTutors() {
+        List<User> allTutors = userDAO.getAllTutors();
+        assertNotNull(allTutors);
+        assertEquals(2, allTutors.size());
     }
 
     @Test
