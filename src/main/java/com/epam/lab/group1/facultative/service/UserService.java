@@ -1,9 +1,15 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Collections;
 import java.util.List;
@@ -46,13 +52,9 @@ public class UserService {
         userDAO.update(user);
     }
 
-    public void leaveCourse(int userId, int courseId) {
+    public void leaveCourse(int userId, int courseId) { userDAO.leaveCourse(userId, courseId);}
 
-    }
-
-    public void participateInCourse(int userId, int courseId) {
-
-    }
+    public void subscribeCourse(int userId, int courseId) { userDAO.subscribeCourse(userId, courseId);}
 
     public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {
         User user = new User();

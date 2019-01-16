@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.persistance;
 
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -108,5 +109,27 @@ public class UserDAO {
         List<User> users = session.createSQLQuery("SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + " AND position = 'student';").addEntity(User.class).list();
         session.getTransaction().commit();
         return users;
+    }
+
+    public void subscribeCourse(int userId, int courseId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.get(User.class, userId);
+        session.get(Course.class, courseId);
+        Query query = session.createSQLQuery("INSERT INTO student_course(student_id, course_id, mark, feedback)" +
+                "VALUES (" + userId + ", " + courseId + ", NULL, 'Empty')") ;
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
+
+    public void leaveCourse(int userId, int courseId) {
+        Session session = sessionFactory.openSession();;
+        session.beginTransaction();
+        session.get(User.class, userId);
+        session.get(Course.class, courseId);
+        Query query = session.createSQLQuery("DELETE FROM student_course " +
+                "WHERE student_id='" + userId + "' AND course_id='" + courseId + "'");
+        query.executeUpdate();
+        session.getTransaction().commit();
     }
 }
