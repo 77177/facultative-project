@@ -19,21 +19,21 @@
 <sec:authorize access="isAuthenticated()">
     <%
         if (!principal.isStudent()) {
-            List listInt = (List) request.getAttribute("listInt");
-            int tutorId = (int) listInt.get(0);
-            int courseId = (int) listInt.get(1);
+            int tutorId = (int) request.getAttribute("tutorId");
+            int courseId = (int) request.getAttribute("courseId");
+
     %>
     <h2>Edit Course Page</h2>
     <form method="post" action="/course/action/edit/">
         Course Name:
-        <input type="text" name="courseName"><br>
+        <input type="text" name="name"><br>
         Starting date yyyy-mm-dd:
         <input type="date" name="startingDate"><br>
         Finishing date yyyy-mm-dd:
         <input type="date" name="finishingDate"><br>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="tutorId" value="<%=tutorId%>">
-        <input type="hidden" name="courseId" value="<%=courseId%>">
+        <input type="hidden" name="id" value="<%=courseId%>">
         <input type="submit" value="Submit">
     </form>
     <%} else {%> nice try <%}%>

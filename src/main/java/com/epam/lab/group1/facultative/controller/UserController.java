@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,7 +40,7 @@ public class UserController {
             }
         } else {
             modelAndView = new ModelAndView("course");
-            modelAndView.addObject("courseList", courseService.getAll());
+            modelAndView.addObject("courseList", courseService.findAll());
         }
         return modelAndView;
     }
@@ -72,7 +71,7 @@ public class UserController {
     private ModelAndView studentProfile(int studentId) {
         ModelAndView modelAndView = new ModelAndView(studentViewName);
         modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
-        modelAndView.addObject("courseList", courseService.getAllByUserId(studentId));
+        modelAndView.addObject("courseList", courseService.findAllByUserId(studentId));
         return modelAndView;
     }
 
