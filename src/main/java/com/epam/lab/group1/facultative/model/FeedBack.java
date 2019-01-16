@@ -5,10 +5,12 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Data
-@Entity(name = "student_course")
+@Entity
+@Table(name = "student_course")
 public class FeedBack implements Serializable {
 
     @Id
