@@ -31,9 +31,11 @@ public class FeedBackController {
         ModelAndView modelAndView = new ModelAndView("feedBack");
         //TODO get feedback from the database
         FeedBack feedBack = new FeedBack();
+        feedBack.setCourseId(1);
+        feedBack.setStudentId(3);
         feedBack.setText("feedback");
-        modelAndView.addObject("feedback", feedBack.getText());
-        modelAndView.addObject("courseId", courseId);
+        modelAndView.addObject("feedback", feedBack);
+        modelAndView.addObject("student",userService.getById(userId).get());
         return modelAndView;
     }
 }
