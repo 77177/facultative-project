@@ -51,7 +51,7 @@ public class CourseDAO {
     public void update(Course course) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.update(course);
+        session.merge(course);
         session.getTransaction().commit();
     }
 
