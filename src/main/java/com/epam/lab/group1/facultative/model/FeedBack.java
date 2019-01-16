@@ -2,11 +2,23 @@ package com.epam.lab.group1.facultative.model;
 
 import lombok.Data;
 
-@Data
-public class FeedBack {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
 
+@Data
+@Entity(name = "student_course")
+public class FeedBack implements Serializable {
+
+    @Id
+    @Column(name = "student_id")
     private int studentId;
+    @Id
+    @Column(name = "course_id")
     private int courseId;
-    private int Mark;
+    @Column(name = "feedback")
     private String text;
+    @Column(name = "mark")
+    private int mark;
 }
