@@ -1,14 +1,13 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
-import com.epam.lab.group1.facultative.exception.external.EmailAlreadyExistsException;
-import com.epam.lab.group1.facultative.exception.internal.UserWithEmailDoesNOtExistException;
-import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,31 +18,24 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public User getById(int userId) {
-        return userDAO.getById(userId).orElseThrow(() -> new UserWithIdDoesNotExistException("user with id " + userId + " was not " +
-            "found in the database"));
+    public Optional<User> getById(int id) {
+        return userDAO.getById(id);
     }
 
-    public User getByEmail(String email) {
-        return userDAO.getByEmail(email).orElseThrow(() -> new UserWithEmailDoesNOtExistException("user with email " + email + " already exists"));
+    public Optional<User> getByEmail(String string) {
+        return userDAO.getByEmail(string);
     }
 
     public User create(User user) {
-        userDAO.getById(user.getId())
-                .ifPresent(user1 -> new EmailAlreadyExistsException("user with this email already exists"));
         return userDAO.create(user);
     }
 
     public void update(User user) {
-        userDAO.getByEmail(user.getEmail())
-                .ifPresent(user1 -> new EmailAlreadyExistsException("Email already exists"));
         userDAO.update(user);
     }
 
-    public void deleteById(int userId) {
-        userDAO.getById(userId).orElseThrow(() -> new UserWithIdDoesNotExistException("user with id " + userId + " was not " +
-            "found in the database"));
-        userDAO.deleteById(userDAO.getById(userId).orElseThrow(UserWithIdDoesNotExistException::new).getId());
+    public void deleteById(int id) {
+        userDAO.deleteById(id);
     }
 
     public List<User> getAllStudents() {
@@ -59,15 +51,9 @@ public class UserService {
     }
 
     public void leaveCourse(int userId, int courseId) {
-        userDAO.getById(userId).orElseThrow(() -> new UserWithIdDoesNotExistException("user with id " + userId + " was not " +
-            "found in the database"));
-        userDAO.leaveCourse(userId, courseId);
     }
 
-    public void subscribeCourse(int userId, int courseId) {
-        userDAO.getById(userId).orElseThrow(() -> new UserWithIdDoesNotExistException("user with id " + userId + " was not " +
-            "found in the database"));
-        userDAO.subscribeCourse(userId, courseId);
+    public void participateInCourse(int userId, int courseId) {
     }
 
     public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {

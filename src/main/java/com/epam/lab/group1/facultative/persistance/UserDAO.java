@@ -1,6 +1,5 @@
 package com.epam.lab.group1.facultative.persistance;
 
-import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,9 +12,6 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * This class is responsible for creating User entities
- */
 @Repository
 public class UserDAO {
 
@@ -31,10 +27,16 @@ public class UserDAO {
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> u = query.from(User.class);
         query.select(u).where(criteriaBuilder.equal(u.get("id"), id));
-        Query<User> queryFinal = session.createQuery(query);
-        User user = queryFinal.getSingleResult();
-        Optional<User> userOptional = Optional.ofNullable(user);
-        return userOptional;
+        Query<User> query1 = session.createQuery(query);
+        User user;
+        Optional<User> optionalUser;
+        try {
+            user = query1.getSingleResult();
+            optionalUser = Optional.ofNullable(user);
+        } catch (Exception e) {
+            optionalUser = Optional.empty();
+        }
+        return optionalUser;
     }
 
     public Optional<User> getByEmail(String email) {
@@ -43,18 +45,31 @@ public class UserDAO {
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> u = query.from(User.class);
         query.select(u).where(criteriaBuilder.equal(u.get("email"), email));
-        Query<User> queryFinal = session.createQuery(query);
-        User user = queryFinal.getSingleResult();
-        Optional<User> userOptional = Optional.ofNullable(user);
-        return userOptional;
+        Query<User> query1 = session.createQuery(query);
+        User user;
+        Optional<User> optionalUser;
+        try {
+            user = query1.getSingleResult();
+            optionalUser = Optional.ofNullable(user);
+        } catch (Exception e) {
+            optionalUser = Optional.empty();
+        }
+        return optionalUser;
     }
 
     public User create(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.saveOrUpdate(user);
+        session.save(user);
         session.getTransaction().commit();
-        User userReturn = getByEmail(user.getEmail()).get();
+        session.beginTransaction();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("email"), user.getEmail()));
+        Query<User> query1 = session.createQuery(query);
+        User userReturn = query1.getSingleResult();
+        session.getTransaction().commit();
         return userReturn;
     }
 
@@ -91,8 +106,9 @@ public class UserDAO {
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> u = query.from(User.class);
-        query.select(u).where(criteriaBuilder.equal(u.get("position"), "tutor"));
+        query.select(u);
         Query<User> query1 = session.createQuery(query);
+        session.beginTransaction();
         List<User> users = query1.getResultList();
         return users;
     }
@@ -103,27 +119,5 @@ public class UserDAO {
         List<User> users = session.createSQLQuery("SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + " AND position = 'student';").addEntity(User.class).list();
         session.getTransaction().commit();
         return users;
-    }
-
-    public void subscribeCourse(int userId, int courseId) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.get(User.class, userId);
-        session.get(Course.class, courseId);
-        Query query = session.createSQLQuery("INSERT INTO student_course(student_id, course_id, mark, feedback)" +
-                "VALUES (" + userId + ", " + courseId + ", NULL, 'Empty')") ;
-        query.executeUpdate();
-        session.getTransaction().commit();
-    }
-
-    public void leaveCourse(int userId, int courseId) {
-        Session session = sessionFactory.openSession();;
-        session.beginTransaction();
-        session.get(User.class, userId);
-        session.get(Course.class, courseId);
-        Query query = session.createSQLQuery("DELETE FROM student_course " +
-                "WHERE student_id='" + userId + "' AND course_id='" + courseId + "'");
-        query.executeUpdate();
-        session.getTransaction().commit();
     }
 }

@@ -1,7 +1,5 @@
 package com.epam.lab.group1.facultative.service;
 
-import com.epam.lab.group1.facultative.exception.external.CourseTitleAlreadyExistsException;
-import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.springframework.stereotype.Service;
@@ -19,16 +17,13 @@ public class CourseService {
         this.courseDAO = courseDAO;
     }
 
-    public Course getById(int courseId) {
-        Optional<Course> courseById = courseDAO.getById(courseId);
-        return courseById.orElseThrow(() -> new CourseWithIdDoesNotExistException("course with id " + courseId + " is not in " +
-            "the database"));
+    public Optional<Course> getById(int courseId) {
+        return courseDAO.getById(courseId);
     }
 
-    public Course create(Course course) {
+    public Optional<Course> create(Course course) {
         course.setActive(isDateActive(course));
-        return courseDAO.create(course).orElseThrow(() -> new CourseTitleAlreadyExistsException("course with title " +
-            "already exists"));
+        return courseDAO.create(course);
     }
 
     public void update(Course course) {
@@ -40,13 +35,13 @@ public class CourseService {
         courseDAO.deleteById(id);
     }
 
-    //getAll methods.
+    //findAll methods.
 
-    public List<Course> getAll() {
+    public List<Course> findAll() {
         return isActiveCheck(courseDAO.findAll());
     }
 
-    public List<Course> getAllByUserId(int id) {
+    public List<Course> findAllByUserId(int id) {
         return isActiveCheck(courseDAO.getAllByUserID(id));
     }
 
@@ -54,12 +49,7 @@ public class CourseService {
         return isActiveCheck(courseDAO.getAllByTutorID(id));
     }
 
-    private List<Course> isActiveCheck(List<Course> courseList) {
-        courseList.forEach(course -> course.setActive(isDateActive(course)));
-        return courseList;
-    }
-
-    private boolean isDateActive(Course course) {
+    public boolean isDateActive(Course course) {
         LocalDate today = LocalDate.now();
         boolean state;
         if (today.isBefore(course.getFinishingDate()) && today.isAfter(course.getStartingDate())) {
@@ -68,5 +58,12 @@ public class CourseService {
             state = false;
         }
         return state;
+    }
+
+    private List<Course> isActiveCheck(List<Course> courseList) {
+        courseList.forEach(course -> {
+            course.setActive(isDateActive(course));
+        });
+        return courseList;
     }
 }

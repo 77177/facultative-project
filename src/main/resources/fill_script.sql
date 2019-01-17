@@ -29,9 +29,6 @@ VALUES ('COURSE_2', 2, '2015-11-18', '2015-11-19', 'false');
 
 --student_course
 INSERT INTO student_course(student_id, course_id, mark, feedback)
-VALUES (1, 1, -1, 'Empty');
-
-INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (3, 1, -1, 'Empty');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)

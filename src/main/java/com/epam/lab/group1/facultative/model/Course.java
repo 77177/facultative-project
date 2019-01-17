@@ -3,20 +3,16 @@ package com.epam.lab.group1.facultative.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
 @Table(name = "courses")
-public class Course implements Serializable {
+public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +34,6 @@ public class Course implements Serializable {
     @Column(name = "active")
     private boolean active;
 
-    @ManyToMany(mappedBy = "courseList")
-    private List<User> usersList;
+    //private List<User> usersList;
 
-    public List<Integer> getUserIds() {
-        return getUsersList().stream().map(User::getId).collect(Collectors.toList());
-    }
 }

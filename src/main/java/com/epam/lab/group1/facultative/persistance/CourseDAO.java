@@ -1,14 +1,20 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +38,7 @@ public class CourseDAO {
     public Optional<Course> create(Course course) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.saveOrUpdate(course);
+        session.persist(course);
         session.getTransaction().commit();
         session.beginTransaction();
         Query<Course> query = session.createSQLQuery("SELECT * FROM courses WHERE courses.course_name = '" + course.getName() + "'").addEntity(Course.class);
@@ -45,7 +51,7 @@ public class CourseDAO {
     public void update(Course course) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.merge(course);
+        session.update(course);
         session.getTransaction().commit();
     }
 

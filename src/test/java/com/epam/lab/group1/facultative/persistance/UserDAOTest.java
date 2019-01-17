@@ -61,6 +61,10 @@ public class UserDAOTest {
         assertEquals("0tutor@gmail.com", user.getEmail());
         assertEquals("0", user.getPassword());
         assertEquals("tutor", user.getPosition());
+
+        int nonExistingUserId = Integer.MAX_VALUE;
+        optionalUser = userDAO.getById(nonExistingUserId);
+        assertNotNull(optionalUser);
     }
 
     @Test

@@ -16,8 +16,8 @@ public class WelcomeController {
 
     @RequestMapping("/**")
     public ModelAndView welcome() {
-        ModelAndView modelAndView = new ModelAndView("course/course");
-        modelAndView.addObject("courseList", courseService.getAll());
+        ModelAndView modelAndView = new ModelAndView("course");
+        modelAndView.addObject("courseList", courseService.findAll());
         return modelAndView;
     }
 }

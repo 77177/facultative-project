@@ -46,12 +46,12 @@ public class UserControllerTest {
     public void testAction() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1?action=leave"))
             .andExpect(MockMvcResultMatchers.view().name(studentViewName))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("user", "courseList"));
+            .andExpect(MockMvcResultMatchers.model().attributeExists("student", "courseList"));
         //TODO check action performance
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1?action=subscribe"))
             .andExpect(MockMvcResultMatchers.view().name(studentViewName))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("user", "courseList"));
+            .andExpect(MockMvcResultMatchers.model().attributeExists("student", "courseList"));
         //TODO check action performance
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1"))
