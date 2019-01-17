@@ -1,5 +1,8 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.exception.external.CourseTitleAlreadyExistsException;
+import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -24,6 +28,7 @@ public class CourseController {
     private final String courseInfoView = "course/courseInfo";
     private final String createCourseView = "course/createCourse";
     private final String editCourseView = "course/editCourse";
+    private final String errorViewName = "exception/exceptionPage";
 
     public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
@@ -34,7 +39,6 @@ public class CourseController {
     public ModelAndView getAllCourses() {
         ModelAndView modelAndView = new ModelAndView(courseView);
         modelAndView.addObject("courseList", courseService.getAll());
-
         return modelAndView;
     }
 
@@ -101,5 +105,29 @@ public class CourseController {
             }
         }
         binder.addCustomFormatter(new LocalDateFormatter());
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ModelAndView sqlExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(errorViewName);
+        ErrorDto errorDto = new ErrorDto("SqlException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
+        return modelAndView;
+    }
+
+    @ExceptionHandler(CourseTitleAlreadyExistsException.class)
+    public ModelAndView incorrectDataInputExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(errorViewName);
+        ErrorDto errorDto = new ErrorDto("incorrect input", e.getMessage());
+        modelAndView.addObject("error", errorDto);
+        return modelAndView;
+    }
+
+    @ExceptionHandler(CourseWithIdDoesNotExistException.class)
+    public ModelAndView courseNotFoundExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(errorViewName);
+        ErrorDto errorDto = new ErrorDto("course not found", e.getMessage());
+        modelAndView.addObject("error", errorDto);
+        return modelAndView;
     }
 }

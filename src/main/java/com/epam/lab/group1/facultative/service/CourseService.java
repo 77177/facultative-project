@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.service;
 
-import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExists;
+import com.epam.lab.group1.facultative.exception.external.CourseTitleAlreadyExistsException;
+import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,14 @@ public class CourseService {
 
     public Course getById(int courseId) {
         Optional<Course> courseById = courseDAO.getById(courseId);
-        return courseById.orElseThrow(() -> new CourseWithIdDoesNotExists("course with id " + courseId + " is not in " +
+        return courseById.orElseThrow(() -> new CourseWithIdDoesNotExistException("course with id " + courseId + " is not in " +
             "the database"));
     }
 
-    public Optional<Course> create(Course course) {
+    public Course create(Course course) {
         course.setActive(isDateActive(course));
-        return courseDAO.create(course);
+        return courseDAO.create(course).orElseThrow(() -> new CourseTitleAlreadyExistsException("course with title " +
+            "already exists"));
     }
 
     public void update(Course course) {
