@@ -1,6 +1,5 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -29,56 +28,43 @@ public class UserController {
 
     @RequestMapping("/profile")
     public ModelAndView sendRedirectToProfile() {
-        ModelAndView modelAndView = null;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            SecurityContextUser principal = (SecurityContextUser)authentication.getPrincipal();
-            if (principal.isStudent()) {
-                modelAndView = studentProfile(principal.getUserId());
-            } else {
-                modelAndView = tutorProfile(principal.getUserId());
-            }
-        } else {
-            modelAndView = new ModelAndView("course");
-            modelAndView.addObject("courseList", courseService.findAll());
-        }
-        return modelAndView;
+        return formProfile();
     }
 
     @RequestMapping("/{userId}/course/{courseId}")
     public ModelAndView action(@PathVariable int userId, @PathVariable int courseId,
                                @RequestParam(name = "action", required = false) String action) {
-        ModelAndView modelAndView = null;
         if (action != null) {
             switch (action) {
                 case "leave": {
                     //TODO userService.leaveCourse(userId, courseId)
-                    modelAndView = studentProfile(userId);
                     break;
                 }
                 case "subscribe": {
                     //TODO userService.subscribeCourse(userId, courseId)
-                    modelAndView = studentProfile(userId);
                     break;
                 }
             }
-        } else {
-            modelAndView = new ModelAndView("course");
         }
-        return modelAndView;
+        return formProfile();
     }
 
-    private ModelAndView studentProfile(int studentId) {
-        ModelAndView modelAndView = new ModelAndView(studentViewName);
-        modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
-        modelAndView.addObject("courseList", courseService.findAllByUserId(studentId));
-        return modelAndView;
-    }
-
-    private ModelAndView tutorProfile(int tutorId) {
-        ModelAndView modelAndView = new ModelAndView(tutorViewName);
-        modelAndView.addObject("tutor", userService.getById(tutorId));
-        modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
+    private ModelAndView formProfile() {
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
+            modelAndView.addObject("user", userService.getById(principal.getUserId()));
+            modelAndView.addObject("courseList", courseService.getAllByUserId(principal.getUserId()));
+            if (principal.isStudent()) {
+                modelAndView.setViewName(studentViewName);
+            } else {
+                modelAndView.setViewName(tutorViewName);
+            }
+        } else {
+            modelAndView = new ModelAndView("course/course");
+            modelAndView.addObject("courseList", courseService.getAll());
+        }
         return modelAndView;
     }
 }

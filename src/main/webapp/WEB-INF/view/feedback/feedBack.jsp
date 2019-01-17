@@ -42,7 +42,7 @@
     }
 %>
 Feedbacks page
-<c:import url="header.jsp"/>
+<c:import url="../template/header.jsp"/>
 <br/>
 <sec:authorize access="isAuthenticated()">
     <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>

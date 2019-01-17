@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.service;
 
+import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExists;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,10 @@ public class CourseService {
         this.courseDAO = courseDAO;
     }
 
-    public Optional<Course> getById(int courseId) {
-        return courseDAO.getById(courseId);
+    public Course getById(int courseId) {
+        Optional<Course> courseById = courseDAO.getById(courseId);
+        return courseById.orElseThrow(() -> new CourseWithIdDoesNotExists("course with id " + courseId + " is not in " +
+            "the database"));
     }
 
     public Optional<Course> create(Course course) {
@@ -35,13 +38,13 @@ public class CourseService {
         courseDAO.deleteById(id);
     }
 
-    //findAll methods.
+    //getAll methods.
 
-    public List<Course> findAll() {
+    public List<Course> getAll() {
         return isActiveCheck(courseDAO.findAll());
     }
 
-    public List<Course> findAllByUserId(int id) {
+    public List<Course> getAllByUserId(int id) {
         return isActiveCheck(courseDAO.getAllByUserID(id));
     }
 

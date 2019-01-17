@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.format.Formatter;
@@ -32,14 +33,21 @@ public class CourseController {
     @GetMapping(value = "/")
     public ModelAndView getAllCourses() {
         ModelAndView modelAndView = new ModelAndView(courseView);
-        modelAndView.addObject("courseList", courseService.findAll());
+        modelAndView.addObject("courseList", courseService.getAll());
+
         return modelAndView;
     }
 
     @GetMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(courseInfoView);
-        modelAndView.addObject("courseInfo", courseService.getById(courseId));
+        Course course = courseService.getById(courseId);
+        User tutor = userService.getById(course.getTutorId());
+        if (!tutor.getPosition().equals("tutor")) {
+            throw new RuntimeException("user is not a tutor");
+        }
+        modelAndView.addObject("course", course);
+        modelAndView.addObject("tutor", tutor);
         modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
         return modelAndView;
     }

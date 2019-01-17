@@ -21,21 +21,21 @@ public class FeedBackController {
 
     @PostMapping(value = "/")
     public ModelAndView createFeedBack(@ModelAttribute FeedBack feedback){
-        ModelAndView modelAndView = new ModelAndView("feedBack");
+        ModelAndView modelAndView = new ModelAndView("feedback/feedBack");
         //TODO save feedback to the database
         return modelAndView;
     }
 
     @GetMapping(value = "/user/{userId}/course/{courseId}")
     public ModelAndView feedBackPage(@PathVariable int userId,@PathVariable int courseId){
-        ModelAndView modelAndView = new ModelAndView("feedBack");
+        ModelAndView modelAndView = new ModelAndView("feedback/feedBack");
         //TODO get feedback from the database
         FeedBack feedBack = new FeedBack();
         feedBack.setCourseId(1);
         feedBack.setStudentId(3);
         feedBack.setText("feedback");
         modelAndView.addObject("feedback", feedBack);
-        modelAndView.addObject("student",userService.getById(userId).get());
+        modelAndView.addObject("student",userService.getById(userId));
         return modelAndView;
     }
 }

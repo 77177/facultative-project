@@ -19,8 +19,9 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public Optional<User> getById(int id) {
-        return userDAO.getById(id);
+    public User getById(int userId) {
+        return userDAO.getById(userId).orElseThrow(() -> new UserWithIdDoesNotExist("user with id " + userId + " was not " +
+            "found in the database"));
     }
 
     public Optional<User> getByEmail(String string) {
