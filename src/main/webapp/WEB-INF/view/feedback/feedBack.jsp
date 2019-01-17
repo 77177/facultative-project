@@ -52,7 +52,9 @@ Feedbacks page
         <form:hidden path="courseId"/>
         <form:hidden path="studentId"/>
         <form:hidden path="mark"/>
-        <input type="submit" value="submit"/>
+        <%if(!principal.isStudent()) {%>
+            <input type="submit" value="submit"/>
+        <%}%>
     </form:form>
 </sec:authorize>
 </body>
