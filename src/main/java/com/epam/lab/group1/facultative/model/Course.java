@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,4 +40,8 @@ public class Course implements Serializable {
 
     @ManyToMany(mappedBy = "courseList")
     private List<User> usersList;
+
+    public List<Integer> getUserIds() {
+        return getUsersList().stream().map(User::getId).collect(Collectors.toList());
+    }
 }

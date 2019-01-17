@@ -9,8 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/authenticator")
 public class AuthenticationController {
 
-    private final String loginViewName = "loginPage";
-    private final String registrationViewName = "register";
+    private final String loginViewName = "security/loginPage";
+    private final String registrationViewName = "security/register";
 
     /**
      * @return official project login page.

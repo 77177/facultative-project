@@ -12,13 +12,20 @@
 
     <tx:annotation-driven/>
 
-    <jdbc:embedded-database database-name="FacultativeDataBase" id="dataSource" type="H2">
+    <jdbc:embedded-database database-name="FacultativeDataBase" id="H2dataSource" type="H2">
         <jdbc:script location="classpath:create_script.sql"/>
         <jdbc:script location="classpath:fill_script.sql"/>
     </jdbc:embedded-database>
 
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <constructor-arg name="url" value="jdbc:postgresql://35.246.157.173:5432/facultative"/>
+        <constructor-arg name="username" value="postgres"/>
+        <constructor-arg name="password" value="admin"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+    </bean>
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="H2dataSource"/>
         <property name="packagesToScan" value="com.epam.lab.group1.facultative.model"/>
         <property name="hibernateProperties">
             <props>
@@ -40,6 +47,10 @@
 
     <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">
         <constructor-arg name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="feedBackDAO" class="com.epam.lab.group1.facultative.persistance.FeedBackDAO">
+        <constructor-arg ref="sessionFactory"/>
     </bean>
 
 </beans>
