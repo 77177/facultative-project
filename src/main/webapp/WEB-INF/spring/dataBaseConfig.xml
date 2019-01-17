@@ -42,4 +42,8 @@
         <constructor-arg name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="feedBackDAO" class="com.epam.lab.group1.facultative.persistance.FeedBackDAO">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
 </beans>

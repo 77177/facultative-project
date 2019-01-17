@@ -34,6 +34,5 @@ public class Course {
     @Column(name = "active")
     private boolean active;
 
-    //private List<User> usersList;
 
 }

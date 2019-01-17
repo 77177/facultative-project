@@ -19,4 +19,9 @@
         <constructor-arg ref="courseDAO"/>
     </bean>
 
+    <bean id="feedBackService" class="com.epam.lab.group1.facultative.service.FeedBackService">
+        <constructor-arg ref="feedBackDAO"/>
+    </bean>
+
+
 </beans>

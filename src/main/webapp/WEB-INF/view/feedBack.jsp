@@ -24,7 +24,7 @@ Feedbacks page
 <br/>
 <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>
 <form:form action="/feedback/" method="post" modelAttribute="feedback">
-<form:textarea path="string" rows="4" cols="50" readonly="<%=principal.isStudent()%>"></form:textarea>
+<form:textarea path="text" rows="4" cols="50" readonly="<%=principal.isStudent()%>"></form:textarea>
     <input type="submit"/>
 </form:form>
 
