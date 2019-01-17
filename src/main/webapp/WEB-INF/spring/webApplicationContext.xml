@@ -23,6 +23,7 @@
     <bean id="feedBackController" class="com.epam.lab.group1.facultative.controller.FeedBackController">
         <constructor-arg name="courseService" ref="courseService"/>
         <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="feedBackService" ref="feedBackService"/>
     </bean>
 
     <bean id="courseController" class="com.epam.lab.group1.facultative.controller.CourseController">
