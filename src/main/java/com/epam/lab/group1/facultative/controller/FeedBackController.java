@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
@@ -27,7 +28,8 @@ public class FeedBackController {
         ModelAndView modelAndView = new ModelAndView("feedBack");
         feedBackService.saveOrUpdate(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
-        modelAndView.addObject("student", userService.getById(feedback.getStudentId()));
+        modelAndView.addObject("course", courseService.getById(feedback.getCourseId()).get());
+
         return modelAndView;
     }
 
@@ -36,7 +38,7 @@ public class FeedBackController {
         ModelAndView modelAndView = new ModelAndView("feedBack");
         FeedBack feedBack = feedBackService.getFeedBack(courseId, userId);
         modelAndView.addObject("feedback", feedBack);
-        modelAndView.addObject("student", userService.getById(userId));
+        modelAndView.addObject("course", courseService.getById(courseId).get());
         return modelAndView;
     }
 }

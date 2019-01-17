@@ -25,8 +25,8 @@ public class FeedBackDAO {
         Root<FeedBack> root = query.from(FeedBack.class);
         query.select(root).where(criteriaBuilder.equal(root.get("courseId"),courseId),criteriaBuilder.equal(root.get("studentId"),userId));
         Query<FeedBack> queryFinal = session.createQuery(query);
-        List<FeedBack> feedBack = queryFinal.getResultList();
-        return feedBack.get(0);
+        FeedBack feedBack = queryFinal.getSingleResult();
+        return feedBack;
     }
 
     public void saveOrUpdate(FeedBack feedBack){
