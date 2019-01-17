@@ -2,10 +2,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-        <title>Feedbacks</title>
+        <title>New feedback</title>
     </head>
     <body>
-        Feedbacks page
-        <c:import url="header.jsp"/>
+        New feedback
+        <c:import url="../template/header.jsp"/>
     </body>
 </html>

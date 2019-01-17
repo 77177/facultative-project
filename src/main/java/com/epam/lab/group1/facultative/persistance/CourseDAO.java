@@ -21,32 +21,10 @@ import java.util.Optional;
 @Repository
 public class CourseDAO {
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private String sql;
-    private JdbcTemplate jdbcTemplate;
     private SessionFactory sessionFactory;
 
-
-    public CourseDAO(DataSource dataSource, SessionFactory sessionFactory) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    public CourseDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-    }
-
-    public List<Integer> getAllCourseIdbyUserId(User user) {
-        Session session = sessionFactory.openSession();
-        List<Course> courses = Collections.emptyList();
-        session.beginTransaction();
-        if (user.getPosition().equals("tutor")) {
-            courses = session.createSQLQuery("SELECT * FROM courses WHERE tutor_id = " + user.getId() + ";").addEntity(Course.class).getResultList();
-        } else {
-            courses = session.createSQLQuery("SELECT * FROM student_course join courses on student_course.course_id = courses.course_id where student_id = " + user.getId() + ";").addEntity(Course.class).getResultList();
-        }
-        session.getTransaction().commit();
-
-        List<Integer> courseIds = new ArrayList<>();
-        courses.forEach(c->courseIds.add(c.getId()));
-        return courseIds;
     }
 
     public Optional<Course> getById(int id) {
@@ -57,12 +35,24 @@ public class CourseDAO {
         return optionalCourse;
     }
 
-    public List<Course> getAllByUserID(int id) {
+    public Optional<Course> create(Course course) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<Course> courses = session.createSQLQuery("SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";").addEntity(Course.class).list();
+        session.persist(course);
         session.getTransaction().commit();
-        return courses;
+        session.beginTransaction();
+        Query<Course> query = session.createSQLQuery("SELECT * FROM courses WHERE courses.course_name = '" + course.getName() + "'").addEntity(Course.class);
+        Course courseReturn = query.getSingleResult();
+        Optional<Course> optionalCourse = Optional.ofNullable(courseReturn);
+        session.getTransaction().commit();
+        return optionalCourse;
+    }
+
+    public void update(Course course) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.merge(course);
+        session.getTransaction().commit();
     }
 
     public void deleteById(int id) {
@@ -75,10 +65,18 @@ public class CourseDAO {
         session.getTransaction().commit();
     }
 
-    public List<Course> getList() {
+    public List<Course> findAll() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Course> courses = session.createSQLQuery("SELECT * FROM courses").addEntity(Course.class).list();
+        session.getTransaction().commit();
+        return courses;
+    }
+
+    public List<Course> getAllByUserID(int id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Course> courses = session.createSQLQuery("SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";").addEntity(Course.class).list();
         session.getTransaction().commit();
         return courses;
     }
@@ -92,25 +90,5 @@ public class CourseDAO {
         Query<Course> query1 = session.createQuery(criteriaQuery);
         List<Course> courseList = query1.getResultList();
         return courseList;
-    }
-
-    public Optional<Course> create(Course course) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.persist(course);
-        session.getTransaction().commit();
-        session.beginTransaction();
-        Query<Course> query = session.createSQLQuery("SELECT * FROM courses WHERE courses.course_name = '" + course.getName()+"'").addEntity(Course.class);
-        Course courseReturn = query.getSingleResult();
-        Optional<Course> optionalCourse = Optional.ofNullable(courseReturn);
-        session.getTransaction().commit();
-        return optionalCourse;
-    }
-
-    public void update(Course course) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.update(course);
-        session.getTransaction().commit();
     }
 }

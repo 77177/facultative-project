@@ -1,7 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.dto.CourseDTO;
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.format.Formatter;
@@ -10,16 +10,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-
-import static java.lang.Boolean.TRUE;
 
 @Controller
 @RequestMapping("/course")
@@ -37,18 +30,25 @@ public class CourseController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "")
+    @GetMapping(value = "/")
     public ModelAndView getAllCourses() {
         ModelAndView modelAndView = new ModelAndView(courseView);
         modelAndView.addObject("courseList", courseService.getAll());
+
         return modelAndView;
     }
 
-    @RequestMapping(value = "/{courseId}")
+    @GetMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(courseInfoView);
-        modelAndView.addObject("courseInfo", courseService.getById(courseId));
-        modelAndView.addObject("studentList", userService.getAllByCourseId(courseId));
+        Course course = courseService.getById(courseId);
+        User tutor = userService.getById(course.getTutorId());
+        if (!tutor.getPosition().equals("tutor")) {
+            throw new RuntimeException("user is not a tutor");
+        }
+        modelAndView.addObject("course", course);
+        modelAndView.addObject("tutor", tutor);
+        modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
         return modelAndView;
     }
 
@@ -60,54 +60,33 @@ public class CourseController {
     }
 
     @PostMapping(value = "/action/create")
-    public void createCourse(@ModelAttribute Course course, @RequestParam int tutorId, HttpServletResponse response) {
-        course.setActive(true);
-        course.setTutorId(tutorId);
+    public String createCourse(@ModelAttribute Course course) {
         courseService.create(course);
-        try {
-            response.sendRedirect("/user/profile");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return "redirect:/user/profile";
     }
 
     @GetMapping(value = "/action/delete/{courseId}")
-    public void deleteCourse(@PathVariable int courseId, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView(courseView);
+    public String deleteCourse(@PathVariable int courseId) {
         courseService.deleteById(courseId);
-        try {
-            response.sendRedirect("/user/profile");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return "redirect:/user/profile";
     }
 
     @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
     public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(editCourseView);
-        List<Integer> listInt = new ArrayList<>();
-        listInt.add(tutorId);
-        listInt.add(courseId);
-        modelAndView.addObject("listInt", listInt);
+        modelAndView.addObject("tutorId", tutorId);
+        modelAndView.addObject("courseId", courseId);
         return modelAndView;
     }
 
-    @PostMapping(value = "/action/edit/")
-    public void editCourse(@ModelAttribute CourseDTO courseDTO, @RequestParam int tutorId, @RequestParam int courseId, HttpServletResponse response) {
-        courseDTO.setTutorId(tutorId);
-        courseDTO.setCourseId(courseId);
-        courseDTO.setActive(courseService.isDateActive(courseService.courseDtoToCourse(courseDTO)));
-        courseService.updateCourseFromDto(courseDTO);
-        try {
-            response.sendRedirect("/user/profile");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @PostMapping(value = "/action/edit")
+    public String editCourse(@ModelAttribute Course course) {
+        courseService.update(course);
+        return "redirect:/user/profile";
     }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-
         class LocalDateFormatter implements Formatter<LocalDate> {
 
             @Override
@@ -121,7 +100,6 @@ public class CourseController {
                 return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
             }
         }
-
         binder.addCustomFormatter(new LocalDateFormatter());
     }
 }

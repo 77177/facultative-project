@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -53,12 +54,12 @@ public class CourseDAOTest {
     @Test
     public void testDeleteById() {
         courseDAO.deleteById(1);
-        assertEquals(1, courseDAO.getList().size());
+        assertEquals(1, courseDAO.findAll().size());
     }
 
     @Test
     public void testGetList() {
-        List<Course> list = courseDAO.getList();
+        List<Course> list = courseDAO.findAll();
         assertEquals(2, list.size());
     }
 
@@ -91,10 +92,11 @@ public class CourseDAOTest {
         User user = new User();
         user.setId(1);
         user.setPosition("tutor");
-        List<Integer> allCourseIdbyUserId = courseDAO.getAllCourseIdbyUserId(user);
+        List<Integer> allCourseIdbyUserId = courseDAO.getAllByUserID(user.getId()).stream().map(Course::getId).collect(Collectors.toList());
+        courseDAO.getAllByUserID(user.getId()).stream().map(Course::getId).collect(Collectors.toList());
         assertEquals(1, allCourseIdbyUserId.get(0).longValue());
         user.setPosition("student");
-        List<Integer> allCourseIdbyUserId1 = courseDAO.getAllCourseIdbyUserId(user);
+        List<Integer> allCourseIdbyUserId1 = courseDAO.getAllByUserID(user.getId()).stream().map(Course::getId).collect(Collectors.toList());
         assertEquals(1, allCourseIdbyUserId1.get(0).longValue());
     }
 

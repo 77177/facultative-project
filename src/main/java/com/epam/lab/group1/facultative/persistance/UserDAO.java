@@ -58,28 +58,6 @@ public class UserDAO {
         return optionalUser;
     }
 
-    public void deleteById(int id) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        User user = session.load(User.class, id);
-        session.getTransaction().commit();
-        session.beginTransaction();
-        session.delete(user);
-        session.getTransaction().commit();
-    }
-
-    public List<User> getList() {
-        Session session = sessionFactory.openSession();
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> u = query.from(User.class);
-        query.select(u);
-        Query<User> query1 = session.createQuery(query);
-        session.beginTransaction();
-        List<User> users = query1.getResultList();
-        return users;
-    }
-
     public User create(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -101,6 +79,38 @@ public class UserDAO {
         session.beginTransaction();
         session.update(user);
         session.getTransaction().commit();
+    }
+
+    public void deleteById(int id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        User user = session.load(User.class, id);
+        session.getTransaction().commit();
+        session.beginTransaction();
+        session.delete(user);
+        session.getTransaction().commit();
+    }
+
+    public List<User> getAllStudents() {
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("position"), "student"));
+        Query<User> query1 = session.createQuery(query);
+        List<User> user = query1.getResultList();
+        return user;
+    }
+
+    public List<User> getAllTutors() {
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("position"), "tutor"));
+        Query<User> query1 = session.createQuery(query);
+        List<User> users = query1.getResultList();
+        return users;
     }
 
     public List<User> getAllStudentByCourseId(int id) {

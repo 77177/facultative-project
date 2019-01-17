@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
@@ -6,6 +7,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SecurityContextUser principal = null;
+    Object courseListObject = request.getParameter("courseList");
+    List<Course> courseList = courseListObject != null ? (List) courseListObject : null;
 %>
 <sec:authorize access="isAuthenticated()">
     <%
@@ -18,10 +21,7 @@
     </head>
     <body>
         <h2>My profile</h2>
-        <%
-            List<Course> list = (List<Course>) request.getAttribute("courseList");
-        %>
-        <c:import url="header.jsp"/>
+        <c:import url="../template/header.jsp"/>
         <table style="border: 2px double black; border-spacing: 7px 7px">
             <tr>
                 <th>CourseName</th>
@@ -32,7 +32,7 @@
                 <th></th>
             </tr>
             <%
-                for (Course course : list) {
+                for (Course course : courseList) {
             %>
             <tr>
                 <td><% out.println(course.getName());%></td>

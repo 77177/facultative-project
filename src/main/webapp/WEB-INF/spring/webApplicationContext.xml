@@ -20,6 +20,10 @@
         <constructor-arg name="userService" ref="userService"/>
     </bean>
 
+    <bean id="feedBackController" class="com.epam.lab.group1.facultative.controller.FeedBackController">
+        <constructor-arg name="courseService" ref="courseService"/>
+        <constructor-arg name="userService" ref="userService"/>
+    </bean>
 
     <bean id="courseController" class="com.epam.lab.group1.facultative.controller.CourseController">
         <constructor-arg name="userService" ref="userService"/>

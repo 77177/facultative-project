@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.security;
 
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
@@ -10,10 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the UserDetailsService. Retrieves data from DB and creates UserDetails.
@@ -58,9 +57,14 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = Arrays.asList(grantedAuthority);
         SecurityContextUser securityContextUser = new SecurityContextUser(username, user.getPassword(), authorities);
         securityContextUser.setUserId(user.getId());
-        securityContextUser.setCourseIdList(courseDAO.getAllCourseIdbyUserId(user));
+        securityContextUser
+                .setCourseIdList(courseDAO.getAllByUserID(user.getId())
+                        .stream()
+                        .map(Course::getId)
+                        .collect(Collectors.toList()));
         securityContextUser.setStudent(isStudent);
         return securityContextUser;
 
     }
 }
+
