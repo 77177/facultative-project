@@ -12,6 +12,9 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class is responsible for creating User entities
+ */
 @Repository
 public class UserDAO {
 
@@ -27,16 +30,10 @@ public class UserDAO {
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> u = query.from(User.class);
         query.select(u).where(criteriaBuilder.equal(u.get("id"), id));
-        Query<User> query1 = session.createQuery(query);
-        User user;
-        Optional<User> optionalUser;
-        try {
-            user = query1.getSingleResult();
-            optionalUser = Optional.ofNullable(user);
-        } catch (Exception e) {
-            optionalUser = Optional.empty();
-        }
-        return optionalUser;
+        Query<User> queryFinal = session.createQuery(query);
+        User user = queryFinal.getSingleResult();
+        Optional<User> userOptional = Optional.ofNullable(user);
+        return userOptional;
     }
 
     public Optional<User> getByEmail(String email) {
@@ -45,31 +42,18 @@ public class UserDAO {
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> u = query.from(User.class);
         query.select(u).where(criteriaBuilder.equal(u.get("email"), email));
-        Query<User> query1 = session.createQuery(query);
-        User user;
-        Optional<User> optionalUser;
-        try {
-            user = query1.getSingleResult();
-            optionalUser = Optional.ofNullable(user);
-        } catch (Exception e) {
-            optionalUser = Optional.empty();
-        }
-        return optionalUser;
+        Query<User> queryFinal = session.createQuery(query);
+        User user = queryFinal.getSingleResult();
+        Optional<User> userOptional = Optional.ofNullable(user);
+        return userOptional;
     }
 
     public User create(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(user);
+        session.saveOrUpdate(user);
         session.getTransaction().commit();
-        session.beginTransaction();
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> u = query.from(User.class);
-        query.select(u).where(criteriaBuilder.equal(u.get("email"), user.getEmail()));
-        Query<User> query1 = session.createQuery(query);
-        User userReturn = query1.getSingleResult();
-        session.getTransaction().commit();
+        User userReturn = getByEmail(user.getEmail()).get();
         return userReturn;
     }
 
