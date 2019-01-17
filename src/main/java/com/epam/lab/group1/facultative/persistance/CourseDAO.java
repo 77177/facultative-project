@@ -32,7 +32,7 @@ public class CourseDAO {
     public Optional<Course> create(Course course) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.persist(course);
+        session.saveOrUpdate(course);
         session.getTransaction().commit();
         session.beginTransaction();
         Query<Course> query = session.createSQLQuery("SELECT * FROM courses WHERE courses.course_name = '" + course.getName() + "'").addEntity(Course.class);
