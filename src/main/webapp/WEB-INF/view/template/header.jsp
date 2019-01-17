@@ -9,6 +9,6 @@
         <div>
             <a href="/course">all courses</a>
         </div>
-        <c:import url="template/userZone.jsp"/>
+        <c:import url="../template/userZone.jsp"/>
     </body>
 </html>

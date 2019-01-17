@@ -40,7 +40,6 @@ public class UserService {
         userDAO.update(user);
     }
 
-    public void leaveCourse(int userId, int courseId) { userDAO.leaveCourse(userId, courseId);}
     public void deleteById(int id) {
         userDAO.deleteById(userDAO.getById(id).orElseThrow(UserWithIdDoesNotExist::new).getId());
     }
@@ -61,7 +60,9 @@ public class UserService {
         userDAO.leaveCourse(userId, courseId);
     }
 
-    public void subscribeCourse(int userId, int courseId) { userDAO.subscribeCourse(userId, courseId);}
+    public void subscribeCourse(int userId, int courseId) {
+        userDAO.subscribeCourse(userId, courseId);
+    }
 
     public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {
         User user = new User();

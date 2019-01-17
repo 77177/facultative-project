@@ -20,10 +20,10 @@ public class CourseController {
 
     private CourseService courseService;
     private UserService userService;
-    private final String courseView = "course";
-    private final String courseInfoView = "courseInfo";
-    private final String createCourseView = "createCourse";
-    private final String editCourseView = "editCourse";
+    private final String courseView = "course/course";
+    private final String courseInfoView = "course/courseInfo";
+    private final String createCourseView = "course/createCourse";
+    private final String editCourseView = "course/editCourse";
 
     public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;

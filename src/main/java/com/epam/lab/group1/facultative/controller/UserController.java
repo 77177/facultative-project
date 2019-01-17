@@ -17,8 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/user")
 public class UserController {
 
-    private final String studentViewName = "student";
-    private final String tutorViewName = "tutor";
+    private final String studentViewName = "user/student";
+    private final String tutorViewName = "user/tutor";
 
     private UserService userService;
     private CourseService courseService;
@@ -57,10 +57,12 @@ public class UserController {
         if (authentication != null && authentication.isAuthenticated()) {
             SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
             modelAndView.addObject("user", userService.getById(principal.getUserId()));
-            modelAndView.addObject("courseList", courseService.getAllByUserId(principal.getUserId()));
             if (principal.isStudent()) {
+                modelAndView.addObject("courseList", courseService.getAllByUserId(principal.getUserId()));
                 modelAndView.setViewName(studentViewName);
             } else {
+                modelAndView.addObject("courseList", courseService.getAllByTutorID(principal.getUserId()));
+                courseService.getAllByTutorID(principal.getUserId());
                 modelAndView.setViewName(tutorViewName);
             }
         } else {

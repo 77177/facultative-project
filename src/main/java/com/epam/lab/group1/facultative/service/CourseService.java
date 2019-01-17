@@ -52,7 +52,12 @@ public class CourseService {
         return isActiveCheck(courseDAO.getAllByTutorID(id));
     }
 
-    public boolean isDateActive(Course course) {
+    private List<Course> isActiveCheck(List<Course> courseList) {
+        courseList.forEach(course -> course.setActive(isDateActive(course)));
+        return courseList;
+    }
+
+    private boolean isDateActive(Course course) {
         LocalDate today = LocalDate.now();
         boolean state;
         if (today.isBefore(course.getFinishingDate()) && today.isAfter(course.getStartingDate())) {
@@ -61,12 +66,5 @@ public class CourseService {
             state = false;
         }
         return state;
-    }
-
-    private List<Course> isActiveCheck(List<Course> courseList) {
-        courseList.forEach(course -> {
-            course.setActive(isDateActive(course));
-        });
-        return courseList;
     }
 }
