@@ -24,19 +24,19 @@ public class FeedBackController {
 
     @PostMapping(value = "/")
     public ModelAndView createFeedBack(@ModelAttribute(name = "feedback") FeedBack feedback) {
-        ModelAndView modelAndView = new ModelAndView("feedBack");
+        ModelAndView modelAndView = new ModelAndView("feedback/feedBack");
         feedBackService.saveOrUpdate(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
-        modelAndView.addObject("student", userService.getById(feedback.getStudentId()).get());
+        modelAndView.addObject("student", userService.getById(feedback.getStudentId()));
         return modelAndView;
     }
 
     @GetMapping(value = "/user/{userId}/course/{courseId}")
     public ModelAndView feedBackPage(@PathVariable int userId, @PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView("feedBack");
+        ModelAndView modelAndView = new ModelAndView("feedback/feedBack");
         FeedBack feedBack = feedBackService.getFeedBack(courseId, userId);
         modelAndView.addObject("feedback", feedBack);
-        modelAndView.addObject("student", userService.getById(userId).get());
+        modelAndView.addObject("student", userService.getById(userId));
         return modelAndView;
     }
 }

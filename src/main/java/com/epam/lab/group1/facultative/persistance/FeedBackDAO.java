@@ -31,8 +31,8 @@ public class FeedBackDAO {
 
     public void saveOrUpdate(FeedBack feedBack){
         Session session = sessionFactory.openSession();
-        session.getTransaction();
-        session.save(feedBack);
+        session.getTransaction().begin();
+        session.saveOrUpdate(feedBack);
         session.getTransaction().commit();
     }
 }

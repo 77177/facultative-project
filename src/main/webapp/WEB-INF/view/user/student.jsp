@@ -46,6 +46,7 @@
                         <th>CourseName</th>
                         <th>StartingDate</th>
                         <th>FinishingDate</th>
+                        <th>FeedBack</th>
                     </tr>
                     <%
                         for (Course course : courseList) {
@@ -55,6 +56,7 @@
                         <td><% out.println(course.getStartingDate());%></td>
                         <td><% out.println(course.getFinishingDate());%></td>
                         <td><a href="/course/<%=course.getId()%>">course info</a></td>
+                        <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/">See feedback</a></td>
                     </tr>
                     <%
                         }
