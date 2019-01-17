@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -61,6 +64,8 @@ public class UserController {
                 modelAndView.addObject("courseList", courseService.getAllByUserId(principal.getUserId()));
                 modelAndView.setViewName(studentViewName);
             } else {
+                List<Course> all = courseService.getAllByTutorID(principal.getUserId());
+                System.out.println(all.size());
                 modelAndView.addObject("courseList", courseService.getAllByTutorID(principal.getUserId()));
                 courseService.getAllByTutorID(principal.getUserId());
                 modelAndView.setViewName(tutorViewName);

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SecurityContextUser principal = null;
-    Object courseListObject = request.getParameter("courseList");
+    Object courseListObject = request.getAttribute("courseList");
     List<Course> courseList = courseListObject != null ? (List) courseListObject : Collections.emptyList();
 %>
 <sec:authorize access="isAuthenticated()">
@@ -21,7 +21,6 @@
         <title>Profile</title>
     </head>
     <body>
-        <h2>My profile</h2>
         <c:import url="../template/header.jsp"/>
         <%
             if (courseList.isEmpty()) {

@@ -9,7 +9,7 @@
     Object userObject = request.getAttribute("user");
     User user = userObject != null ? (User) userObject : null;
 
-    Object courseListObject = request.getParameter("courseList");
+    Object courseListObject = request.getAttribute("courseList");
     List<Course> courseList = courseListObject != null ? (List) courseListObject : Collections.emptyList();
 %>
 <%
@@ -46,9 +46,6 @@
                         <th>CourseName</th>
                         <th>StartingDate</th>
                         <th>FinishingDate</th>
-                        <th>isActive</th>
-                        <th>Options</th>
-                        <th></th>
                     </tr>
                     <%
                         for (Course course : courseList) {
@@ -57,10 +54,7 @@
                         <td><% out.println(course.getName());%></td>
                         <td><% out.println(course.getStartingDate());%></td>
                         <td><% out.println(course.getFinishingDate());%></td>
-                        <td><% out.println(course.isActive());%></td>
-
-                        <td><a href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">Edit</a></td>
-                        <td><a href="/course/action/delete/<%=course.getId()%>/">delete</a></td>
+                        <td><a href="/course/<%=course.getId()%>">course info</a></td>
                     </tr>
                     <%
                         }

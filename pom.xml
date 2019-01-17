@@ -16,6 +16,7 @@
         <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
         <javax.persistance.version>2.2</javax.persistance.version>
         <h2.version>1.4.197</h2.version>
+        <postgresql.version>42.2.5</postgresql.version>
         <hibernate.version>5.4.0.Final</hibernate.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.23.4</mockito.version>
@@ -103,6 +104,13 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
+        </dependency>
+
+        <!--Postrgres-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
 
         <!--H2-->
