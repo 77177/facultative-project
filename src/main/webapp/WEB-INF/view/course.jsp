@@ -47,27 +47,22 @@
         <td><%= course.isActive()%>
         </td>
         <td><a href="/course/<%=course.getId()%>">course info</a></td>
+        <td>
         <sec:authorize access="isAuthenticated()">
             <%
                 if (principal.isStudent()) {
                     if (principal.getCourseIdList().contains(course.getId())) {
-                        principal.getCourseIdList().remove(new Integer(course.getId()));
             %>
-            <td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">
-                Leave</a>
-            </td>
+            <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">Leave</a>
             <%
-            } else {
-                principal.getCourseIdList().add(course.getId());
-            %>
-            <td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">
-                Subscribe</a></td>
+            } else {%>
+            <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">Subscribe</a>
             <%
                     }
-
                 }
             %>
         </sec:authorize>
+        </td>
     </tr>
     <%
         }%>

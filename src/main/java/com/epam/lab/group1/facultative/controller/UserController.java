@@ -32,7 +32,7 @@ public class UserController {
         ModelAndView modelAndView = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            SecurityContextUser principal = (SecurityContextUser)authentication.getPrincipal();
+            SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
             if (principal.isStudent()) {
                 modelAndView = studentProfile(principal.getUserId());
             } else {
@@ -48,21 +48,24 @@ public class UserController {
     @RequestMapping("/{userId}/course/{courseId}/{action}/")
     public ModelAndView action(@PathVariable int userId, @PathVariable int courseId,
                                @PathVariable String action) {
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ModelAndView modelAndView = null;
         if (action != null) {
             switch (action) {
                 case "leave": {
+                    principal.getCourseIdList().remove(new Integer(courseId));
                     userService.leaveCourse(userId, courseId);
                     break;
                 }
                 case "subscribe": {
+                    principal.getCourseIdList().add(courseId);
                     userService.subscribeCourse(userId, courseId);
                     break;
                 }
             }
-        } else {
-            modelAndView = new ModelAndView("course");
         }
+        modelAndView = new ModelAndView("course");
+        modelAndView.addObject("courseList", courseService.findAll());
         return modelAndView;
     }
 

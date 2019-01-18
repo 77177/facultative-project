@@ -125,7 +125,7 @@ public class UserDAO {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Query query = session.createSQLQuery("INSERT INTO student_course(student_id, course_id, mark, feedback)" +
-                "VALUES (" + userId + ", " + courseId + ", NULL, 'Empty')") ;
+                "VALUES (" + userId + ", " + courseId + ", -1, 'Empty')") ;
         query.executeUpdate();
         session.getTransaction().commit();
     }
