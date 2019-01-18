@@ -58,6 +58,7 @@ public class CourseService {
         });
         return courseList;
     }
+
     public List<Course> getAllById(int id) {
         return isActiveCheck(courseDAO.getAllById(id));
     }

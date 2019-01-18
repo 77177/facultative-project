@@ -46,10 +46,9 @@ public class UserController {
     }
 
     @RequestMapping("/{userId}/course/{courseId}/{action}/")
-    public ModelAndView action(@PathVariable int userId, @PathVariable int courseId,
+    public String action(@PathVariable int userId, @PathVariable int courseId,
                                @PathVariable String action) {
         SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ModelAndView modelAndView = null;
         if (action != null) {
             switch (action) {
                 case "leave": {
@@ -64,9 +63,7 @@ public class UserController {
                 }
             }
         }
-        modelAndView = new ModelAndView("course");
-        modelAndView.addObject("courseList", courseService.findAll());
-        return modelAndView;
+        return "redirect:/profile";
     }
 
     private ModelAndView studentProfile(int studentId) {
