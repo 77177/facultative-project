@@ -58,7 +58,7 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         SecurityContextUser securityContextUser = new SecurityContextUser(username, user.getPassword(), authorities);
         securityContextUser.setUserId(user.getId());
         securityContextUser
-                .setCourseIdList(courseDAO.getAllByUserID(user.getId())
+                .setCourseIdList(courseDAO.getAllById(user.getId())
                         .stream()
                         .map(Course::getId)
                         .collect(Collectors.toList()));

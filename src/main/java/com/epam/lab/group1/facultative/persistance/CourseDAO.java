@@ -73,7 +73,7 @@ public class CourseDAO {
         return courses;
     }
 
-    public List<Course> getAllByUserID(int id) {
+    private List<Course> getAllByUserID(int id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Course> courses = session.createSQLQuery("SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id WHERE student_id =" + id + ";").addEntity(Course.class).list();
@@ -81,7 +81,7 @@ public class CourseDAO {
         return courses;
     }
 
-    public List<Course> getAllByTutorID(int id) {
+    private List<Course> getAllByTutorID(int id) {
         Session session = sessionFactory.openSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
@@ -90,5 +90,22 @@ public class CourseDAO {
         Query<Course> query1 = session.createQuery(criteriaQuery);
         List<Course> courseList = query1.getResultList();
         return courseList;
+    }
+
+    public List<Course> getAllById(int id) {
+        Session session = sessionFactory.openSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> u = query.from(User.class);
+        query.select(u).where(criteriaBuilder.equal(u.get("id"), id));
+        Query<User> query1 = session.createQuery(query);
+        User user = query1.getSingleResult();
+        List<Course> result = null;
+            if(user.getPosition().equals("tutor")) {
+                result = getAllByTutorID(id);
+            } else if(user.getPosition().equals("student")) {
+                result = getAllByUserID(id);
+            }
+        return result;
     }
 }

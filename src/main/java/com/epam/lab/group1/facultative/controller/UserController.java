@@ -70,15 +70,15 @@ public class UserController {
 
     private ModelAndView studentProfile(int studentId) {
         ModelAndView modelAndView = new ModelAndView(studentViewName);
-        modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
-        modelAndView.addObject("courseList", courseService.findAllByUserId(studentId));
+        modelAndView.addObject("user", userService.getById(studentId).orElse(new User()));
+        modelAndView.addObject("courseList", courseService.getAllById(studentId));
         return modelAndView;
     }
 
     private ModelAndView tutorProfile(int tutorId) {
         ModelAndView modelAndView = new ModelAndView(tutorViewName);
-        modelAndView.addObject("tutor", userService.getById(tutorId));
-        modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
+        modelAndView.addObject("user", userService.getById(tutorId));
+        modelAndView.addObject("courseList", courseService.getAllById(tutorId));
         return modelAndView;
     }
 }

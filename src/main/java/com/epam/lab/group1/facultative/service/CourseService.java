@@ -41,14 +41,6 @@ public class CourseService {
         return isActiveCheck(courseDAO.findAll());
     }
 
-    public List<Course> findAllByUserId(int id) {
-        return isActiveCheck(courseDAO.getAllByUserID(id));
-    }
-
-    public List<Course> getAllByTutorID(int id) {
-        return isActiveCheck(courseDAO.getAllByTutorID(id));
-    }
-
     public boolean isDateActive(Course course) {
         LocalDate today = LocalDate.now();
         boolean state;
@@ -65,5 +57,8 @@ public class CourseService {
             course.setActive(isDateActive(course));
         });
         return courseList;
+    }
+    public List<Course> getAllById(int id) {
+        return isActiveCheck(courseDAO.getAllById(id));
     }
 }
