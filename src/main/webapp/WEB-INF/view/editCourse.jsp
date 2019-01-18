@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="com.epam.lab.group1.facultative.model.Course" %>
+<%@ page import="java.util.Optional" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SecurityContextUser principal = null;
@@ -18,9 +20,11 @@
 <body>
 <sec:authorize access="isAuthenticated()">
     <%
-        if (!principal.isStudent()) {
-            int tutorId = (int) request.getAttribute("tutorId");
-            int courseId = (int) request.getAttribute("courseId");
+        int tutorId = (int) request.getAttribute("tutorId");
+        Optional<Course> course = (Optional<Course>) request.getAttribute("course");
+        int courseId = course.get().getId();
+
+        if (!principal.isStudent() && principal.getUserId() == course.get().getTutorId()) {
 
     %>
     <h2>Edit Course Page</h2>
