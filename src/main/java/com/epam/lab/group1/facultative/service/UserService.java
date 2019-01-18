@@ -51,9 +51,23 @@ public class UserService {
     }
 
     public void leaveCourse(int userId, int courseId) {
+        try {
+            userDAO.getById(userId).orElseThrow(() -> new Exception("user with id " + userId + " was not " +
+                "found in the database"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        userDAO.leaveCourse(userId, courseId);
     }
 
-    public void participateInCourse(int userId, int courseId) {
+    public void subscribeCourse(int userId, int courseId) {
+        try {
+            userDAO.getById(userId).orElseThrow(() -> new Exception("user with id " + userId + " was not " +
+                "found in the database"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        userDAO.subscribeCourse(userId, courseId);
     }
 
     public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {

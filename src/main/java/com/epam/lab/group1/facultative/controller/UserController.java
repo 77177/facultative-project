@@ -32,7 +32,7 @@ public class UserController {
         ModelAndView modelAndView = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            SecurityContextUser principal = (SecurityContextUser)authentication.getPrincipal();
+            SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
             if (principal.isStudent()) {
                 modelAndView = studentProfile(principal.getUserId());
             } else {
@@ -45,39 +45,36 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping("/{userId}/course/{courseId}")
+    @RequestMapping("/{userId}/course/{courseId}/{action}/")
     public ModelAndView action(@PathVariable int userId, @PathVariable int courseId,
-                               @RequestParam(name = "action", required = false) String action) {
+                               @PathVariable String action) {
         ModelAndView modelAndView = null;
         if (action != null) {
             switch (action) {
                 case "leave": {
-                    //TODO userService.leaveCourse(userId, courseId)
-                    modelAndView = studentProfile(userId);
+                    userService.leaveCourse(userId, courseId);
                     break;
                 }
                 case "subscribe": {
-                    //TODO userService.subscribeCourse(userId, courseId)
-                    modelAndView = studentProfile(userId);
+                    userService.subscribeCourse(userId, courseId);
                     break;
                 }
             }
-        } else {
-            modelAndView = new ModelAndView("course");
         }
+        modelAndView = new ModelAndView("course");
         return modelAndView;
     }
 
     private ModelAndView studentProfile(int studentId) {
         ModelAndView modelAndView = new ModelAndView(studentViewName);
-        modelAndView.addObject("student", userService.getById(studentId).orElse(new User()));
+        modelAndView.addObject("user", userService.getById(studentId).orElse(new User()));
         modelAndView.addObject("courseList", courseService.findAllByUserId(studentId));
         return modelAndView;
     }
 
     private ModelAndView tutorProfile(int tutorId) {
         ModelAndView modelAndView = new ModelAndView(tutorViewName);
-        modelAndView.addObject("tutor", userService.getById(tutorId));
+        modelAndView.addObject("user", userService.getById(tutorId));
         modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
         return modelAndView;
     }

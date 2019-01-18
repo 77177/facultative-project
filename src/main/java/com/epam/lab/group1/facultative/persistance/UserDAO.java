@@ -106,7 +106,7 @@ public class UserDAO {
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> u = query.from(User.class);
-        query.select(u);
+        query.select(u).where(criteriaBuilder.equal(u.get("position"), "tutor"));;
         Query<User> query1 = session.createQuery(query);
         session.beginTransaction();
         List<User> users = query1.getResultList();
@@ -119,5 +119,23 @@ public class UserDAO {
         List<User> users = session.createSQLQuery("SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id WHERE course_id =" + id + " AND position = 'student';").addEntity(User.class).list();
         session.getTransaction().commit();
         return users;
+    }
+
+    public void subscribeCourse(int userId, int courseId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query query = session.createSQLQuery("INSERT INTO student_course(student_id, course_id, mark, feedback)" +
+                "VALUES (" + userId + ", " + courseId + ", NULL, 'Empty')") ;
+        query.executeUpdate();
+        session.getTransaction().commit();
+    }
+
+    public void leaveCourse(int userId, int courseId) {
+        Session session = sessionFactory.openSession();;
+        session.beginTransaction();
+        Query query = session.createSQLQuery("DELETE FROM student_course " +
+                "WHERE student_id='" + userId + "' AND course_id='" + courseId + "'");
+        query.executeUpdate();
+        session.getTransaction().commit();
     }
 }
