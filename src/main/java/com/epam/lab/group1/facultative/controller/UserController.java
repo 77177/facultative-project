@@ -32,7 +32,7 @@ public class UserController {
         ModelAndView modelAndView = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
+            SecurityContextUser principal = (SecurityContextUser)authentication.getPrincipal();
             if (principal.isStudent()) {
                 modelAndView = studentProfile(principal.getUserId());
             } else {
@@ -60,22 +60,23 @@ public class UserController {
                     break;
                 }
             }
+        } else {
+            modelAndView = new ModelAndView("course");
         }
-        modelAndView = new ModelAndView("course");
         return modelAndView;
     }
 
     private ModelAndView studentProfile(int studentId) {
         ModelAndView modelAndView = new ModelAndView(studentViewName);
         modelAndView.addObject("user", userService.getById(studentId).orElse(new User()));
-        modelAndView.addObject("courseList", courseService.findAllByUserId(studentId));
+        modelAndView.addObject("courseList", courseService.getAllById(studentId));
         return modelAndView;
     }
 
     private ModelAndView tutorProfile(int tutorId) {
         ModelAndView modelAndView = new ModelAndView(tutorViewName);
         modelAndView.addObject("user", userService.getById(tutorId));
-        modelAndView.addObject("courseList", courseService.getAllByTutorID(tutorId));
+        modelAndView.addObject("courseList", courseService.getAllById(tutorId));
         return modelAndView;
     }
 }
