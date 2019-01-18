@@ -49,11 +49,17 @@ Feedbacks page
 <sec:authorize access="isAuthenticated()">
     <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>
     <form:form action="/feedback/" method="post" modelAttribute="feedback">
+        FeedBack
+        <br/>
         <form:textarea path="text" rows="4" cols="50"
                        readonly="<%=!(course.getTutorId()==principal.getUserId())%>"></form:textarea>
+        <br/>
+        Mark
+        <br/>
+        <form:input path="mark" readonly="<%=!(course.getTutorId()==principal.getUserId())%>"/>
         <form:hidden path="courseId"/>
         <form:hidden path="studentId"/>
-        <form:hidden path="mark"/>
+        <br/>
         <%if(!principal.isStudent()) {%>
         <input type="submit" value="submit"/>
         <%}%>

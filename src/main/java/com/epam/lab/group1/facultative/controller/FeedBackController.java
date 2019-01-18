@@ -29,7 +29,6 @@ public class FeedBackController {
         feedBackService.saveOrUpdate(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
         modelAndView.addObject("course", courseService.getById(feedback.getCourseId()).get());
-
         return modelAndView;
     }
 
