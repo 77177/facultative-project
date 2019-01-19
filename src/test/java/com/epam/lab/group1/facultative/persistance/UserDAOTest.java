@@ -155,12 +155,22 @@ public class UserDAOTest {
     public void testGetAllStudentByCourseId() {
         int courseId = 1;
         List<User> allStudentByCourseId = userDAO.getAllStudentByCourseId(courseId);
-        assertEquals(1, allStudentByCourseId.size());
+        assertEquals(2, allStudentByCourseId.size());
+        assertEquals("Laura", allStudentByCourseId.get(0).getFirstName());
+        assertEquals("Hieme", allStudentByCourseId.get(0).getLastName());
+        assertEquals("Sam", allStudentByCourseId.get(1).getFirstName());
+        assertEquals("Garrison", allStudentByCourseId.get(1).getLastName());
     }
 
     @Test
     public void getAllStudents() {
         List<User> allStudents = userDAO.getAllStudents();
         assertEquals(5,allStudents.size());
+        assertEquals("Laura", allStudents.get(0).getFirstName());
+        assertEquals("Hieme", allStudents.get(0).getLastName());
+        assertEquals("Sam", allStudents.get(1).getFirstName());
+        assertEquals("Garrison", allStudents.get(1).getLastName());
+        assertEquals("Donald", allStudents.get(2).getFirstName());
+        assertEquals("Trump", allStudents.get(2).getLastName());
     }
 }
