@@ -4,40 +4,43 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
-import com.epam.lab.group1.facultative.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import static com.epam.lab.group1.facultative.controller.ViewName.FEEDBACK;
 
 @Controller
 @RequestMapping("/feedback")
 public class FeedBackController {
 
     private CourseService courseService;
-    private UserService userService;
     private FeedBackService feedBackService;
 
-    public FeedBackController(CourseService courseService, UserService userService, FeedBackService feedBackService) {
+    public FeedBackController(CourseService courseService, FeedBackService feedBackService) {
         this.courseService = courseService;
-        this.userService = userService;
         this.feedBackService = feedBackService;
     }
 
     @PostMapping(value = "/")
     public ModelAndView createFeedBack(@ModelAttribute(name = "feedback") FeedBack feedback) {
-        ModelAndView modelAndView = new ModelAndView("feedBack");
+        ModelAndView modelAndView = new ModelAndView(FEEDBACK);
         feedBackService.saveOrUpdate(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
-        modelAndView.addObject("course", courseService.getById(feedback.getCourseId()).get());
+        modelAndView.addObject("course", courseService.getById(feedback.getCourseId()).orElse(new Course()));
         return modelAndView;
     }
 
     @GetMapping(value = "/user/{userId}/course/{courseId}")
-    public ModelAndView feedBackPage(@PathVariable int userId, @PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView("feedBack");
+    public ModelAndView getFeedbackPage(@PathVariable int userId, @PathVariable int courseId) {
+        ModelAndView modelAndView = new ModelAndView(FEEDBACK);
         FeedBack feedBack = feedBackService.getFeedBack(courseId, userId);
         modelAndView.addObject("feedback", feedBack);
-        modelAndView.addObject("course", courseService.getById(courseId).get());
+        modelAndView.addObject("course", courseService.getById(courseId).orElse(new Course()));
         return modelAndView;
     }
 }

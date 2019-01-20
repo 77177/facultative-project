@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.STUDENT;
-import static com.epam.lab.group1.facultative.controller.ViewName.TUTOR;
+import static com.epam.lab.group1.facultative.controller.ViewName.USER_STUDENT;
+import static com.epam.lab.group1.facultative.controller.ViewName.USER_TUTOR;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 
 @Controller
@@ -30,7 +30,7 @@ public class UserController {
 
     @RequestMapping("/profile")
     public ModelAndView sendRedirectToProfile() {
-        ModelAndView modelAndView = null;
+        ModelAndView modelAndView;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
@@ -75,14 +75,14 @@ public class UserController {
     }
 
     private ModelAndView studentProfile(int studentId) {
-        ModelAndView modelAndView = new ModelAndView(STUDENT);
+        ModelAndView modelAndView = new ModelAndView(USER_STUDENT);
         modelAndView.addObject("user", userService.getById(studentId).orElse(new User()));
         modelAndView.addObject("courseList", courseService.getAllById(studentId));
         return modelAndView;
     }
 
     private ModelAndView tutorProfile(int tutorId) {
-        ModelAndView modelAndView = new ModelAndView(TUTOR);
+        ModelAndView modelAndView = new ModelAndView(USER_TUTOR);
         modelAndView.addObject("user", userService.getById(tutorId));
         modelAndView.addObject("courseList", courseService.getAllById(tutorId));
         return modelAndView;

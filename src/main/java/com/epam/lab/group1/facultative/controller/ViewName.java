@@ -7,11 +7,13 @@ public final class ViewName {
 
     public final static String COURSE = "course";
     public final static String COURSE_INFO = "courseInfo";
-    public final static String CREATE_COURSE = "createCourse";
-    public final static String EDIT_COURSE = "editCourse";
+    public final static String COURSE_CREATE = "createCourse";
+    public final static String COURSE_EDIT = "editCourse";
 
     public final static String ERROR = "errorPage";
 
-    public final static String STUDENT = "student";
-    public final static String TUTOR = "tutor";
+    public final static String USER_STUDENT = "student";
+    public final static String USER_TUTOR = "tutor";
+
+    public final static String FEEDBACK = "feedBack";
 }

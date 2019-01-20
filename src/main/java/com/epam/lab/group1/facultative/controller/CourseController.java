@@ -15,8 +15,8 @@ import java.util.Locale;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
-import static com.epam.lab.group1.facultative.controller.ViewName.CREATE_COURSE;
-import static com.epam.lab.group1.facultative.controller.ViewName.EDIT_COURSE;
+import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
+import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
 
 @Controller
 @RequestMapping("/course")
@@ -47,7 +47,7 @@ public class CourseController {
 
     @GetMapping(value = "/action/create/{tutorId}")
     public ModelAndView createCourse(@PathVariable int tutorId) {
-        ModelAndView modelAndView = new ModelAndView(CREATE_COURSE);
+        ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
         modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
@@ -66,7 +66,7 @@ public class CourseController {
 
     @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
     public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView(EDIT_COURSE);
+        ModelAndView modelAndView = new ModelAndView(COURSE_EDIT);
         modelAndView.addObject("tutorId", tutorId);
         modelAndView.addObject("course", courseService.getById(courseId));
         return modelAndView;
@@ -85,8 +85,7 @@ public class CourseController {
 
             @Override
             public LocalDate parse(String date, Locale locale) {
-                LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-                return localDate;
+                return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
             }
 
             @Override
@@ -94,7 +93,6 @@ public class CourseController {
                 return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
             }
         }
-
         binder.addCustomFormatter(new LocalDateFormatter());
     }
 }
