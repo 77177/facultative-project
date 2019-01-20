@@ -9,6 +9,7 @@
 
     <!--DTO-->
     <bean id="personRegistrationFormDTO" class="com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO"/>
+    <bean class="com.epam.lab.group1.facultative.dto.ErrorDto"/>
 
     <!--Service-->
     <bean id="userService" class="com.epam.lab.group1.facultative.service.UserService" >
