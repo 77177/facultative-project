@@ -27,7 +27,6 @@
     </authentication-manager>
 
     <beans:bean id="registrationFilter" class="com.epam.lab.group1.facultative.security.NewUserRegistrationFilter">
-        <beans:constructor-arg name="userService" ref="userService"/>
         <beans:constructor-arg name="authenticationService" ref="authenticationService"/>
     </beans:bean>
 
@@ -38,7 +37,6 @@
     </beans:bean>
 
     <beans:bean id="authenticationService" class="com.epam.lab.group1.facultative.service.AuthenticationService">
-        <beans:constructor-arg name="userDetailsService" ref="facultativeJdbcUserDetailsService"/>
         <beans:constructor-arg name="userService" ref="userService"/>
     </beans:bean>
 

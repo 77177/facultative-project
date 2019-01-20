@@ -2,8 +2,10 @@ package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
+import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +22,12 @@ import static com.epam.lab.group1.facultative.controller.ViewName.FEEDBACK;
 public class FeedBackController {
 
     private final Logger logger = Logger.getLogger(this.getClass());
+    private UserService userService;
     private CourseService courseService;
     private FeedBackService feedBackService;
 
-    public FeedBackController(CourseService courseService, FeedBackService feedBackService) {
+    public FeedBackController(UserService userService, CourseService courseService, FeedBackService feedBackService) {
+        this.userService = userService;
         this.courseService = courseService;
         this.feedBackService = feedBackService;
     }
@@ -33,6 +37,7 @@ public class FeedBackController {
         ModelAndView modelAndView = new ModelAndView(FEEDBACK);
         feedBackService.saveOrUpdate(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
+        modelAndView.addObject("student", userService.getById(feedback.getStudentId()).orElse(new User()));
         modelAndView.addObject("course", courseService.getById(feedback.getCourseId()).orElse(new Course()));
         return modelAndView;
     }
@@ -42,6 +47,7 @@ public class FeedBackController {
         ModelAndView modelAndView = new ModelAndView(FEEDBACK);
         FeedBack feedBack = feedBackService.getFeedBack(courseId, userId);
         modelAndView.addObject("feedback", feedBack);
+        modelAndView.addObject("student", userService.getById(userId).orElse(new User()));
         modelAndView.addObject("course", courseService.getById(courseId).orElse(new Course()));
         return modelAndView;
     }

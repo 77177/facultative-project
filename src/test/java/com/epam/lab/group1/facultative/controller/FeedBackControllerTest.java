@@ -2,8 +2,10 @@ package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
+import com.epam.lab.group1.facultative.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,8 +36,11 @@ public class FeedBackControllerTest {
         when(courseService.getById(1)).thenReturn(Optional.of(new Course()));
         FeedBackService feedBackService = mock(FeedBackService.class);
         when(feedBackService.getFeedBack(0, 0)).thenReturn(new FeedBack());
+        UserService userService = mock(UserService.class);
+        when(userService.getById(0)).thenReturn(Optional.of(new User()));
+
         mockMvc = MockMvcBuilders
-            .standaloneSetup(new FeedBackController(courseService, feedBackService))
+            .standaloneSetup(new FeedBackController(userService, courseService, feedBackService))
             .build();
     }
 
@@ -43,13 +48,13 @@ public class FeedBackControllerTest {
     public void testCreateFeedback() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/feedback/"))
             .andExpect(MockMvcResultMatchers.view().name(FEEDBACK))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("feedback", "course"));
+            .andExpect(MockMvcResultMatchers.model().attributeExists("student", "course", "feedback"));
     }
 
     @Test
     public void testGetFeedbackPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/feedback/user/0/course/0"))
             .andExpect(MockMvcResultMatchers.view().name(FEEDBACK))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("feedback", "course"));
+            .andExpect(MockMvcResultMatchers.model().attributeExists("student", "course", "feedback"));
     }
 }

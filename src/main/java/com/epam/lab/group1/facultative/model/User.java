@@ -33,4 +33,8 @@ public class User implements Serializable {
 
     @Column(name = "position")
     private String position;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

@@ -24,7 +24,7 @@ public class ErrorControllerTest {
 
     public ErrorControllerTest() {
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new ErrorController(Logger.getLogger(AuthenticationController.class)))
+                .standaloneSetup(new ErrorController())
                 .build();
     }
 

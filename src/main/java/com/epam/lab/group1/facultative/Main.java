@@ -4,25 +4,25 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletException;
 import java.io.File;
+import java.nio.file.Paths;
 
 public class Main {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
-    private void startTomcat() throws LifecycleException, ServletException {
+    private void startTomcat() throws LifecycleException {
         String docBase = "src/main/webapp/";
 
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
-        tomcat.addWebapp("/", new File(docBase).getAbsolutePath());
+        tomcat.addWebapp("/", Paths.get(docBase).toAbsolutePath().toString());
 
         tomcat.start();
         tomcat.getServer().await();
     }
 
-    public static void main(String[] args) throws LifecycleException, ServletException {
+    public static void main(String[] args) throws LifecycleException {
         Main tomcat = new Main();
         tomcat.startTomcat();
     }
