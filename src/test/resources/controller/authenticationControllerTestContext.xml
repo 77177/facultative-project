@@ -3,9 +3,4 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--Logger-->
-    <bean id="logger" class="org.apache.log4j.Logger" factory-method="getLogger">
-        <constructor-arg type="java.lang.String" value="my.Logger" />
-    </bean>
-    
 </beans>

@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,7 +24,7 @@ public class ErrorControllerTest {
 
     public ErrorControllerTest() {
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new ErrorController())
+                .standaloneSetup(new ErrorController(Logger.getLogger(AuthenticationController.class)))
                 .build();
     }
 

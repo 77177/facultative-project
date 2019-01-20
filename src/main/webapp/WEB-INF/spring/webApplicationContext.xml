@@ -21,11 +21,6 @@
     </bean>
 
 
-    <!--Logger-->
-    <bean id="logger" class="org.apache.log4j.Logger" factory-method="getLogger">
-        <constructor-arg type="java.lang.String" value="my.Logger" />
-    </bean>
-
     <bean id="feedBackController" class="com.epam.lab.group1.facultative.controller.FeedBackController">
         <constructor-arg name="courseService" ref="courseService"/>
         <constructor-arg name="feedBackService" ref="feedBackService"/>
@@ -40,6 +35,8 @@
           class="com.epam.lab.group1.facultative.controller.AuthenticationController">
     </bean>
 
-    <bean id="errorController" class="com.epam.lab.group1.facultative.controller.ErrorController"/>
+    <bean id="errorController" class="com.epam.lab.group1.facultative.controller.ErrorController">
+        <constructor-arg name="logger" ref="logger"/>
+    </bean>
 
 </beans>
