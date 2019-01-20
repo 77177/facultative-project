@@ -9,4 +9,9 @@ public final class ViewName {
     public final static String COURSE_INFO = "courseInfo";
     public final static String CREATE_COURSE = "createCourse";
     public final static String EDIT_COURSE = "editCourse";
+
+    public final static String ERROR = "errorPage";
+
+    public final static String STUDENT = "student";
+    public final static String TUTOR = "tutor";
 }

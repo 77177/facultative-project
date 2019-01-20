@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -31,20 +32,19 @@ public class WelcomeControllerTest {
     @Test
     public void testWelcome() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(""))
-                .andExpect(MockMvcResultMatchers.view().name("course"))
+                .andExpect(MockMvcResultMatchers.view().name(COURSE))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/student"))
-                .andExpect(MockMvcResultMatchers.view().name("course"))
+                .andExpect(MockMvcResultMatchers.view().name(COURSE))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/tutor"))
-                .andExpect(MockMvcResultMatchers.view().name("course"))
+                .andExpect(MockMvcResultMatchers.view().name(COURSE))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/mordor"))
-                .andExpect(MockMvcResultMatchers.view().name("course"))
+                .andExpect(MockMvcResultMatchers.view().name(COURSE))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
     }
-
 }

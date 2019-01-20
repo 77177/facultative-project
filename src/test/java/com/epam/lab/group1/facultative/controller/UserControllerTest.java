@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.*;
+import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -22,9 +23,6 @@ public class UserControllerTest {
     private MockMvc mockMvc;
     private UserService userService;
     private CourseService courseService;
-    private final String studentViewName = "student";
-    private final String tutorViewName = "tutor";
-    private final String courseViewName = "course";
 
     public UserControllerTest() {
         this.userService = mock(UserService.class);
@@ -38,23 +36,19 @@ public class UserControllerTest {
     @Test
     public void testSendRedirectToProfile() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/user/profile"))
-            .andExpect(MockMvcResultMatchers.view().name(courseViewName))
+            .andExpect(MockMvcResultMatchers.view().name(COURSE))
             .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
     }
 
     @Test
     public void testAction() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1?action=leave"))
-            .andExpect(MockMvcResultMatchers.view().name(studentViewName))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("student", "courseList"));
-        //TODO check action performance
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1?action=subscribe"))
-            .andExpect(MockMvcResultMatchers.view().name(studentViewName))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("student", "courseList"));
-        //TODO check action performance
+        //TODO tests in authentication zone.
+        //Out of authentication
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1/leave"))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/course"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1"))
-            .andExpect(MockMvcResultMatchers.view().name(courseViewName));
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/1/course/1/subscribe"))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/course"));
     }
 }

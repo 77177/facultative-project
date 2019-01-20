@@ -10,6 +10,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -28,13 +30,13 @@ public class ErrorControllerTest {
     @Test
     public void testErrorNotExists() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/error"))
-                .andExpect(MockMvcResultMatchers.view().name("errorPage"));
+                .andExpect(MockMvcResultMatchers.view().name(ERROR));
     }
 
 //    @Test
     public void testErrorExists() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/error"))
-                .andExpect(MockMvcResultMatchers.view().name("errorPage"))
+                .andExpect(MockMvcResultMatchers.view().name(ERROR))
                 .andExpect(MockMvcResultMatchers.model()
                         .attributeExists("errorStatus", "errorReason"));
     }
