@@ -14,9 +14,11 @@ import java.util.List;
 @Component
 public class SecurityContextUser extends User {
 
-    private int UserId;
+    private int userId;
+    private String firstName;
     private boolean isStudent;
-    List<Integer> courseIdList;
+    private List<Integer> courseIdList;
+
 
     public SecurityContextUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);

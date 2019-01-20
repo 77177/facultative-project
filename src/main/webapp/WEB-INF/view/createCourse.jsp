@@ -12,29 +12,28 @@
 </sec:authorize>
 
 <html>
-<head>
-    <title>Create Course Page</title>
-</head>
-<body>
-<%int tutorId = (int) request.getAttribute("tutorId"); %>
-<sec:authorize access="isAuthenticated()">
-    <%
-        if (!principal.isStudent()) {%>
-    <h2>Create Course Page</h2>
-    <form method="post" action="/course/action/create/">
-        Course Name:
-        <input type="text" name="name"><br>
-        Starting date yyyy-mm-dd:
-        <input type="date" name="startingDate"><br>
-        Finishing date yyyy-mm-dd:
-        <input type="date" name="finishingDate"><br>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
-        <input type="submit" value="Submit">
-    </form>
-    <%} else {%> nice try <%}%>
-</sec:authorize>
-
-<br><br>
-</body>
+    <head>
+        <title>Create Course Page</title>
+    </head>
+    <body>
+        <%int tutorId = (int) request.getAttribute("tutorId"); %>
+        <sec:authorize access="isAuthenticated()">
+            <%
+                if (!principal.isStudent()) {%>
+            <h2>Create Course Page</h2>
+            <form method="post" action="/course/action/create/">
+                Course Name:
+                <input type="text" name="name"><br>
+                Starting date yyyy-mm-dd:
+                <input type="date" name="startingDate"><br>
+                Finishing date yyyy-mm-dd:
+                <input type="date" name="finishingDate"><br>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
+                <input type="submit" value="Submit">
+            </form>
+            <%} else {%> nice try <%}%>
+        </sec:authorize>
+        <br><br>
+    </body>
 </html>

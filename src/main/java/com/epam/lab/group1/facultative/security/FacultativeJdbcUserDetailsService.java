@@ -63,8 +63,8 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
                         .map(Course::getId)
                         .collect(Collectors.toList()));
         securityContextUser.setStudent(isStudent);
+        securityContextUser.setFirstName(user.getFirstName());
         return securityContextUser;
-
     }
 }
 
