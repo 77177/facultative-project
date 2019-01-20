@@ -71,7 +71,7 @@ public class UserController {
                 }
             }
         }
-        return "redirect:/profile";
+        return "redirect:/course/" + courseId;
     }
 
     private ModelAndView studentProfile(int studentId) {

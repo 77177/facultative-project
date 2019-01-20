@@ -15,5 +15,5 @@ public final class ViewName {
     public final static String USER_STUDENT = "student";
     public final static String USER_TUTOR = "tutor";
 
-    public final static String FEEDBACK = "feedBack";
+    public final static String FEEDBACK = "feedback";
 }

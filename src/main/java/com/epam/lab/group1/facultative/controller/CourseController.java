@@ -40,7 +40,7 @@ public class CourseController {
     @GetMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
-        modelAndView.addObject("courseInfo", courseService.getById(courseId));
+        modelAndView.addObject("course", courseService.getById(courseId));
         modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
         return modelAndView;
     }

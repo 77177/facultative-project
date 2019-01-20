@@ -15,7 +15,9 @@
         <title>header</title>
     </head>
     <body>
-    <a href="/course">all courses</a><br>
+        <div id="allCoursesLink">
+            <p><a href="/course">all courses</a></p>
+        </div>
         <sec:authorize access="isAuthenticated()">
             <p style="display: inline-block">Hello, <%=principal.getFirstName()%>. </p>
             <a href="/user/profile">My profile</a>
@@ -25,7 +27,9 @@
             </form>
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">
-            <a href="/authenticator/login">Login</a><br><br>
+            <div id="loginButton">
+                <p><a href="/authenticator/login">Login</a></p>
+            </div>
         </sec:authorize>
     </body>
 </html>

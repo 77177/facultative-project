@@ -45,23 +45,6 @@
                                         course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
                                     <td><%= course.isActive()%></td>
                                     <td><a href="/course/<%=course.getId()%>">info</a></td>
-                                    <td>
-                                        <sec:authorize access="isAuthenticated()">
-                                            <%
-                                                if (principal.isStudent()) {
-                                                    if (principal.getCourseIdList().contains(course.getId())) {
-                                                        %>
-                                                        <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">Leave</a>
-                                                        <%
-                                                    } else {
-                                                        %>
-                                                        <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">Subscribe</a>
-                                                        <%
-                                                    }
-                                                }
-                                            %>
-                                        </sec:authorize>
-                                    </td>
                                 </tr>
                                 <%
                             }

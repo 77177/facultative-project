@@ -47,7 +47,7 @@ public class CourseControllerTest {
     public void tesGetById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/course/1"))
             .andExpect(MockMvcResultMatchers.view().name(COURSE_INFO))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("courseInfo", "studentList"));
+            .andExpect(MockMvcResultMatchers.model().attributeExists("course", "studentList"));
     }
 
     @Test
