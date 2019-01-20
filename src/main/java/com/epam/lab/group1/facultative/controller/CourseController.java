@@ -13,16 +13,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
+import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
+import static com.epam.lab.group1.facultative.controller.ViewName.CREATE_COURSE;
+import static com.epam.lab.group1.facultative.controller.ViewName.EDIT_COURSE;
+
 @Controller
 @RequestMapping("/course")
 public class CourseController {
 
     private CourseService courseService;
     private UserService userService;
-    private final String courseView = "course";
-    private final String courseInfoView = "courseInfo";
-    private final String createCourseView = "createCourse";
-    private final String editCourseView = "editCourse";
 
     public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
@@ -31,14 +32,14 @@ public class CourseController {
 
     @GetMapping(value = "/")
     public ModelAndView getAllCourses() {
-        ModelAndView modelAndView = new ModelAndView(courseView);
+        ModelAndView modelAndView = new ModelAndView(COURSE);
         modelAndView.addObject("courseList", courseService.findAll());
         return modelAndView;
     }
 
     @GetMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView(courseInfoView);
+        ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
         modelAndView.addObject("courseInfo", courseService.getById(courseId));
         modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
         return modelAndView;
@@ -46,7 +47,7 @@ public class CourseController {
 
     @GetMapping(value = "/action/create/{tutorId}")
     public ModelAndView createCourse(@PathVariable int tutorId) {
-        ModelAndView modelAndView = new ModelAndView(createCourseView);
+        ModelAndView modelAndView = new ModelAndView(CREATE_COURSE);
         modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
@@ -65,14 +66,13 @@ public class CourseController {
 
     @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
     public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView(editCourseView);
+        ModelAndView modelAndView = new ModelAndView(EDIT_COURSE);
         modelAndView.addObject("tutorId", tutorId);
-        //modelAndView.addObject("courseId", courseId);
         modelAndView.addObject("course", courseService.getById(courseId));
         return modelAndView;
     }
 
-    @PostMapping(value = "/action/edit/")
+    @PostMapping(value = "/action/edit")
     public String editCourse(@ModelAttribute Course course) {
         courseService.update(course);
         return "redirect:/user/profile";

@@ -10,6 +10,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.epam.lab.group1.facultative.controller.ViewName.LOGIN;
+import static com.epam.lab.group1.facultative.controller.ViewName.REGISTER;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -28,12 +31,12 @@ public class AuthenticationControllerTest {
     @Test
     public void testLogin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/authenticator/login"))
-                .andExpect(MockMvcResultMatchers.view().name("loginPage"));
+                .andExpect(MockMvcResultMatchers.view().name(LOGIN));
     }
 
     @Test
     public void TestRegistration() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/authenticator/registration"))
-                .andExpect(MockMvcResultMatchers.view().name("register"));
+                .andExpect(MockMvcResultMatchers.view().name(REGISTER));
     }
 }
