@@ -2,6 +2,7 @@ package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.Optional;
 @Service
 public class CourseService {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
     private CourseDAO courseDAO;
 
     public CourseService(CourseDAO courseDAO) {

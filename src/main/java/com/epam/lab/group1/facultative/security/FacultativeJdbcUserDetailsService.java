@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Component
 public class FacultativeJdbcUserDetailsService implements UserDetailsService {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
     private final String studentRole = "student";
     private final String tutorRole = "tutor";
     private UserDAO userDAO;

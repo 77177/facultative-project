@@ -3,17 +3,17 @@ package com.epam.lab.group1.facultative.security;
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
 import com.epam.lab.group1.facultative.service.AuthenticationService;
 import com.epam.lab.group1.facultative.service.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import java.io.IOException;
 
 public class NewUserRegistrationFilter implements Filter {
 
-    private UserService userService;
+    private final Logger logger = Logger.getLogger(this.getClass());
     private AuthenticationService authenticationService;
 
-    public NewUserRegistrationFilter(UserService userService, AuthenticationService authenticationService) {
-        this.userService = userService;
+    public NewUserRegistrationFilter(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 

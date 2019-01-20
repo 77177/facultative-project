@@ -15,8 +15,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.REGISTER;
 @RequestMapping("/authenticator")
 public class AuthenticationController {
 
-    @Autowired
-    private Logger logger;
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     /**
      * @return official project LOGIN page.

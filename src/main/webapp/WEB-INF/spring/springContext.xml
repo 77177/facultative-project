@@ -23,9 +23,4 @@
         <constructor-arg ref="feedBackDAO"/>
     </bean>
 
-    <!--Logger-->
-    <bean id="logger" class="org.apache.log4j.Logger" factory-method="getLogger">
-        <constructor-arg type="java.lang.String" value="my.Logger" />
-    </bean>
-
 </beans>

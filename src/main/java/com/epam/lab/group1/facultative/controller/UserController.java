@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 @RequestMapping("/user")
 public class UserController {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
     private UserService userService;
     private CourseService courseService;
 

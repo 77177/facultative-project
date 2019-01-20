@@ -13,11 +13,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 @Controller
 public class ErrorController {
 
-    private Logger logger;
-
-    public ErrorController(Logger logger) {
-        this.logger = logger;
-    }
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     @RequestMapping("/error")
     public ModelAndView error(HttpServletRequest request, Exception e) {

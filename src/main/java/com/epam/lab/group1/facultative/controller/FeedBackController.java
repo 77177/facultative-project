@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +19,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.FEEDBACK;
 @RequestMapping("/feedback")
 public class FeedBackController {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
     private CourseService courseService;
     private FeedBackService feedBackService;
 
