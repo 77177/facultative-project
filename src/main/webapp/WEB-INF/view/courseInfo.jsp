@@ -62,6 +62,8 @@
         </sec:authorize>
         <sec:authorize access="hasAnyAuthority('tutor')">
             <div id="tutorZone">
+                <a href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">edit course</a><br>
+                <a href="/course/action/delete/<%=course.getId()%>/">delete course</a><br>
                 <br>
                 <div>Students of the course</div>
                 <table style="border: 2px double black; border-spacing: 7px 7px">
