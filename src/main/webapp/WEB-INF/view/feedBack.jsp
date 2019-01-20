@@ -60,7 +60,7 @@ Feedbacks page
         <form:hidden path="courseId"/>
         <form:hidden path="studentId"/>
         <br/>
-        <%if(!principal.isStudent()) {%>
+        <%if(course.getTutorId()==principal.getUserId()) {%>
         <input type="submit" value="submit"/>
         <%}%>
     </form:form>

@@ -23,7 +23,4 @@
         <constructor-arg ref="feedBackDAO"/>
     </bean>
 
-    <!--Logger-->
-
-
 </beans>
