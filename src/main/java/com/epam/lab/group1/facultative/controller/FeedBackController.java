@@ -38,7 +38,7 @@ public class FeedBackController {
         feedBackService.saveOrUpdate(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
         modelAndView.addObject("student", userService.getById(feedback.getStudentId()).orElse(new User()));
-        modelAndView.addObject("course", courseService.getById(feedback.getCourseId()).orElse(new Course()));
+        modelAndView.addObject("course", courseService.getById(feedback.getCourseId()));
         return modelAndView;
     }
 
@@ -48,7 +48,7 @@ public class FeedBackController {
         FeedBack feedBack = feedBackService.getFeedBack(courseId, userId);
         modelAndView.addObject("feedback", feedBack);
         modelAndView.addObject("student", userService.getById(userId).orElse(new User()));
-        modelAndView.addObject("course", courseService.getById(courseId).orElse(new Course()));
+        modelAndView.addObject("course", courseService.getById(courseId));
         return modelAndView;
     }
 }

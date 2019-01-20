@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -19,11 +18,11 @@ public class CourseService {
         this.courseDAO = courseDAO;
     }
 
-    public Optional<Course> getById(int courseId) {
+    public Course getById(int courseId) {
         return courseDAO.getById(courseId);
     }
 
-    public Optional<Course> create(Course course) {
+    public Course create(Course course) {
         course.setActive(isDateActive(course));
         return courseDAO.create(course);
     }

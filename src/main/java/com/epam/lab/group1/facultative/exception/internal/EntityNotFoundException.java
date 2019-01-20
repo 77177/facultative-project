@@ -1,6 +1,6 @@
 package com.epam.lab.group1.facultative.exception.internal;
 
-public class EntityNotFoundException extends RuntimeException {
+public class EntityNotFoundException extends PersistingEntityException {
 
     public EntityNotFoundException() {
     }
