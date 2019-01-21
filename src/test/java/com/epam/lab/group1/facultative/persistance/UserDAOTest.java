@@ -1,7 +1,6 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
-import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.NoResultException;
 import javax.sql.DataSource;
 import java.util.List;
 
@@ -64,7 +62,7 @@ public class UserDAOTest {
         assertEquals("tutor", user.getPosition());
     }
 
-    @Test(expected = UserWithIdDoesNotExistException.class)
+    @Test(expected = PersistingEntityException.class)
     public void testGetByIdWrongId() {
         int nonExistingUserId = Integer.MAX_VALUE;
         userDAO.getById(nonExistingUserId);
@@ -83,8 +81,8 @@ public class UserDAOTest {
         assertEquals("student", user.getPosition());
     }
 
-    @Test(expected = UserWithIdDoesNotExistException.class)
-    public void testGetByEmailWrongEmail() {
+    @Test(expected = PersistingEntityException.class)
+    public void testGetByEmailWrognEmail() {
         String nonExistingUserEmail = "";
         userDAO.getByEmail(nonExistingUserEmail);
     }
