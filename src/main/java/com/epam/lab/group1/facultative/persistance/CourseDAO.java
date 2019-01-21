@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -47,7 +48,7 @@ public class CourseDAO {
                 session.beginTransaction();
                 session.persist(course);
                 session.getTransaction().commit();
-            } catch (HibernateException e) {
+            } catch (PersistenceException e) {
                 String error = "Error during course persisting. " + course;
                 logger.error(error);
                 throw new PersistingEntityException(error, e);
@@ -72,7 +73,7 @@ public class CourseDAO {
             session.beginTransaction();
             session.update(course);
             session.getTransaction().commit();
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during course updating. " + course;
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -85,7 +86,7 @@ public class CourseDAO {
             Course course = session.load(Course.class, id);
             session.delete(course);
             session.getTransaction().commit();
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during deleting by courseID: " + id;
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -98,7 +99,7 @@ public class CourseDAO {
             List<Course> courses = session.createSQLQuery("SELECT * FROM courses").addEntity(Course.class).list();
             session.getTransaction().commit();
             return courses;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during retrieving all courses.";
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -113,7 +114,7 @@ public class CourseDAO {
             List<Course> courses = session.createSQLQuery(sql).addEntity(Course.class).list();
             session.getTransaction().commit();
             return courses;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during retrieving all courses by user id: " + id;
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -131,7 +132,7 @@ public class CourseDAO {
             List<Course> courseList = query1.getResultList();
             session.getTransaction().commit();
             return courseList;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during retrieving all courses by tutor id: " + id;
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -155,7 +156,7 @@ public class CourseDAO {
                 result = getAllByUserID(id);
             }
             return result;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during retrieving all courses by user id: " + id;
             logger.error(error);
             throw new PersistingEntityException(error, e);
