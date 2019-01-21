@@ -1,6 +1,5 @@
 package com.epam.lab.group1.facultative.persistance;
 
-import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;

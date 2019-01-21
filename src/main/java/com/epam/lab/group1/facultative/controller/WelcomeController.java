@@ -1,13 +1,14 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.ErrorDto;
-import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
 import com.epam.lab.group1.facultative.service.CourseService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.persistence.PersistenceException;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
@@ -26,7 +27,7 @@ public class WelcomeController {
         return "redirect:/course/";
     }
 
-    @ExceptionHandler(PersistingEntityException.class)
+    @ExceptionHandler(PersistenceException.class)
     public ModelAndView persistingEntityExceptionHandler(Exception e) {
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());

@@ -29,17 +29,19 @@
                 out.print(errorMessageObject.toString());
             }%>
             <form method="post" action="/course/action/create/">
-                Course Name:
-                <input type="text" name="name" required><br>
-                Starting date yyyy-mm-dd:
+                Course name:
+                <input type="text" name="name" minlength="1" required><br>
+                Starting date:
                 <input type="date" name="startingDate" required><br>
-                Finishing date yyyy-mm-dd:
+                Finishing date:
                 <input type="date" name="finishingDate" required><br>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
                 <input type="submit" value="Submit">
             </form>
-            <%} else {%> Better luck next time. <%}%>
+            <%
+            }
+            %>
         </sec:authorize>
         <br><br>
     </body>

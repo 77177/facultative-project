@@ -1,7 +1,5 @@
 package com.epam.lab.group1.facultative.persistance;
 
-import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
-import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.User;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -36,17 +34,12 @@ public class UserDAO {
             Root<User> u = criteriaQuery.from(User.class);
             criteriaQuery.select(u).where(criteriaBuilder.equal(u.get("id"), id));
             User user = session.createQuery(criteriaQuery).getSingleResult();
-            Optional<User> optionalUser = Optional.ofNullable(user);
             session.getTransaction().commit();
-            return optionalUser.orElseThrow(() -> {
-                String error = "user with id " + id + "does not exist in database";
-                logger.info(error);
-                return new UserWithIdDoesNotExistException(error);
-            });
+            return user;
         } catch (PersistenceException e) {
             String error = "Error during user getting by id: " + id;
             logger.error(error);
-            throw new UserWithIdDoesNotExistException(error, e);
+            throw e;
         }
     }
 
@@ -58,17 +51,12 @@ public class UserDAO {
             Root<User> userRoot = criteriaQuery.from(User.class);
             criteriaQuery.select(userRoot).where(criteriaBuilder.equal(userRoot.get("email"), email));
             User user = session.createQuery(criteriaQuery).getSingleResult();
-            Optional<User> optionalUser = Optional.ofNullable(user);
             session.getTransaction().commit();
-            return optionalUser.orElseThrow(() -> {
-                String error = "user with email " + email + "does not exist in database";
-                logger.info(error);
-                return new UserWithIdDoesNotExistException(error);
-            });
+            return user;
         } catch (PersistenceException e) {
             String error = "Error retrieving  user by email: " + email;
             logger.error(error);
-            throw new UserWithIdDoesNotExistException(error, e);
+            throw e;
         }
     }
 
@@ -89,7 +77,7 @@ public class UserDAO {
         } catch (PersistenceException e) {
             String error = "Error during user creating. " + user;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -109,7 +97,7 @@ public class UserDAO {
         } catch (HibernateException | EntityNotFoundException e) {
             String error = "Error during course deleting by id. " + id;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -127,7 +115,7 @@ public class UserDAO {
         } catch (PersistenceException e) {
             String error = "Error during retrieving all users with position 'student'.";
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -145,7 +133,7 @@ public class UserDAO {
         } catch (PersistenceException e) {
             String error = "Error during retrieving all users with position 'tutor'.";
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -160,7 +148,7 @@ public class UserDAO {
         } catch (PersistenceException e) {
             String error = "Error during retrieving all users with position 'student' and by courseId: " + id;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -175,7 +163,7 @@ public class UserDAO {
         } catch (PersistenceException e) {
             String error = String.format("Error during subscribing user with id %d, on course with id %d", userId, courseId);
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -190,7 +178,7 @@ public class UserDAO {
             String error = String.format("Error during unsubscribing user with id %d, on course with id %d", userId,
                 courseId);
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 }

@@ -1,13 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.ErrorDto;
-import com.epam.lab.group1.facultative.exception.external.CourseTitleAlreadyExistsException;
-import com.epam.lab.group1.facultative.exception.external.IncorrectInputDataException;
-import com.epam.lab.group1.facultative.exception.external.WrongDateInputException;
-import com.epam.lab.group1.facultative.exception.external.WrongNameInputException;
-import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
-import com.epam.lab.group1.facultative.exception.internal.CourseWithTitleDoesNotExistException;
-import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
+import com.epam.lab.group1.facultative.exception.course.create.CourseCreationException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -32,7 +26,6 @@ import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
-import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Controller
 @RequestMapping("/course")
@@ -70,7 +63,7 @@ public class CourseController {
         modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
-
+    /////////////////////////////////////////////////////////////////////HERE
     @PostMapping(value = "/action/create")
     public String createCourse(@ModelAttribute Course course) {
         courseService.create(course);
@@ -115,44 +108,12 @@ public class CourseController {
         binder.addCustomFormatter(new LocalDateFormatter());
     }
 
-    @ExceptionHandler(PersistingEntityException.class)
+    @ExceptionHandler(CourseCreationException.class)
     public ModelAndView persistingEntityExceptionHandler(Exception e) {
-        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
         ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
         modelAndView.addObject("error", errorDto);
         return modelAndView;
     }
 
-    @ExceptionHandler(CourseWithIdDoesNotExistException.class)
-    public ModelAndView courseWithIdDoesNotExistExceptionHandler(Exception e) {
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        ErrorDto errorDto = new ErrorDto("CourseWithIdDoesNotExistException", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(CourseWithTitleDoesNotExistException.class)
-    public ModelAndView courseWithTitleDoesNotExistExceptionHandler(Exception e) {
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        ErrorDto errorDto = new ErrorDto("CourseWithTitleDoesNotExistException", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(IncorrectInputDataException.class)
-    public ModelAndView incorrectInputDateExceptionHandler(Exception e) {
-        ModelAndView modelAndView = new ModelAndView(COURSE_EDIT);
-        int courseId = Integer.parseInt(e.getMessage());
-        Course course = courseService.getById(courseId);
-        modelAndView.addObject("course", course);
-        modelAndView.addObject("tutorId", course.getTutorId());
-
-        if (e instanceof WrongDateInputException) {
-            modelAndView.addObject("error", "Course date is incorrect. Check date.");
-        } else if (e instanceof WrongNameInputException) {
-            modelAndView.addObject("error", "Course name is incorrect. Change name.");
-        }
-
-        return modelAndView;
-    }
 }

@@ -1,13 +1,8 @@
 package com.epam.lab.group1.facultative.persistance;
 
-import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
-import com.epam.lab.group1.facultative.exception.internal.CourseWithTitleDoesNotExistException;
-import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
-import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -33,13 +28,12 @@ public class CourseDAO {
     public Course getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Optional<Course> optionalCourse = Optional.ofNullable(session.get(Course.class, id));
+            Course course = session.get(Course.class, id);
             session.getTransaction().commit();
-            return optionalCourse.orElseThrow(() -> {
-                String error = "course with id " + id + "does not exist in database";
-                logger.error(error);
-                return new CourseWithIdDoesNotExistException(error);
-            });
+            return course;
+        } catch (PersistenceException e) {
+            logger.info("course with id " + id + "does not exist in database");
+            throw e;
         }
     }
 
@@ -52,20 +46,18 @@ public class CourseDAO {
             } catch (PersistenceException e) {
                 String error = "Error during course persisting. " + course;
                 logger.error(error);
-                throw new PersistingEntityException(error, e);
+                throw e;
             }
 
             session.beginTransaction();
             String sql = "SELECT * FROM courses WHERE courses.course_name = '" + course.getName() + "'";
             Query<Course> query = session.createSQLQuery(sql).addEntity(Course.class);
             Course courseReturn = query.getSingleResult();
-            Optional<Course> optionalCourse = Optional.ofNullable(courseReturn);
             session.getTransaction().commit();
-            return optionalCourse.orElseThrow(() -> {
-                String error = "course with name " + course.getName() + "does not exist in database";
-                logger.error(error);
-                return new CourseWithTitleDoesNotExistException(error);
-            });
+            return courseReturn;
+        } catch (PersistenceException e) {
+            logger.error("course with name " + course.getName() + "does not exist in database");
+            throw e;
         }
     }
 
@@ -77,7 +69,7 @@ public class CourseDAO {
         } catch (PersistenceException e) {
             String error = "Error during course updating. " + course;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -90,7 +82,7 @@ public class CourseDAO {
         } catch (PersistenceException e) {
             String error = "Error during deleting by courseID: " + id;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -103,7 +95,7 @@ public class CourseDAO {
         } catch (PersistenceException e) {
             String error = "Error during retrieving all courses.";
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -118,7 +110,7 @@ public class CourseDAO {
         } catch (PersistenceException e) {
             String error = "Error during retrieving all courses by user id: " + id;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -136,7 +128,7 @@ public class CourseDAO {
         } catch (PersistenceException e) {
             String error = "Error during retrieving all courses by tutor id: " + id;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -160,7 +152,7 @@ public class CourseDAO {
         } catch (PersistenceException e) {
             String error = "Error during retrieving all courses by user id: " + id;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 }

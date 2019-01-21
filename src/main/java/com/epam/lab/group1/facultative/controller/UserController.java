@@ -1,8 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.ErrorDto;
-import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
-import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.persistence.PersistenceException;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.USER_STUDENT;
 import static com.epam.lab.group1.facultative.controller.ViewName.USER_TUTOR;
@@ -94,7 +94,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @ExceptionHandler(PersistingEntityException.class)
+    @ExceptionHandler(PersistenceException.class)
     public ModelAndView persistingEntityExceptionHandler(Exception e) {
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
@@ -102,7 +102,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @ExceptionHandler(UserWithIdDoesNotExistException.class)
+    @ExceptionHandler(PersistenceException.class)
     public ModelAndView userWithIdDoesNotExistExceptionHandler(Exception e) {
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("UserWithIdDoesNotExistException", e.getMessage());

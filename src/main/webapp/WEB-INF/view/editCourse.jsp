@@ -35,11 +35,11 @@
     <div class="header"> <h2>Edit the current Course</h2> </div>
     <form method="post" action="/course/action/edit/">
         <div class="input-group">
-        Course Name:
+        Course name:
         <input type="text" name="name" value="<%=course.getName()%>" minlength="1" required><br>
-        Starting date yyyy-mm-dd:
+        Starting date:
         <input type="date" name="startingDate" value="<%=course.getStartingDate().toString()%>" required><br>
-        Finishing date yyyy-mm-dd:
+        Finishing date:
         <input type="date" name="finishingDate"  value="<%=course.getFinishingDate().toString()%>" required><br>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="tutorId" value="<%=tutorId%>">
