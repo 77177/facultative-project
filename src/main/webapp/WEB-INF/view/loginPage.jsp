@@ -7,19 +7,34 @@
 <html>
     <head>
         <title>Login to facultative</title>
+        <style>
+            <%@include file="/theme/css/main.css"%>
+        </style>
     </head>
     <body>
-        <fmt:message key="welcome"/>
+        <div class="header">
+            <h2><fmt:message key="welcome"/></h2>
+        </div>
         <form method="post" action="/login">
-            <fmt:message key="email"/> :     <input type="text" name="username" placeholder="yourEmail@company.com"/><br>
-            <fmt:message key="password"/>:   <input type="password" name="password" placeholder="password"/><br>
-            <button type="submit"><fmt:message key="button.loginIn"/></button>
-            <sec:csrfInput/>
+            <div class="input-group">
+                    <label><fmt:message key="email"/>:</label>     <input type="text" name="username" placeholder="yourEmail@company.com"/>
+                </div><br>
+                <div class="input-group">
+                    <label><fmt:message key="password"/>:</label>   <input type="password" name="password" placeholder="password"/>
+                </div><br>
+                <div class="input-group">
+                    <center><button type="submit"><fmt:message key="button.loginIn"/></button></center>
+                    <sec:csrfInput/>
+                </div>
         </form>
         <br><br>
-        <fmt:message key="noRegistration"/><br>
-        <a href="/authenticator/registration">
-            <button><fmt:message key="button.register"/></button>
-        </a>
+            <div class="header">
+                <fmt:message key="noRegistration"/>
+            </div>
+            <form action="/authenticator/registration">
+                <div class="input-group">
+                    <center><button type="submit"><fmt:message key="button.register"/></button></center>
+                </div>
+            </form>
     </body>
 </html>

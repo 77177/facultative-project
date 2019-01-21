@@ -16,15 +16,23 @@
 <html>
     <head>
         <title>Courses</title>
+        <style>
+            <%@include file="/theme/css/main.css"%>
+        </style> <style>
+            <%@include file="/theme/css/table.css"%>
+        </style>
     </head>
     <body>
-        <h2>All Courses</h2>
-        <c:import url="header.jsp"/>
+        <div class="header">
+            <h2>Go to all Courses</h2>
+        </div>
+            <c:import url="header.jsp"/>
+            <br>
         <%
             Object listObject = request.getAttribute("courseList");
             if (listObject != null) {
                 if (listObject instanceof List) { %>
-                    <table style="border: 2px solid black; border-spacing: 7px 7px">
+                    <table>
                         <tr>
                             <th>CourseName</th>
                             <th>TutorId</th>
