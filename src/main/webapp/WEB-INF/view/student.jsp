@@ -22,9 +22,12 @@
     <style> <%@include file="/theme/css/table.css"%> </style>
 </head>
 <body>
-<div class="header">
-    <a href="/course">All courses</a>
-</div>
+<div class="header"> <h2>Go back to all courses.</h2> </div>
+    <form action="/course">
+        <div class="input-group">
+            <center> <button>All courses</button> </center>
+        </div>
+    </form>
 <div class="header">
 <sec:authorize access="isAuthenticated()">
     <h3>Hello, <%=user.getFirstName() + " " + user.getLastName()%></h3>
@@ -50,7 +53,8 @@
 <%
 } else {
 %>
-<form> Your courses: </form>
+<form> <center> Your courses: </center> </form>
+<br>
 <table>
     <tr>
         <th>CourseName</th>

@@ -30,7 +30,11 @@
             </form>
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">
-            <a href="/authenticator/login">Login</a> <br><br>
+            <form action="/authenticator/login">
+                <div class="input-group">
+                    <center> <button>Login</button> </center>
+                </div>
+            </form>
         </sec:authorize>
     </body>
 </html>

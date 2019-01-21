@@ -15,14 +15,17 @@
 <html>
     <head>
         <title>Profile</title>
+        <style> <%@include file="/theme/css/main.css"%> </style>
+        <style> <%@include file="/theme/css/table.css"%> </style>
     </head>
     <body>
-        <h2>My profile</h2>
+        <div class="header"> <h2>My profile</h2> </div>
         <%
             List<Course> list = (List<Course>) request.getAttribute("courseList");
         %>
         <c:import url="header.jsp"/>
-        <table style="border: 2px double black; border-spacing: 7px 7px">
+        <br>
+        <table>
             <tr>
                 <th>CourseName</th>
                 <th>StartingDate</th>
@@ -47,6 +50,8 @@
                 }
             %>
         </table>
-        <a href="/course/action/create/<%=principal.getUserId()%>/">Create</a>
+        <br> <form>
+            <center> <button> <a href="/course/action/create/<%=principal.getUserId()%>/">Create a new Course</button> </button> </center>
+        </form>
     </body>
 </html>

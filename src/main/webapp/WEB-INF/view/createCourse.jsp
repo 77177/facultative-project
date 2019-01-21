@@ -14,27 +14,28 @@
 <html>
 <head>
     <title>Create Course Page</title>
+    <style> <%@include file="/theme/css/main.css"%> </style>
 </head>
 <body>
 <%int tutorId = (int) request.getAttribute("tutorId"); %>
 <sec:authorize access="isAuthenticated()">
     <%
         if (!principal.isStudent()) {%>
-    <h2>Create Course Page</h2>
+    <div class="header"> <h2>Create a new Course</h2> </div>
     <form method="post" action="/course/action/create/">
+        <div class="input-group">
         Course Name:
-        <input type="text" name="name"><br>
+        <input type="text" name="name"><br><br>
         Starting date yyyy-mm-dd:
-        <input type="date" name="startingDate"><br>
+        <input type="date" name="startingDate"><br><br>
         Finishing date yyyy-mm-dd:
-        <input type="date" name="finishingDate"><br>
+        <input type="date" name="finishingDate"><br><br>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
         <input type="submit" value="Submit">
+        </div>
     </form>
-    <%} else {%> nice try <%}%>
+    <%} else {%> Better luck next time. <%}%>
 </sec:authorize>
-
-<br><br>
 </body>
 </html>

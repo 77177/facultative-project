@@ -18,11 +18,14 @@
 <html>
     <head>
         <title>Course Info</title>
+        <style> <%@include file="/theme/css/main.css"%> </style>
+        <style> <%@include file="/theme/css/table.css"%> </style>
     </head>
     <body>
-        <h2>Course Info</h2>
+        <div class="header"> <h2>Course Info</h2> </div>
         <c:import url="header.jsp"/>
-        <table style="border: 2px double black; border-spacing: 7px 7px">
+        <br>
+        <table>
             <tr>
                 <th>CourseName</th>
                 <th>TutorId</th>
@@ -44,8 +47,9 @@
         </table>
         <br><br>
 
-        <h3>Student List</h3>
-        <table style="border: 2px double black; border-spacing: 7px 7px">
+        <div class="header2"> <h3>Student List</h3> </div>
+        <br>
+        <table>
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>

@@ -24,6 +24,7 @@
 <html>
 <head>
     <title>Feedbacks</title>
+    <style> <%@include file="/theme/css/main.css"%> </style>
 </head>
 <body>
 
@@ -43,18 +44,18 @@
         return true;
     }
 %>--%>
-Feedbacks page
+<div class="header"> <h2> Feedback </h2> </div>
 <c:import url="header.jsp"/>
 <br/>
 <sec:authorize access="isAuthenticated()">
     <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>
     <form:form action="/feedback/" method="post" modelAttribute="feedback">
-        FeedBack
+        Feedback:
         <br/>
         <form:textarea path="text" rows="4" cols="50"
                        readonly="<%=!(course.getTutorId()==principal.getUserId())%>"></form:textarea>
         <br/>
-        Mark
+        Mark:
         <br/>
         <form:input path="mark" readonly="<%=!(course.getTutorId()==principal.getUserId())%>"/>
         <form:hidden path="courseId"/>
