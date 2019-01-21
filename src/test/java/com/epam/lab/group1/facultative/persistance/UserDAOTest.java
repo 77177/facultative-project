@@ -63,7 +63,7 @@ public class UserDAOTest {
         assertEquals("tutor", user.getPosition());
     }
 
-    @Test(expected = NoResultException.class)
+    @Test(expected = PersistingEntityException.class)
     public void testGetByIdWrongId() {
         int nonExistingUserId = Integer.MAX_VALUE;
         userDAO.getById(nonExistingUserId);
@@ -82,7 +82,7 @@ public class UserDAOTest {
         assertEquals("student", user.getPosition());
     }
 
-    @Test(expected = NoResultException.class)
+    @Test(expected = PersistingEntityException.class)
     public void testGetByEmailWrognEmail() {
         String nonExistingUserEmail = "";
         userDAO.getByEmail(nonExistingUserEmail);

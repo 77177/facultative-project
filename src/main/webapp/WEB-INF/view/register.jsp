@@ -3,6 +3,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${pageContext.request.locale}"/>
 <fmt:setBundle basename="bundle.register"/>
+<%
+    Object emailErrorAttr = request.getAttribute("emailError");
+%>
 <html>
     <head>
         <title>Facultative registration</title>
@@ -10,6 +13,13 @@
     <body>
         <fmt:message key="welcome"/><br/>
         <br><br>
+        <%
+            if(emailErrorAttr != null) {
+                <p>
+                    e-mail is not available.
+                </p>
+            }
+        %>
         <form method="post" action="/login">
             <fmt:message key="firstName"/>:<input type="text"     name="firstName"  placeholder="first name"/><br>
             <fmt:message key="lastName"/>: <input type="text"     name="lastName"   placeholder="last name"/><br>

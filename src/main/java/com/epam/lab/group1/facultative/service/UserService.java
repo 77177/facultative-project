@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.apache.log4j.Logger;
@@ -24,6 +25,16 @@ public class UserService {
 
     public User getByEmail(String string) {
         return userDAO.getByEmail(string);
+    }
+
+    public boolean isEmailAvailable(String email) {
+        try {
+            getByEmail(email);
+            return false;
+        } catch (UserWithIdDoesNotExistException e) {
+            logger.debug("user with email " + email + "does not exist in the db");
+            return true;
+        }
     }
 
     public User create(User user) {

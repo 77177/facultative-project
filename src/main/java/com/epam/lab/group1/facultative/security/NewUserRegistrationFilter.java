@@ -45,13 +45,14 @@ public class NewUserRegistrationFilter implements Filter {
 
     }
 
-    private PersonRegistrationFormDTO formDtoFromRequest(ServletRequest req) {
-        PersonRegistrationFormDTO dto = new PersonRegistrationFormDTO();
-        dto.setFirstName(req.getParameter("firstName"));
-        dto.setLastName(req.getParameter("lastName"));
-        dto.setEmail(req.getParameter("username"));
-        dto.setPosition(req.getParameter("position"));
-        dto.setPassword(req.getParameter("password"));
-        return dto;
+        private PersonRegistrationFormDTO formDtoFromRequest (ServletRequest req){
+            PersonRegistrationFormDTO dto = new PersonRegistrationFormDTO();
+            dto.setFirstName(req.getParameter("firstName"));
+            dto.setLastName(req.getParameter("lastName"));
+            dto.setEmail(req.getParameter("username"));
+            dto.setPosition(req.getParameter("position"));
+            dto.setPassword(req.getParameter("password"));
+            logger.debug("Created PersonRegistrationFormDTO from request: " + dto);
+            return dto;
+        }
     }
-}
