@@ -36,16 +36,9 @@ public class NewUserRegistrationFilter implements Filter {
         logger.debug("Entering to the new user creation zone.");
         if (isRegistration) {
             PersonRegistrationFormDTO personRegistrationFormDTO = formDtoFromRequest(servletRequest);
-            if (userService.isEmailAvailable(personRegistrationFormDTO.getEmail())) {
-                logger.debug("user with email does not exist. New user can be created.");
-                authenticationService.createUser(personRegistrationFormDTO);
-                logger.debug("User successfully created. Proceeding the filter chain.");
-            } else {
-                logger.debug("Email is not available. User was not created.");
-                servletRequest.setAttribute("emailError", "email is not available");
-            }
-            filterChain.doFilter(servletRequest, response);
+            authenticationService.createUser(personRegistrationFormDTO);
         }
+        filterChain.doFilter(servletRequest, response);
     }
 
         @Override

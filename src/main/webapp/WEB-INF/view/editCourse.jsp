@@ -21,10 +21,10 @@
 <sec:authorize access="isAuthenticated()">
     <%
         int tutorId = (int) request.getAttribute("tutorId");
-        Optional<Course> course = (Optional<Course>) request.getAttribute("course");
-        int courseId = course.get().getId();
+        Course course = (Course) request.getAttribute("course");
+        int courseId = course.getId();
 
-        if (!principal.isStudent() && principal.getUserId() == course.get().getTutorId()) {
+        if (!principal.isStudent() && principal.getUserId() == course.getTutorId()) {
 
     %>
     <h2>Edit Course Page</h2>
