@@ -1,8 +1,8 @@
 package com.epam.lab.group1.facultative.persistance;
 
+import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.internal.CourseWithTitleDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
-import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.apache.log4j.Logger;
@@ -34,9 +34,9 @@ public class CourseDAO {
             Optional<Course> optionalCourse = Optional.ofNullable(session.get(Course.class, id));
             session.getTransaction().commit();
             return optionalCourse.orElseThrow(() -> {
-                String error = "user with id " + id + "does not exist in database";
+                String error = "course with id " + id + "does not exist in database";
                 logger.error(error);
-                return new UserWithIdDoesNotExistException(error);
+                return new CourseWithIdDoesNotExistException(error);
             });
         }
     }
