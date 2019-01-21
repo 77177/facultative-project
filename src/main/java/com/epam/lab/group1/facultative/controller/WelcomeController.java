@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Controller
@@ -23,10 +22,8 @@ public class WelcomeController {
     }
 
     @RequestMapping("/**")
-    public ModelAndView welcome() {
-        ModelAndView modelAndView = new ModelAndView(COURSE);
-        modelAndView.addObject("courseList", courseService.findAll());
-        return modelAndView;
+    public String welcome() {
+        return "redirect:/course/";
     }
 
     @ExceptionHandler(PersistingEntityException.class)

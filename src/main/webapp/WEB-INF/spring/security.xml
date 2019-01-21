@@ -7,13 +7,16 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <beans:import resource="exceptionTranslatorFilterConfig.xml"/>
+
     <http>
         <intercept-url pattern="/profile**" access="hasAnyAuthority('student', 'tutor')"/>
+        <intercept-url pattern="/feedback/**" access="hasAnyAuthority('student', 'tutor')"/>
         <intercept-url pattern="/course/action/**" access="hasAnyAuthority('tutor')"/>
         <custom-filter ref="registrationFilter" before="FORM_LOGIN_FILTER"/>
         <form-login login-page="/authenticator/login"
                     always-use-default-target="true"
-                    authentication-failure-url="/"
+                    authentication-failure-url="/authenticator/login"
                     default-target-url="/course"/>
         <logout delete-cookies="JSESSIONID"
                 invalidate-session="true"

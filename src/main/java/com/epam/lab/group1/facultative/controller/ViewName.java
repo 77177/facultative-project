@@ -11,6 +11,7 @@ public final class ViewName {
     public final static String COURSE_EDIT = "editCourse";
 
     public final static String ERROR = "errorPage";
+    public final static String ACCESS_DENIED = "accessDenied";
 
     public final static String USER_STUDENT = "student";
     public final static String USER_TUTOR = "tutor";
