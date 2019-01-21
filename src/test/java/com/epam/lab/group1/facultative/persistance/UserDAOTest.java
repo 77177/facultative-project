@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
+import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +64,7 @@ public class UserDAOTest {
         assertEquals("tutor", user.getPosition());
     }
 
-    @Test(expected = NoResultException.class)
+    @Test(expected = UserWithIdDoesNotExistException.class)
     public void testGetByIdWrongId() {
         int nonExistingUserId = Integer.MAX_VALUE;
         userDAO.getById(nonExistingUserId);
@@ -82,8 +83,8 @@ public class UserDAOTest {
         assertEquals("student", user.getPosition());
     }
 
-    @Test(expected = NoResultException.class)
-    public void testGetByEmailWrognEmail() {
+    @Test(expected = UserWithIdDoesNotExistException.class)
+    public void testGetByEmailWrongEmail() {
         String nonExistingUserEmail = "";
         userDAO.getByEmail(nonExistingUserEmail);
     }

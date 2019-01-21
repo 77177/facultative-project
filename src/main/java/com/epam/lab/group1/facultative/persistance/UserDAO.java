@@ -11,6 +11,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -39,13 +40,13 @@ public class UserDAO {
             session.getTransaction().commit();
             return optionalUser.orElseThrow(() -> {
                 String error = "user with id " + id + "does not exist in database";
-                logger.error(error);
+                logger.info(error);
                 return new UserWithIdDoesNotExistException(error);
             });
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during user getting by id: " + id;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw new UserWithIdDoesNotExistException(error, e);
         }
     }
 
@@ -61,13 +62,13 @@ public class UserDAO {
             session.getTransaction().commit();
             return optionalUser.orElseThrow(() -> {
                 String error = "user with email " + email + "does not exist in database";
-                logger.error(error);
+                logger.info(error);
                 return new UserWithIdDoesNotExistException(error);
             });
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error retrieving  user by email: " + email;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw new UserWithIdDoesNotExistException(error, e);
         }
     }
 
