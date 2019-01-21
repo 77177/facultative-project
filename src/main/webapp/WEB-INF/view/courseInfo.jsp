@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SecurityContextUser principal = null;
-    Course course = ((Optional<Course>) request.getAttribute("course")).get();
+    Course course = (Course)request.getAttribute("course");
     List<User> studentList = (List) request.getAttribute("studentList");
 %>
 <sec:authorize access="isAuthenticated()">

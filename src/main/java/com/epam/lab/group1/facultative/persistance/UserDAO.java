@@ -86,7 +86,7 @@ public class UserDAO {
             User userReturn = session.createQuery(criteriaQuery).getSingleResult();
             session.getTransaction().commit();
             return userReturn;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during user creating. " + user;
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -124,7 +124,7 @@ public class UserDAO {
             List<User> user = query1.getResultList();
             session.getTransaction().commit();
             return user;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during retrieving all users with position 'student'.";
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -142,7 +142,7 @@ public class UserDAO {
             List<User> users = query1.getResultList();
             session.getTransaction().commit();
             return users;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during retrieving all users with position 'tutor'.";
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -157,7 +157,7 @@ public class UserDAO {
             List<User> users = session.createSQLQuery(sql).addEntity(User.class).list();
             session.getTransaction().commit();
             return users;
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = "Error during retrieving all users with position 'student' and by courseId: " + id;
             logger.error(error);
             throw new PersistingEntityException(error, e);
@@ -167,12 +167,12 @@ public class UserDAO {
     public void subscribeCourse(int userId, int courseId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            String sql = String.format("INSERT INTO student_course(student_id, course_id) VALUES (%d, %d, -1, 'empty')",
+            String sql = String.format("INSERT INTO student_course(student_id, course_id, mark, feedback) VALUES (%d, %d, -1, '')",
                 userId, courseId);
             Query query = session.createSQLQuery(sql);
             query.executeUpdate();
             session.getTransaction().commit();
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             String error = String.format("Error during subscribing user with id %d, on course with id %d", userId, courseId);
             logger.error(error);
             throw new PersistingEntityException(error, e);
