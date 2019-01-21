@@ -14,6 +14,7 @@
 <html>
     <head>
         <title>Create Course Page</title>
+        <style> <%@include file="/theme/css/main.css"%> </style>
     </head>
     <body>
         <%
@@ -38,7 +39,7 @@
                 <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
                 <input type="submit" value="Submit">
             </form>
-            <%} else {%> nice try <%}%>
+            <%} else {%> Better luck next time. <%}%>
         </sec:authorize>
         <br><br>
     </body>

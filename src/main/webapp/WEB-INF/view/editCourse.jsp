@@ -15,7 +15,8 @@
 </sec:authorize>
 <html>
 <head>
-    <title>Edit Course Page</title>
+    <title>Edit Course</title>
+    <style> <%@include file="/theme/css/main.css"%> </style>
 </head>
 <body>
 <sec:authorize access="isAuthenticated()">
@@ -30,8 +31,10 @@
     <%if(errorMessageObject != null) {
         out.print(errorMessageObject.toString());
     }%>
-
+<div class="input-group">
+    <div class="header"> <h2>Edit the current Course</h2> </div>
     <form method="post" action="/course/action/edit/">
+        <div class="input-group">
         Course Name:
         <input type="text" name="name" value="<%=course.getName()%>" minlength="1" required><br>
         Starting date yyyy-mm-dd:
@@ -42,6 +45,7 @@
         <input type="hidden" name="tutorId" value="<%=tutorId%>">
         <input type="hidden" name="id" value="<%=course.getId()%>">
         <input type="submit" value="Submit">
+        </div>
     </form>
     <%} else {%> nice try <%}%>
 </sec:authorize>

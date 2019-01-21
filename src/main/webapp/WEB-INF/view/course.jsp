@@ -17,10 +17,18 @@
 <html>
     <head>
         <title>Courses</title>
+        <style>
+            <%@include file="/theme/css/main.css"%>
+        </style> <style>
+            <%@include file="/theme/css/table.css"%>
+        </style>
     </head>
     <body>
-        <c:import url="header.jsp"/>
-        <h2>All Courses</h2>
+        <div class="header">
+            <h2>All Courses</h2>
+        </div>
+            <c:import url="header.jsp"/>
+            <br>
         <%
             Object listObject = request.getAttribute("courseList");
             if (listObject != null) {
@@ -53,9 +61,8 @@
                     <br><br>
                     <%
                 }
-            } else {
-                out.print("There is not a single course");
-            }
-        %>
+            } else { %>
+                <p>There is not a single course.</p>
+        <% } %> </center> </form>
     </body>
 </html>

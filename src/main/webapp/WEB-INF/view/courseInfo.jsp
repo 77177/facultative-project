@@ -22,8 +22,11 @@
 <html>
     <head>
         <title>Course Info</title>
+        <style> <%@include file="/theme/css/main.css"%> </style>
+        <style> <%@include file="/theme/css/table.css"%> </style>
     </head>
     <body>
+        <div class="header"> <h2>Course Info</h2> </div>
         <c:import url="header.jsp"/>
         <h2><%=course.getName()%></h2>
         <div id="courseInfo">
@@ -65,7 +68,7 @@
                 <a href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">edit course</a><br>
                 <a href="/course/action/delete/<%=course.getId()%>/">delete course</a><br>
                 <br>
-                <div>Students of the course</div>
+                <div class="header2"> <h3>Student List</h3> </div>
                 <table style="border: 2px double black; border-spacing: 7px 7px">
                     <tr>
                         <th>First Name</th>

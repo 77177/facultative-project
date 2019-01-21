@@ -13,23 +13,38 @@
 <html>
     <head>
         <title>header</title>
+        <style>
+            </@include file="/theme/css/main.css"%>
+        </style>
     </head>
     <body>
-        <div id="allCoursesLink">
-            <p><a href="/course">all courses</a></p>
+    <form action="/course">
+        <div class="input-group">
+            <center> <button>All courses</button> </center>
         </div>
+    </form>
         <sec:authorize access="isAuthenticated()">
-            <p style="display: inline-block">Hello, <%=principal.getFirstName()%>. </p>
-            <a href="/user/profile">My profile</a>
+            <div class="header">
+                <h3>Hello, <sec:authentication property="name"/></h3>
+            </div>
+            <form action="/user/profile">
+                <div class="input-group">
+                    <center> <button>My Profile</button> </center>
+                </div>
+            </form>
             <form method="post" action="/logout">
                 <sec:csrfInput/>
-                <input type="submit" value="Logout"/>
+                <div class="input-group">
+                    <center> <button type="submit" value="Logout"> Logout </button> </center>
+                </div>
             </form>
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">
-            <div id="loginButton">
-                <p><a href="/authenticator/login">Login</a></p>
-            </div>
+            <form action="/authenticator/login">
+                <div class="input-group">
+                    <center> <button>Login</button> </center>
+                </div>
+            </form>
         </sec:authorize>
     </body>
 </html>
