@@ -13,7 +13,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class CourseDAO {
@@ -149,25 +148,25 @@ public class CourseDAO {
         }
     }
 
-    public List<Course> getAllById(int id) {
+    public List<Course> getAllByUserId(int userId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
             Root<User> u = query.from(User.class);
-            query.select(u).where(criteriaBuilder.equal(u.get("id"), id));
+            query.select(u).where(criteriaBuilder.equal(u.get("id"), userId));
             Query<User> query1 = session.createQuery(query);
             User user = query1.getSingleResult();
             List<Course> result = null;
             session.getTransaction().commit();
             if (user.getPosition().equals("tutor")) {
-                result = getAllByTutorID(id);
+                result = getAllByTutorID(userId);
             } else if (user.getPosition().equals("student")) {
-                result = getAllByUserID(id);
+                result = getAllByUserID(userId);
             }
             return result;
         } catch (PersistenceException e) {
-            String error = "Error during retrieving all courses by user id: " + id;
+            String error = "Error during retrieving all courses by user id: " + userId;
             logger.error(error);
             throw e;
         }

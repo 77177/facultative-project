@@ -1,9 +1,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ page import="java.util.List" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
-<%@ page import="java.util.Optional" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SecurityContextUser principal = null;
@@ -41,6 +39,8 @@
         <input type="date" name="startingDate" value="<%=course.getStartingDate().toString()%>" required><br>
         Finishing date:
         <input type="date" name="finishingDate"  value="<%=course.getFinishingDate().toString()%>" required><br>
+        <input type="radio" name="active" value="true" required>Active<br>
+        <input type="radio" name="active" value="false" required>Closed<br>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="tutorId" value="<%=tutorId%>">
         <input type="hidden" name="id" value="<%=course.getId()%>">

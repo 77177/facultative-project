@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.junit.Test;
@@ -12,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Collections;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
@@ -33,7 +36,15 @@ public class CourseControllerTest {
     public CourseControllerTest() {
         this.userService = mock(UserService.class);
         this.courseService = mock(CourseService.class);
-        when(courseService.getById(1)).thenReturn(new Course());
+        Course course = mock(Course.class);
+        User user = mock(User.class);
+
+        when(course.getTutorId()).thenReturn(1);
+        when(courseService.getById(1)).thenReturn(course);
+        when(user.getFullName()).thenReturn("Poligraf Poligrafovich");
+        when(userService.getAllStudentByCourseId(1)).thenReturn(Collections.emptyList());
+        when(userService.getById(1)).thenReturn(user);
+
         this.mockMvc = MockMvcBuilders
             .standaloneSetup(new CourseController(courseService, userService))
             .build();
@@ -50,7 +61,7 @@ public class CourseControllerTest {
     public void tesGetById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/course/1"))
             .andExpect(MockMvcResultMatchers.view().name(COURSE_INFO))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("course", "studentList"));
+            .andExpect(MockMvcResultMatchers.model().attributeExists("tutorName", "course", "studentList"));
     }
 
     @Test

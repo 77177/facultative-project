@@ -25,11 +25,9 @@
     </head>
     <body>
         <div class="header"> <h2>My profile</h2> </div>
-        <%
-            List<Course> list = (List<Course>) request.getAttribute("courseList");
-        %>
         <c:import url="header.jsp"/>
         <br>
+        <center>My courses</center>
         <table>
             <tr>
                 <th>Title</th>
@@ -55,7 +53,11 @@
             %>
         </table>
         <br> <form>
-            <center> <button> <a href="/course/action/create/<%=principal.getUserId()%>/">Create a new Course</button> </button> </center>
+            <center>
+                <button>
+                    <a href="/course/action/create/<%=principal.getUserId()%>"/>Create a new Course
+                </button>
+            </center>
         </form>
     </body>
 </html>

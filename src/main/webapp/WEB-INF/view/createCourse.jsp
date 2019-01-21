@@ -35,6 +35,8 @@
                 <input type="date" name="startingDate" required><br>
                 Finishing date:
                 <input type="date" name="finishingDate" required><br>
+                <input type="radio" name="active" value="true" required>Active<br>
+                <input type="radio" name="active" value="false" required>Closed<br>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
                 <input type="submit" value="Submit">

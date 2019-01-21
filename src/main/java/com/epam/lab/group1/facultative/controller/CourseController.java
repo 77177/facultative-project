@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
@@ -51,7 +52,7 @@ public class CourseController {
     public ModelAndView getById(@PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
         Course course = courseService.getById(courseId);
-        modelAndView.addObject("tutorName", userService.getById(course.getId()).getFullName());
+        modelAndView.addObject("tutorName", userService.getById(course.getTutorId()).getFullName());
         modelAndView.addObject("course", course);
         modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
         return modelAndView;

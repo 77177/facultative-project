@@ -45,7 +45,7 @@ public class CourseDAOTest {
 
     @Test
     public void testGetAllByUserID() {
-        List<Course> allByUserID = courseDAO.getAllById(3);
+        List<Course> allByUserID = courseDAO.getAllByUserId(3);
         assertEquals(1, allByUserID.get(0).getId());
         assertEquals("COURSE_1", allByUserID.get(0).getName());
         assertEquals(1, allByUserID.size());
@@ -97,11 +97,11 @@ public class CourseDAOTest {
         User user = new User();
         user.setId(1);
         user.setPosition("tutor");
-        List<Course> allCourseIdbyUserId = courseDAO.getAllById(user.getId());
+        List<Course> allCourseIdbyUserId = courseDAO.getAllByUserId(user.getId());
         assertEquals(1, allCourseIdbyUserId.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId.get(0).getName());
         user.setPosition("student");
-        List<Course> allCourseIdbyUserId1 = courseDAO.getAllById(user.getId());
+        List<Course> allCourseIdbyUserId1 = courseDAO.getAllByUserId(user.getId());
         assertEquals(1, allCourseIdbyUserId1.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId1.get(0).getName());
     }

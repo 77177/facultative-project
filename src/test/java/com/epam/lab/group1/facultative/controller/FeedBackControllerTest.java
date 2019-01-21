@@ -55,7 +55,8 @@ public class FeedBackControllerTest {
 
     @Test
     public void testGetFeedbackPage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/feedback/user/0/course/0"))
+        //TODO exceptionHandler should be implemented.
+        mockMvc.perform(MockMvcRequestBuilders.get("/feedback/course/0"))
             .andExpect(MockMvcResultMatchers.view().name(FEEDBACK))
             .andExpect(MockMvcResultMatchers.model().attributeExists("student", "course", "feedback"));
     }

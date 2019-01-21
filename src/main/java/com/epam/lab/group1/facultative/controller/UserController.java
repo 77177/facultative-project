@@ -1,7 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.ErrorDto;
-import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.PersistenceException;
-
-import java.util.List;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.USER_STUDENT;
 import static com.epam.lab.group1.facultative.controller.ViewName.USER_TUTOR;
@@ -86,14 +83,14 @@ public class UserController {
     private ModelAndView studentProfile(int studentId) {
         ModelAndView modelAndView = new ModelAndView(USER_STUDENT);
         modelAndView.addObject("user", userService.getById(studentId));
-        modelAndView.addObject("courseList", courseService.getAllById(studentId));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(studentId));
         return modelAndView;
     }
 
     private ModelAndView tutorProfile(int tutorId) {
         ModelAndView modelAndView = new ModelAndView(USER_TUTOR);
         modelAndView.addObject("user", userService.getById(tutorId));
-        modelAndView.addObject("courseList", courseService.getAllById(tutorId));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId));
         return modelAndView;
     }
 

@@ -39,7 +39,6 @@
                             <th>Title</th>
                             <th>Starting date</th>
                             <th>Finishing date</th>
-                            <th>Active</th>
                         </tr>
                         <%
                             List<Course> list = (List<Course>) listObject;
@@ -51,7 +50,6 @@
                                         course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
                                     <td><%=
                                         course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
-                                    <td><%= course.isActive()%></td>
                                     <td><a href="/course/<%=course.getId()%>">info</a></td>
                                 </tr>
                                 <%

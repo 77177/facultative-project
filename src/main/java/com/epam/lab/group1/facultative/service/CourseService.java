@@ -14,6 +14,7 @@ import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -38,7 +39,6 @@ public class CourseService {
         } else if (course.getName().isEmpty()) {
             throw new CourseCreationEmptyName("Course should have not empty name");
         }
-        course.setActive(isDateActive(course));
         try {
             course = courseDAO.create(course);
         } catch (PersistenceException e) {
@@ -57,7 +57,6 @@ public class CourseService {
         } else if (course.getName().isEmpty()) {
             throw new CourseCreationEmptyName("Course should have not empty name");
         }
-        course.setActive(isDateActive(course));
         Course courseFromDB;
         try {
             courseFromDB = courseDAO.getById(course.getId());
@@ -85,28 +84,10 @@ public class CourseService {
     //findAll methods.
 
     public List<Course> findAll() {
-        return isActiveCheck(courseDAO.findAll());
+        return courseDAO.findAll().stream().filter(Course::isActive).collect(Collectors.toList());
     }
 
-    public boolean isDateActive(Course course) {
-        LocalDate today = LocalDate.now();
-        boolean state;
-        if (today.isBefore(course.getFinishingDate()) && today.isAfter(course.getStartingDate())) {
-            state = true;
-        } else {
-            state = false;
-        }
-        return state;
-    }
-
-    private List<Course> isActiveCheck(List<Course> courseList) {
-        courseList.forEach(course -> {
-            course.setActive(isDateActive(course));
-        });
-        return courseList;
-    }
-
-    public List<Course> getAllById(int id) {
-        return isActiveCheck(courseDAO.getAllById(id));
+    public List<Course> getAllByUserId(int userId) {
+        return courseDAO.getAllByUserId(userId);
     }
 }
