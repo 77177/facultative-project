@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -35,7 +36,7 @@ public class FeedBackDAO {
             String error = String .format("Error during retrieving feedBack by courseId: %d and userId: %d", courseId
                 , userId);
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 
@@ -47,7 +48,7 @@ public class FeedBackDAO {
         } catch (HibernateException e) {
             String error = "Error during feedBack persisting. " + feedBack;
             logger.error(error);
-            throw new PersistingEntityException(error, e);
+            throw e;
         }
     }
 }

@@ -37,6 +37,23 @@ public class CourseDAO {
         }
     }
 
+    public Course getByName(String name) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
+            Root<Course> userRoot = criteriaQuery.from(Course.class);
+            criteriaQuery.select(userRoot).where(criteriaBuilder.equal(userRoot.get("name"), name));
+            Course course = session.createQuery(criteriaQuery).getSingleResult();
+            session.getTransaction().commit();
+            return course;
+        } catch (PersistenceException e) {
+            String error = "Error retrieving course by name: " + name;
+            logger.error(error);
+            throw e;
+        }
+    }
+
     public Course create(Course course) {
         try (Session session = sessionFactory.openSession()) {
             try {

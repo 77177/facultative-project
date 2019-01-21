@@ -6,6 +6,7 @@ import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 @Service
@@ -30,7 +31,7 @@ public class UserService {
         try {
             getByEmail(email);
             return false;
-        } catch (UserWithIdDoesNotExistException e) {
+        } catch (PersistenceException e) {
             logger.debug("user with email " + email + "does not exist in the db");
             return true;
         }

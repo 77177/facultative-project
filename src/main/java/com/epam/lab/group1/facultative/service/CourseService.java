@@ -3,6 +3,7 @@ package com.epam.lab.group1.facultative.service;
 import com.epam.lab.group1.facultative.exception.course.create.CourseCreationEmptyName;
 import com.epam.lab.group1.facultative.exception.course.create.CourseCreationWrongDateException;
 import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateCourseWithIdDoesNotExistException;
+import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateNonUniqueNameException;
 import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateWrongDateException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
@@ -38,7 +39,13 @@ public class CourseService {
             throw new CourseCreationEmptyName("Course should have not empty name");
         }
         course.setActive(isDateActive(course));
-        return courseDAO.create(course);
+        try {
+            course = courseDAO.create(course);
+        } catch (PersistenceException e) {
+            logger.debug("Course with name " + course.getName() + " already exists in the database. Course name should be unique.");
+            throw new CourseUpdateNonUniqueNameException("Course with name " + course.getName() + " already exists in the database. Course name should be unique.");
+        }
+        return course;
     }
 
     public void update(Course course) {
@@ -66,7 +73,7 @@ public class CourseService {
                 courseDAO.update(course);
             } catch (PersistenceException e) {
                 logger.debug("Course with name " + course.getName() + " already exists in the database. Course name should be unique.");
-                throw new CourseUpdateCourseWithIdDoesNotExistException("Course with name " + course.getName() + " already exists in the database. Course name should be unique.");
+                throw new CourseUpdateNonUniqueNameException("Course with name " + course.getName() + " already exists in the database. Course name should be unique.");
             }
         }
     }

@@ -10,6 +10,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class UserDAOTest {
         assertEquals("tutor", user.getPosition());
     }
 
-    @Test(expected = PersistingEntityException.class)
+    @Test(expected = PersistenceException.class)
     public void testGetByIdWrongId() {
         int nonExistingUserId = Integer.MAX_VALUE;
         userDAO.getById(nonExistingUserId);
@@ -80,8 +81,8 @@ public class UserDAOTest {
         assertEquals("student", user.getPosition());
     }
 
-    @Test(expected = PersistingEntityException.class)
-    public void testGetByEmailWrognEmail() {
+    @Test(expected = PersistenceException.class)
+    public void testGetByEmailWrongEmail() {
         String nonExistingUserEmail = "";
         userDAO.getByEmail(nonExistingUserEmail);
     }
@@ -123,7 +124,7 @@ public class UserDAOTest {
         assertEquals(position, user.getPosition());
     }
 
-    @Test(expected = PersistingEntityException.class)
+    @Test(expected = PersistenceException.class)
     public void testDeleteById() {
         User user = new User();
         user.setFirstName("firstName");
