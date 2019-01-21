@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.persistance;
 
+import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
 import com.epam.lab.group1.facultative.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/dao/userDaoTestContext.xml")
@@ -30,8 +31,8 @@ public class UserDAOTest {
     public void init() {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScripts(
-                new ClassPathResource("/dao/sql/create_script.sql"),
-                new ClassPathResource("/dao/sql/fill_script.sql"));
+            new ClassPathResource("/dao/sql/create_script.sql"),
+            new ClassPathResource("/dao/sql/fill_script.sql"));
         populator.execute(this.dataSource);
     }
 
@@ -41,6 +42,7 @@ public class UserDAOTest {
         assertNotNull(allStudents);
         assertEquals(5, allStudents.size());
     }
+
     @Test
     public void testGetAllTutors() {
         List<User> allTutors = userDAO.getAllTutors();
@@ -51,39 +53,38 @@ public class UserDAOTest {
     @Test
     public void testGetById() {
         int existingUserId = 1;
-        Optional<User> optionalUser = userDAO.getById(existingUserId);
-        assertNotNull(optionalUser);
-        assertTrue(optionalUser.isPresent());
-        User user = optionalUser.get();
+        User user = userDAO.getById(existingUserId);
         assertNotNull(user);
         assertEquals("Mark", user.getFirstName());
         assertEquals("Rasane", user.getLastName());
         assertEquals("0tutor@gmail.com", user.getEmail());
         assertEquals("0", user.getPassword());
         assertEquals("tutor", user.getPosition());
+    }
 
+    @Test(expected = PersistingEntityException.class)
+    public void testGetByIdWrongId() {
         int nonExistingUserId = Integer.MAX_VALUE;
-        optionalUser = userDAO.getById(nonExistingUserId);
-        assertNotNull(optionalUser);
+        userDAO.getById(nonExistingUserId);
+
     }
 
     @Test
     public void testGetByEmail() {
         String existingUserEmail = "1student@gmail.com";
-        Optional<User> optionalUser = userDAO.getByEmail(existingUserEmail);
-        assertNotNull(optionalUser);
-        assertTrue(optionalUser.isPresent());
-        User user = optionalUser.get();
+        User user = userDAO.getByEmail(existingUserEmail);
         assertNotNull(user);
         assertEquals("Sam", user.getFirstName());
         assertEquals("Garrison", user.getLastName());
         assertEquals("1student@gmail.com", user.getEmail());
         assertEquals("1", user.getPassword());
         assertEquals("student", user.getPosition());
+    }
 
+    @Test(expected = PersistingEntityException.class)
+    public void testGetByEmailWrognEmail() {
         String nonExistingUserEmail = "";
-        optionalUser = userDAO.getByEmail(nonExistingUserEmail);
-        assertNotNull(optionalUser);
+        userDAO.getByEmail(nonExistingUserEmail);
     }
 
     @Test
@@ -103,20 +104,18 @@ public class UserDAOTest {
         user.setPassword(password);
         user.setPosition(position);
         userDAO.update(user);
-        Optional<User> optionalUser = userDAO.getById(id);
-        assertNotNull(optionalUser);
-        assertTrue(optionalUser.isPresent());
-        user = optionalUser.get();
+
+        user = userDAO.getById(id);
+        assertNotNull(user);
         assertNotNull(user);
         assertEquals(firstName, user.getFirstName());
         assertEquals(lastName, user.getLastName());
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
         assertEquals(position, user.getPosition());
-        optionalUser = userDAO.getByEmail(email);
-        assertNotNull(optionalUser);
-        assertTrue(optionalUser.isPresent());
-        user = optionalUser.get();
+
+        user = userDAO.getByEmail(email);
+        assertNotNull(user);
         assertNotNull(user);
         assertEquals(firstName, user.getFirstName());
         assertEquals(lastName, user.getLastName());
@@ -125,7 +124,7 @@ public class UserDAOTest {
         assertEquals(position, user.getPosition());
     }
 
-    @Test
+    @Test(expected = PersistingEntityException.class)
     public void testDeleteById() {
         User user = new User();
         user.setFirstName("firstName");
@@ -133,9 +132,10 @@ public class UserDAOTest {
         user.setEmail("email");
         user.setPassword("email");
         user.setPosition("position");
-        userDAO.create(user);
+        User dbUser = userDAO.create(user);
+        assertEquals(8, dbUser.getId());
         userDAO.deleteById(8);
-        assertFalse(userDAO.getByEmail("email").isPresent());
+        userDAO.deleteById(8);
     }
 
     @Test
@@ -143,12 +143,12 @@ public class UserDAOTest {
         User user = new User();
         user.setEmail("anithing@something.com");
         userDAO.create(user);
-        Optional<User> userFromDB = userDAO.getByEmail(user.getEmail());
-        assertEquals(user.getFirstName(), userFromDB.get().getFirstName());
-        assertEquals(user.getLastName(), userFromDB.get().getLastName());
-        assertEquals(user.getEmail(), userFromDB.get().getEmail());
-        assertEquals(user.getPassword(), userFromDB.get().getPassword());
-        assertEquals(user.getPosition(), userFromDB.get().getPosition());
+        User userFromDB = userDAO.getByEmail(user.getEmail());
+        assertEquals(user.getFirstName(), userFromDB.getFirstName());
+        assertEquals(user.getLastName(), userFromDB.getLastName());
+        assertEquals(user.getEmail(), userFromDB.getEmail());
+        assertEquals(user.getPassword(), userFromDB.getPassword());
+        assertEquals(user.getPosition(), userFromDB.getPosition());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class UserDAOTest {
     @Test
     public void getAllStudents() {
         List<User> allStudents = userDAO.getAllStudents();
-        assertEquals(5,allStudents.size());
+        assertEquals(5, allStudents.size());
         assertEquals("Laura", allStudents.get(0).getFirstName());
         assertEquals("Hieme", allStudents.get(0).getLastName());
         assertEquals("Sam", allStudents.get(1).getFirstName());

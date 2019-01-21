@@ -1,5 +1,15 @@
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    SecurityContextUser principal = null;
+%>
+<sec:authorize access="isAuthenticated()">
+    <%
+        principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    %>
+</sec:authorize>
 <html>
     <head>
         <title>header</title>

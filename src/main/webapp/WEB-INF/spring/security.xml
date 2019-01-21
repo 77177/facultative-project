@@ -7,13 +7,16 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <beans:import resource="exceptionTranslatorFilterConfig.xml"/>
+
     <http>
         <intercept-url pattern="/profile**" access="hasAnyAuthority('student', 'tutor')"/>
+        <intercept-url pattern="/feedback/**" access="hasAnyAuthority('student', 'tutor')"/>
         <intercept-url pattern="/course/action/**" access="hasAnyAuthority('tutor')"/>
         <custom-filter ref="registrationFilter" before="FORM_LOGIN_FILTER"/>
         <form-login login-page="/authenticator/login"
                     always-use-default-target="true"
-                    authentication-failure-url="/"
+                    authentication-failure-url="/authenticator/login"
                     default-target-url="/course"/>
         <logout delete-cookies="JSESSIONID"
                 invalidate-session="true"
@@ -27,8 +30,8 @@
     </authentication-manager>
 
     <beans:bean id="registrationFilter" class="com.epam.lab.group1.facultative.security.NewUserRegistrationFilter">
-        <beans:constructor-arg name="userService" ref="userService"/>
         <beans:constructor-arg name="authenticationService" ref="authenticationService"/>
+        <beans:constructor-arg name="userService" ref="userService"/>
     </beans:bean>
 
     <beans:bean id="facultativeJdbcUserDetailsService"
@@ -38,7 +41,6 @@
     </beans:bean>
 
     <beans:bean id="authenticationService" class="com.epam.lab.group1.facultative.service.AuthenticationService">
-        <beans:constructor-arg name="userDetailsService" ref="facultativeJdbcUserDetailsService"/>
         <beans:constructor-arg name="userService" ref="userService"/>
     </beans:bean>
 

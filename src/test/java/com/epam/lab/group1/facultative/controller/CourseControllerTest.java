@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -31,6 +33,7 @@ public class CourseControllerTest {
     public CourseControllerTest() {
         this.userService = mock(UserService.class);
         this.courseService = mock(CourseService.class);
+        when(courseService.getById(1)).thenReturn(new Course());
         this.mockMvc = MockMvcBuilders
             .standaloneSetup(new CourseController(courseService, userService))
             .build();
@@ -47,7 +50,7 @@ public class CourseControllerTest {
     public void tesGetById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/course/1"))
             .andExpect(MockMvcResultMatchers.view().name(COURSE_INFO))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("courseInfo", "studentList"));
+            .andExpect(MockMvcResultMatchers.model().attributeExists("course", "studentList"));
     }
 
     @Test

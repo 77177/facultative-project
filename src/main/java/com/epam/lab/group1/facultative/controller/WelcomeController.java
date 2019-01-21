@@ -1,15 +1,20 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
 import com.epam.lab.group1.facultative.service.CourseService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
+import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Controller
 public class WelcomeController {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
     private CourseService courseService;
 
     public WelcomeController(CourseService courseService) {
@@ -17,9 +22,15 @@ public class WelcomeController {
     }
 
     @RequestMapping("/**")
-    public ModelAndView welcome() {
-        ModelAndView modelAndView = new ModelAndView(COURSE);
-        modelAndView.addObject("courseList", courseService.findAll());
+    public String welcome() {
+        return "redirect:/course/";
+    }
+
+    @ExceptionHandler(PersistingEntityException.class)
+    public ModelAndView persistingEntityExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
         return modelAndView;
     }
 }

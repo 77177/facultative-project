@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Component
 public class FacultativeJdbcUserDetailsService implements UserDetailsService {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
     private final String studentRole = "student";
     private final String tutorRole = "tutor";
     private UserDAO userDAO;
@@ -39,8 +41,12 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userDAO.getByEmail(username);
-        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User " + username + " does not exist"));
+        User user;
+        try {
+            user = userDAO.getByEmail(username);
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("User " + username + " does not exist");
+        }
         SimpleGrantedAuthority grantedAuthority = null;
         boolean isStudent = false;
         switch (user.getPosition()) {
@@ -63,8 +69,8 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
                         .map(Course::getId)
                         .collect(Collectors.toList()));
         securityContextUser.setStudent(isStudent);
+        securityContextUser.setFirstName(user.getFirstName());
         return securityContextUser;
-
     }
 }
 

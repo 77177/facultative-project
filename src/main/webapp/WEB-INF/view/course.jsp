@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     SecurityContextUser principal = null;
@@ -45,8 +46,8 @@
                         <tr>
                             <td><%= course.getName()%></td>
                             <td><%= course.getTutorId()%></td>
-                            <td><%= course.getStartingDate()%></td>
-                            <td><%= course.getFinishingDate()%></td>
+                            <td><%= course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
+                            <td><%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")%></td>
                             <td><%= course.isActive()%></td>
                             <td><a href="/course/<%=course.getId()%>">course info</a></td>
                             <sec:authorize access="isAuthenticated()">

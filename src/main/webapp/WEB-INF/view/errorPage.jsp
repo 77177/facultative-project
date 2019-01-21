@@ -9,6 +9,11 @@
     <form> <center>
     Error info. <br>
     status:<%=request.getAttribute("errorStatus")%><br>
+    message:<%=request.getAttribute("message")%><br>
+    exception_type:<%=request.getAttribute("exception_type")%><br>
+    exception:<%=request.getAttribute("exception")%><br>
+    request_uri:<%=request.getAttribute("request_uri")%><br><br>
+    <a href="/course">all courses</a>
     reason:<%=request.getAttribute("errorReason")%><br><br>
     </center> </form>
     <form action="/course">

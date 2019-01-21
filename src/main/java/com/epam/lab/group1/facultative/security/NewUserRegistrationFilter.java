@@ -1,20 +1,28 @@
 package com.epam.lab.group1.facultative.security;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.service.AuthenticationService;
 import com.epam.lab.group1.facultative.service.UserService;
+import org.apache.log4j.Logger;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 public class NewUserRegistrationFilter implements Filter {
 
-    private UserService userService;
+    private final Logger logger = Logger.getLogger(this.getClass());
     private AuthenticationService authenticationService;
+    private UserService userService;
 
-    public NewUserRegistrationFilter(UserService userService, AuthenticationService authenticationService) {
-        this.userService = userService;
+    public NewUserRegistrationFilter(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     @Override
@@ -25,6 +33,7 @@ public class NewUserRegistrationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         boolean isRegistration = servletRequest.getParameter("registration") != null;
+        logger.debug("Entering to the new user creation zone.");
         if (isRegistration) {
             PersonRegistrationFormDTO personRegistrationFormDTO = formDtoFromRequest(servletRequest);
             authenticationService.createUser(personRegistrationFormDTO);
@@ -32,18 +41,19 @@ public class NewUserRegistrationFilter implements Filter {
         filterChain.doFilter(servletRequest, response);
     }
 
-    @Override
-    public void destroy() {
+        @Override
+        public void destroy () {
 
-    }
+        }
 
-    private PersonRegistrationFormDTO formDtoFromRequest(ServletRequest req) {
-        PersonRegistrationFormDTO dto = new PersonRegistrationFormDTO();
-        dto.setFirstName(req.getParameter("firstName"));
-        dto.setLastName(req.getParameter("lastName"));
-        dto.setEmail(req.getParameter("username"));
-        dto.setPosition(req.getParameter("position"));
-        dto.setPassword(req.getParameter("password"));
-        return dto;
+        private PersonRegistrationFormDTO formDtoFromRequest (ServletRequest req){
+            PersonRegistrationFormDTO dto = new PersonRegistrationFormDTO();
+            dto.setFirstName(req.getParameter("firstName"));
+            dto.setLastName(req.getParameter("lastName"));
+            dto.setEmail(req.getParameter("username"));
+            dto.setPosition(req.getParameter("position"));
+            dto.setPassword(req.getParameter("password"));
+            logger.debug("Created PersonRegistrationFormDTO from request: " + dto);
+            return dto;
+        }
     }
-}

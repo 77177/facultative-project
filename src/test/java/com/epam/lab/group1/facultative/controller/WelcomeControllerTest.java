@@ -32,19 +32,12 @@ public class WelcomeControllerTest {
     @Test
     public void testWelcome() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(""))
-                .andExpect(MockMvcResultMatchers.view().name(COURSE))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
-
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/course/"));
         mockMvc.perform(MockMvcRequestBuilders.get("/student"))
-                .andExpect(MockMvcResultMatchers.view().name(COURSE))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
-
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/course/"));
         mockMvc.perform(MockMvcRequestBuilders.get("/tutor"))
-                .andExpect(MockMvcResultMatchers.view().name(COURSE))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
-
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/course/"));
         mockMvc.perform(MockMvcRequestBuilders.get("/mordor"))
-                .andExpect(MockMvcResultMatchers.view().name(COURSE))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/course/"));
     }
 }

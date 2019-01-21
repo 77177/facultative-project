@@ -12,9 +12,6 @@
     Object courseListObject = request.getAttribute("courseList");
     List<Course> courseList = courseListObject != null ? (List) courseListObject : Collections.emptyList();
 %>
-<%
-
-%>
 <html>
 <head>
     <title>Students</title>

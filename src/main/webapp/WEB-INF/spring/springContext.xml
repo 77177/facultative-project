@@ -9,6 +9,7 @@
 
     <!--DTO-->
     <bean id="personRegistrationFormDTO" class="com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO"/>
+    <bean class="com.epam.lab.group1.facultative.dto.ErrorDto"/>
 
     <!--Service-->
     <bean id="userService" class="com.epam.lab.group1.facultative.service.UserService" >
@@ -21,11 +22,6 @@
 
     <bean id="feedBackService" class="com.epam.lab.group1.facultative.service.FeedBackService">
         <constructor-arg ref="feedBackDAO"/>
-    </bean>
-
-    <!--Logger-->
-    <bean id="logger" class="org.apache.log4j.Logger" factory-method="getLogger">
-        <constructor-arg type="java.lang.String" value="my.Logger" />
     </bean>
 
 </beans>

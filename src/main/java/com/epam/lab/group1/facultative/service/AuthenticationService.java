@@ -2,7 +2,7 @@ package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
 import com.epam.lab.group1.facultative.model.User;
-import com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService;
+import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-    private FacultativeJdbcUserDetailsService userDetailsService;
+    private final Logger logger = Logger.getLogger(this.getClass());
     private UserService userService;
 
-    public AuthenticationService(FacultativeJdbcUserDetailsService userDetailsService, UserService userService) {
+    public AuthenticationService(UserService userService) {
         this.userService = userService;
-        this.userDetailsService = userDetailsService;
     }
 
     /**

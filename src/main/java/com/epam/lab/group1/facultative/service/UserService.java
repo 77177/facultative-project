@@ -1,29 +1,40 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
     private UserDAO userDAO;
 
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public Optional<User> getById(int id) {
+    public User getById(int id) {
         return userDAO.getById(id);
     }
 
-    public Optional<User> getByEmail(String string) {
+    public User getByEmail(String string) {
         return userDAO.getByEmail(string);
+    }
+
+    public boolean isEmailAvailable(String email) {
+        try {
+            getByEmail(email);
+            return false;
+        } catch (UserWithIdDoesNotExistException e) {
+            logger.debug("user with email " + email + "does not exist in the db");
+            return true;
+        }
     }
 
     public User create(User user) {
@@ -51,22 +62,10 @@ public class UserService {
     }
 
     public void leaveCourse(int userId, int courseId) {
-        try {
-            userDAO.getById(userId).orElseThrow(() -> new Exception("user with id " + userId + " was not " +
-                "found in the database"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         userDAO.leaveCourse(userId, courseId);
     }
 
     public void subscribeCourse(int userId, int courseId) {
-        try {
-            userDAO.getById(userId).orElseThrow(() -> new Exception("user with id " + userId + " was not " +
-                "found in the database"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         userDAO.subscribeCourse(userId, courseId);
     }
 
