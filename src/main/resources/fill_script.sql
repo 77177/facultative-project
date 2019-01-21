@@ -1,10 +1,11 @@
---users
+--users - tutors
 INSERT INTO users (first_name, last_name, email, password, position)
 VALUES ('Mark', 'Rasane', '0tutor@gmail.com', '$2a$05$1MRWimua526pMo7b7c0ynuxzjBQGkW/nNGD2CfQ7m6UUsNda5Do/m', 'tutor');
 
 INSERT INTO users (first_name, last_name, email, password, position)
 VALUES ('Lewis', 'Meckln', '1tutor@gmail.com', '$2a$05$cX8f.TnQczI2tbvsYVNEkegQD.MuHbqWXnTzjzdoTwp/ezyY5wNpC', 'tutor');
 
+--users - students
 INSERT INTO users (first_name, last_name, email, password, position)
 VALUES ('Laura', 'Hieme', '0student@gmail.com', '$2a$05$GyjRzb11IYENptTcv22BeehLWiufsyynVSJqvyY0wuJFiNZftRD3G', 'student');
 
@@ -29,8 +30,28 @@ VALUES ('COURSE_2', 2, '2015-11-18', '2015-11-19', 'false');
 
 --student_course
 
+--course 1
 INSERT INTO student_course(student_id, course_id, mark, feedback)
-VALUES (3, 1, -1, 'Empty');
+VALUES (3, 1, -1, 'feed back bad');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)
-VALUES (4, 2, 4, 'Good performance');
+VALUES (4, 1, 3, 'feedback good');
+
+INSERT INTO student_course(student_id, course_id, mark, feedback)
+VALUES (5, 1, 2, 'excelent');
+
+INSERT INTO student_course(student_id, course_id, mark, feedback)
+VALUES (6, 1, 0, 'not bad');
+
+INSERT INTO student_course(student_id, course_id, mark, feedback)
+VALUES (7, 1, 7, 'could be better');
+
+--course 2
+INSERT INTO student_course(student_id, course_id, mark, feedback)
+VALUES (3, 2, 4, 'Good performance');
+
+INSERT INTO student_course(student_id, course_id, mark, feedback)
+VALUES (7, 2, 5, 'Awful performance');
+
+INSERT INTO student_course(student_id, course_id, mark, feedback)
+VALUES (5, 2, 42, 'Alien');

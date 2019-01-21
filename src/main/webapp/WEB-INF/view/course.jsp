@@ -32,41 +32,34 @@
         <%
             Object listObject = request.getAttribute("courseList");
             if (listObject != null) {
-                if (listObject instanceof List) { %>
-                    <table>
+                if (listObject instanceof List) {
+                    %>
+                    <table style="border: 2px solid black; border-spacing: 7px 7px">
                         <tr>
-                            <th>CourseName</th>
-                            <th>TutorId</th>
-                            <th>StartingDate</th>
-                            <th>FinishingDate</th>
-                            <th>isActive</th>
-                        </tr> <%
-                    List<Course> list = (List<Course>) listObject;
-                    for (Course course : list) { %>
-                        <tr>
-                            <td><%= course.getName()%></td>
-                            <td><%= course.getTutorId()%></td>
-                            <td><%= course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
-                            <td><%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy")%></td>
-                            <td><%= course.isActive()%></td>
-                            <td><a href="/course/<%=course.getId()%>">course info</a></td>
-                            <sec:authorize access="isAuthenticated()">
-                                <%
-                                    if (principal.isStudent()) {
-                                        if (principal.getCourseIdList().contains(course.getId())) {
-                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>?action=leave">
-                                                        Leave</a>
-                                              </td><%
-                                        } else {
-                                            %><td><a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>?action=subscribe">
-                                                        Subscribe</a></td><%
-                                        }
-                                    }
+                            <th>Title</th>
+                            <th>Starting date</th>
+                            <th>Finishing date</th>
+                            <th>Active</th>
+                        </tr>
+                        <%
+                            List<Course> list = (List<Course>) listObject;
+                            for (Course course : list) {
                                 %>
-                            </sec:authorize>
-                        </tr><%
-                    }%>
-                    </table><br><br> <form> <center> <%
+                                <tr>
+                                    <td><%= course.getName()%></td>
+                                    <td><%=
+                                        course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
+                                    <td><%=
+                                        course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
+                                    <td><%= course.isActive()%></td>
+                                    <td><a href="/course/<%=course.getId()%>">info</a></td>
+                                </tr>
+                                <%
+                            }
+                        %>
+                    </table>
+                    <br><br>
+                    <%
                 }
             } else { %>
                 <p>There is not a single course.</p>
