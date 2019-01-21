@@ -1,6 +1,8 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.model.User;
+import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
+import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -8,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import static com.epam.lab.group1.facultative.controller.ViewName.USER_STUDENT;
 import static com.epam.lab.group1.facultative.controller.ViewName.USER_TUTOR;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
+import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Controller
 @RequestMapping("/user")
@@ -78,7 +82,7 @@ public class UserController {
 
     private ModelAndView studentProfile(int studentId) {
         ModelAndView modelAndView = new ModelAndView(USER_STUDENT);
-        modelAndView.addObject("user", userService.getById(studentId).orElse(new User()));
+        modelAndView.addObject("user", userService.getById(studentId));
         modelAndView.addObject("courseList", courseService.getAllById(studentId));
         return modelAndView;
     }
@@ -87,6 +91,22 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView(USER_TUTOR);
         modelAndView.addObject("user", userService.getById(tutorId));
         modelAndView.addObject("courseList", courseService.getAllById(tutorId));
+        return modelAndView;
+    }
+
+    @ExceptionHandler(PersistingEntityException.class)
+    public ModelAndView persistingEntityExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
+        return modelAndView;
+    }
+
+    @ExceptionHandler(UserWithIdDoesNotExistException.class)
+    public ModelAndView userWithIdDoesNotExistExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ErrorDto errorDto = new ErrorDto("UserWithIdDoesNotExistException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
         return modelAndView;
     }
 }

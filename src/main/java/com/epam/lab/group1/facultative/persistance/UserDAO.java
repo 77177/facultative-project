@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -104,7 +105,7 @@ public class UserDAO {
             User user = session.load(User.class, id);
             session.delete(user);
             session.getTransaction().commit();
-        } catch (HibernateException e) {
+        } catch (HibernateException | EntityNotFoundException e) {
             String error = "Error during course deleting by id. " + id;
             logger.error(error);
             throw new PersistingEntityException(error, e);

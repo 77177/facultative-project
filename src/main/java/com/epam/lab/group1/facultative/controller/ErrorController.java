@@ -1,7 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,13 +16,20 @@ public class ErrorController {
 
     @RequestMapping("/error")
     public ModelAndView error(HttpServletRequest request, Exception e) {
+        String s = "javax.servlet.error.";
         logger.error("" +
-                request.getAttribute("javax.servlet.error.status_code") +
-                " " + request.getAttribute("javax.servlet.error.message") +
+                request.getAttribute(s + "status_code") + " " +
+                request.getAttribute(s + "message") + " " +
+                request.getAttribute(s + "exception_type") + " " +
+                request.getAttribute(s + "exception") + " " +
+                request.getAttribute(s + "request_uri") + " " +
                 " " + e.getClass(), e);
         ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("errorStatus", request.getAttribute("javax.servlet.error.status_code"));
-        modelAndView.addObject("errorReason", request.getAttribute("javax.servlet.error.message"));
+        modelAndView.addObject("errorStatus", request.getAttribute(s + "status_code"));
+        modelAndView.addObject("message", request.getAttribute(s + "message"));
+        modelAndView.addObject("exception_type", request.getAttribute(s + "exception_type"));
+        modelAndView.addObject("exception", request.getAttribute(s + "exception"));
+        modelAndView.addObject("request_uri", request.getAttribute(s + "request_uri"));
         return modelAndView;
     }
 }

@@ -33,11 +33,13 @@ public class FeedBackControllerTest {
 
     public FeedBackControllerTest() {
         CourseService courseService = mock(CourseService.class);
-        when(courseService.getById(1)).thenReturn(new Course());
+        when(courseService.getById(0)).thenReturn(new Course());
+
         FeedBackService feedBackService = mock(FeedBackService.class);
         when(feedBackService.getFeedBack(0, 0)).thenReturn(new FeedBack());
+
         UserService userService = mock(UserService.class);
-        when(userService.getById(0)).thenReturn(Optional.of(new User()));
+        when(userService.getById(0)).thenReturn(new User());
 
         mockMvc = MockMvcBuilders
             .standaloneSetup(new FeedBackController(userService, courseService, feedBackService))

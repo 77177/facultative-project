@@ -41,8 +41,12 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userDAO.getByEmail(username);
-        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User " + username + " does not exist"));
+        User user;
+        try {
+            user = userDAO.getByEmail(username);
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("User " + username + " does not exist");
+        }
         SimpleGrantedAuthority grantedAuthority = null;
         boolean isStudent = false;
         switch (user.getPosition()) {

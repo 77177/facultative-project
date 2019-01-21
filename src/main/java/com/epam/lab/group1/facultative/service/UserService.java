@@ -19,11 +19,11 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public Optional<User> getById(int id) {
+    public User getById(int id) {
         return userDAO.getById(id);
     }
 
-    public Optional<User> getByEmail(String string) {
+    public User getByEmail(String string) {
         return userDAO.getByEmail(string);
     }
 
@@ -52,22 +52,10 @@ public class UserService {
     }
 
     public void leaveCourse(int userId, int courseId) {
-        try {
-            userDAO.getById(userId).orElseThrow(() -> new Exception("user with id " + userId + " was not " +
-                "found in the database"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         userDAO.leaveCourse(userId, courseId);
     }
 
     public void subscribeCourse(int userId, int courseId) {
-        try {
-            userDAO.getById(userId).orElseThrow(() -> new Exception("user with id " + userId + " was not " +
-                "found in the database"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         userDAO.subscribeCourse(userId, courseId);
     }
 

@@ -1,5 +1,9 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
+import com.epam.lab.group1.facultative.exception.internal.CourseWithTitleDoesNotExistException;
+import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -7,7 +11,13 @@ import org.apache.log4j.Logger;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
@@ -18,6 +28,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
+import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Controller
 @RequestMapping("/course")
@@ -96,5 +107,29 @@ public class CourseController {
             }
         }
         binder.addCustomFormatter(new LocalDateFormatter());
+    }
+
+    @ExceptionHandler(PersistingEntityException.class)
+    public ModelAndView persistingEntityExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
+        return modelAndView;
+    }
+
+    @ExceptionHandler(CourseWithIdDoesNotExistException.class)
+    public ModelAndView courseWithIdDoesNotExistExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ErrorDto errorDto = new ErrorDto("CourseWithIdDoesNotExistException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
+        return modelAndView;
+    }
+
+    @ExceptionHandler(CourseWithTitleDoesNotExistException.class)
+    public ModelAndView courseWithTitleDoesNotExistExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ErrorDto errorDto = new ErrorDto("CourseWithTitleDoesNotExistException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
+        return modelAndView;
     }
 }
