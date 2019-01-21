@@ -3,6 +3,7 @@ package com.epam.lab.group1.facultative.persistance;
 import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.internal.CourseWithTitleDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
+import com.epam.lab.group1.facultative.exception.internal.UserWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.apache.log4j.Logger;

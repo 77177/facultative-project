@@ -1,5 +1,9 @@
 package com.epam.lab.group1.facultative.service;
 
+import com.epam.lab.group1.facultative.exception.external.CourseTitleAlreadyExistsException;
+import com.epam.lab.group1.facultative.exception.external.IncorrectInputDataException;
+import com.epam.lab.group1.facultative.exception.external.WrongDateInputException;
+import com.epam.lab.group1.facultative.exception.external.WrongNameInputException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.apache.log4j.Logger;
@@ -23,11 +27,23 @@ public class CourseService {
     }
 
     public Course create(Course course) {
+        if (course.getStartingDate().isAfter(course.getFinishingDate())) {
+            throw new WrongDateInputException(course.getId() + "");
+        } else if (course.getName().isEmpty()) {
+            throw new WrongNameInputException(course.getId() + "");
+        }
         course.setActive(isDateActive(course));
         return courseDAO.create(course);
     }
 
     public void update(Course course) {
+        if (course.getStartingDate().isAfter(course.getFinishingDate())) {
+            //TODO
+            throw new WrongDateInputException(course.getId() + "");
+        } else if (course.getName().isEmpty()) {
+            throw new WrongNameInputException("Name is empty");
+        }
+
         course.setActive(isDateActive(course));
         courseDAO.update(course);
     }

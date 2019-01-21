@@ -1,6 +1,10 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.exception.external.CourseTitleAlreadyExistsException;
+import com.epam.lab.group1.facultative.exception.external.IncorrectInputDataException;
+import com.epam.lab.group1.facultative.exception.external.WrongDateInputException;
+import com.epam.lab.group1.facultative.exception.external.WrongNameInputException;
 import com.epam.lab.group1.facultative.exception.internal.CourseWithIdDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.internal.CourseWithTitleDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.internal.PersistingEntityException;
@@ -130,6 +134,23 @@ public class CourseController {
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("CourseWithTitleDoesNotExistException", e.getMessage());
         modelAndView.addObject("error", errorDto);
+        return modelAndView;
+    }
+
+    @ExceptionHandler(IncorrectInputDataException.class)
+    public ModelAndView incorrectInputDateExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(COURSE_EDIT);
+        int courseId = Integer.parseInt(e.getMessage());
+        Course course = courseService.getById(courseId);
+        modelAndView.addObject("course", course);
+        modelAndView.addObject("tutorId", course.getTutorId());
+
+        if (e instanceof WrongDateInputException) {
+            modelAndView.addObject("error", "Course date is incorrect. Check date.");
+        } else if (e instanceof WrongNameInputException) {
+            modelAndView.addObject("error", "Course name is incorrect. Change name.");
+        }
+
         return modelAndView;
     }
 }

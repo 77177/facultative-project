@@ -22,22 +22,25 @@
     <%
         int tutorId = (int) request.getAttribute("tutorId");
         Course course = (Course) request.getAttribute("course");
-        int courseId = course.getId();
-
+        Object errorMessageObject = request.getAttribute("error");
         if (!principal.isStudent() && principal.getUserId() == course.getTutorId()) {
 
     %>
     <h2>Edit Course Page</h2>
+    <%if(errorMessageObject != null) {
+        out.print(errorMessageObject.toString());
+    }%>
+
     <form method="post" action="/course/action/edit/">
         Course Name:
-        <input type="text" name="name"><br>
+        <input type="text" name="name" value="<%=course.getName()%>" minlength="1" required><br>
         Starting date yyyy-mm-dd:
-        <input type="date" name="startingDate"><br>
+        <input type="date" name="startingDate" value="<%=course.getStartingDate().toString()%>" required><br>
         Finishing date yyyy-mm-dd:
-        <input type="date" name="finishingDate"><br>
+        <input type="date" name="finishingDate"  value="<%=course.getFinishingDate().toString()%>" required><br>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="tutorId" value="<%=tutorId%>">
-        <input type="hidden" name="id" value="<%=courseId%>">
+        <input type="hidden" name="id" value="<%=course.getId()%>">
         <input type="submit" value="Submit">
     </form>
     <%} else {%> nice try <%}%>

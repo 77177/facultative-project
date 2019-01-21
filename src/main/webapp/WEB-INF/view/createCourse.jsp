@@ -16,18 +16,24 @@
         <title>Create Course Page</title>
     </head>
     <body>
-        <%int tutorId = (int) request.getAttribute("tutorId"); %>
+        <%
+            int tutorId = (int) request.getAttribute("tutorId");
+            Object errorMessageObject = request.getAttribute("error");
+        %>
         <sec:authorize access="isAuthenticated()">
             <%
                 if (!principal.isStudent()) {%>
             <h2>Create Course Page</h2>
+            <%if(errorMessageObject != null) {
+                out.print(errorMessageObject.toString());
+            }%>
             <form method="post" action="/course/action/create/">
                 Course Name:
-                <input type="text" name="name"><br>
+                <input type="text" name="name" required><br>
                 Starting date yyyy-mm-dd:
-                <input type="date" name="startingDate"><br>
+                <input type="date" name="startingDate" required><br>
                 Finishing date yyyy-mm-dd:
-                <input type="date" name="finishingDate"><br>
+                <input type="date" name="finishingDate" required><br>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
                 <input type="submit" value="Submit">
