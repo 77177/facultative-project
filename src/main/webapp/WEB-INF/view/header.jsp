@@ -3,16 +3,30 @@
 <html>
     <head>
         <title>header</title>
+        <style>
+            </@include file="/theme/css/main.css"%>
+        </style>
     </head>
     <body>
-    <a href="/course">all courses</a> <br><br>
+    <form action="/course">
+        <div class="input-group">
+            <center> <button>All courses</button> </center>
+        </div>
+    </form>
         <sec:authorize access="isAuthenticated()">
-            <h3>Hello, <sec:authentication property="name"/></h3>
-            <a href="/user/profile">my profile</a>
-            <br><br>
+            <div class="header">
+                <h3>Hello, <sec:authentication property="name"/></h3>
+            </div>
+            <form action="/user/profile">
+                <div class="input-group">
+                    <center> <button>My Profile</button> </center>
+                </div>
+            </form>
             <form method="post" action="/logout">
                 <sec:csrfInput/>
-                <input type="submit" value="Logout"/>
+                <div class="input-group">
+                    <center> <button type="submit" value="Logout"> Logout </button> </center>
+                </div>
             </form>
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">

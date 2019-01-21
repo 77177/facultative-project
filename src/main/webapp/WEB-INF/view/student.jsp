@@ -18,30 +18,40 @@
 <html>
 <head>
     <title>Students</title>
+    <style> <%@include file="/theme/css/main.css"%> </style>
+    <style> <%@include file="/theme/css/table.css"%> </style>
 </head>
 <body>
-<div>
-    <a href="/course">all courses</a>
+<div class="header">
+    <a href="/course">All courses</a>
 </div>
+<div class="header">
 <sec:authorize access="isAuthenticated()">
     <h3>Hello, <%=user.getFirstName() + " " + user.getLastName()%></h3>
+</div>
     <form method="post" action="/logout">
         <sec:csrfInput/>
-        <input type="submit" value="Logout"/>
+        <div class="input-group">
+            <center> <button> Logout </button> </center>
+        </div>
     </form>
 </sec:authorize>
 <sec:authorize access="!isAuthenticated()">
-    <a href="/authenticator/login">Login</a>
+    <form action="/authenticator/login">
+        <center> <button> Login </button> </center>
+    </form>
 </sec:authorize>
 <%
     if (courseList.isEmpty()) {
 %>
-<span>You are not assigned on any course</span>
+<form>
+    <center> <span>You are not assigned on any course</span> </center>
+</form>
 <%
 } else {
 %>
-<div>Your courses:</div>
-<table style="border: 2px double black; border-spacing: 7px 7px">
+<form> Your courses: </form>
+<table>
     <tr>
         <th>CourseName</th>
         <th>StartingDate</th>
