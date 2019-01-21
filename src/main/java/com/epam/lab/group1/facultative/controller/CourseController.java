@@ -57,7 +57,9 @@ public class CourseController {
     @GetMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
-        modelAndView.addObject("course", courseService.getById(courseId));
+        Course course = courseService.getById(courseId);
+        modelAndView.addObject("tutorName", userService.getById(course.getId()).getFullName());
+        modelAndView.addObject("course", course);
         modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
         return modelAndView;
     }

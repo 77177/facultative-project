@@ -30,6 +30,7 @@
         <c:import url="header.jsp"/>
         <h2><%=course.getName()%></h2>
         <div id="courseInfo">
+            Maestro: <span>${tutorName}</span><br/>
             starts: <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
             finishes: <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
             duration:
