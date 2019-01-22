@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
@@ -31,18 +32,30 @@ import static org.mockito.Mockito.when;
 public class CourseControllerTest {
 
     private MockMvc mockMvc;
+    private User user;
+    private Course course;
     private UserService userService;
     private CourseService courseService;
+    private SingleCourseDto singleCourseDto;
 
     public CourseControllerTest() {
+        this.user = mock(User.class);
+        this.course = mock(Course.class);
+        Course courseForCreate = new Course();
         this.userService = mock(UserService.class);
         this.courseService = mock(CourseService.class);
-        Course course = mock(Course.class);
-        User user = mock(User.class);
+        this.singleCourseDto = mock(SingleCourseDto.class);
 
         when(course.getTutorId()).thenReturn(1);
-        when(courseService.getById(1)).thenReturn(course);
+
         when(user.getFullName()).thenReturn("Poligraf Poligrafovich");
+
+        when(singleCourseDto.isErrorPresent()).thenReturn(false);
+
+        when(courseService.getById(1)).thenReturn(course);
+        when(courseService.create(courseForCreate)).thenReturn(singleCourseDto);
+        when(courseService.update(courseForCreate)).thenReturn(singleCourseDto);
+
         when(userService.getAllStudentByCourseId(1)).thenReturn(Collections.emptyList());
         when(userService.getById(1)).thenReturn(user);
 
@@ -71,7 +84,6 @@ public class CourseControllerTest {
             .andExpect(MockMvcResultMatchers.view().name(COURSE_CREATE));
     }
 
-    @Ignore
     @Test
     public void testPostCreateCourse() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/course/action/create"))
@@ -91,7 +103,6 @@ public class CourseControllerTest {
             .andExpect(MockMvcResultMatchers.view().name(COURSE_EDIT));
     }
 
-    @Ignore
     @Test
     public void testPostEditCourse() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/course/action/edit"))
