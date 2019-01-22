@@ -1,8 +1,10 @@
 package com.epam.lab.group1.facultative.service;
 
+import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,39 +55,21 @@ public class CourseServiceTest {
     public void testCreate() {
         Course course = new Course();
         course.setName("COURSE_3");
-        course.setTutorId(5);
-        course.setStartingDate(LocalDate.of(2016, 11, 10));
-        course.setFinishingDate(LocalDate.of(2017, 11, 12));
-        course.setActive(Boolean.TRUE);
+        course.setTutorId(1);
+        course.setStartingDate(LocalDate.of(2019, 1, 30));
+        course.setFinishingDate(LocalDate.of(2020, 1, 30));
+        course.setActive(false);
+
+        SingleCourseDto courseDto = new SingleCourseDto();
+        courseDto.setCourse(course);
         courseService.create(course);
 
-        assertEquals(course.getName(), courseService.getById(course.getId()).getName());
-        assertEquals(course.getTutorId(), courseService.getById(course.getId()).getTutorId());
-        assertEquals(course.getStartingDate(), courseService.getById(course.getId()).getStartingDate());
-        assertEquals(course.getFinishingDate(), courseService.getById(course.getId()).getFinishingDate());
-        assertEquals(course.isActive(), courseService.getById(course.getId()).isActive());
-    }
+        assertEquals(courseDto.getCourse().getName(), courseService.getById(course.getId()).getName());
+        assertEquals(courseDto.getCourse().getTutorId(), courseService.getById(course.getId()).getTutorId());
+        assertEquals(courseDto.getCourse().getStartingDate(), courseService.getById(course.getId()).getStartingDate());
+        assertEquals(courseDto.getCourse().getFinishingDate(), courseService.getById(course.getId()).getFinishingDate());
+        assertEquals(courseDto.getCourse().isActive(), courseService.getById(course.getId()).isActive());
 
-    @Test(expected = PersistenceException.class)
-    public void testCreateWithWrongDate() {
-        Course course = new Course();
-        course.setName("COURSE_4");
-        course.setTutorId(5);
-        course.setStartingDate(LocalDate.of(2016, 11, 10));
-        course.setFinishingDate(LocalDate.of(2015, 11, 12));
-        course.setActive(Boolean.TRUE);
-        courseService.create(course);
-    }
-
-    @Test(expected = PersistenceException.class)
-    public void testCreateWithWrongName() {
-        Course course = new Course();
-        course.setName("");
-        course.setTutorId(5);
-        course.setStartingDate(LocalDate.of(2015, 11, 10));
-        course.setFinishingDate(LocalDate.of(2016, 11, 12));
-        course.setActive(Boolean.TRUE);
-        courseService.create(course);
     }
 
     @Test()
@@ -96,26 +80,13 @@ public class CourseServiceTest {
         assertEquals("New_Course_Name", courseService.getById(1).getName());
     }
 
-    @Test(expected = PersistenceException.class)
-    public void testUpdateWithWrongDate() {
-        Course course = courseService.getById(1);
-        course.setStartingDate(LocalDate.of(2020, 01,01));
-        courseService.update(course);
-    }
-
-    @Test(expected = PersistenceException.class)
-    public void testUpdateWithWrongName() {
-        Course course = courseService.getById(1);
-        course.setName("");
-        courseService.update(course);
-    }
-
     @Test
     public void testDeleteById() {
-        courseService.deleteById(1);
+        courseService.deleteById(2);
+
         assertEquals(1, courseService.findAll().size());
-        assertEquals(2, courseService.findAll().get(0).getId());
-        assertEquals("COURSE_2", courseService.findAll().get(0).getName());
+        assertEquals(1, courseService.findAll().get(0).getId());
+        assertEquals("COURSE_1", courseService.findAll().get(0).getName());
     }
 
     @Test

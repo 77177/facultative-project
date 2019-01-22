@@ -29,7 +29,7 @@ public class CourseService {
     public SingleCourseDto create(Course course) {
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
-        checkInputData(course, singleCourseDto);
+        checkInputDataAndName(course, singleCourseDto);
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
         }
@@ -50,7 +50,12 @@ public class CourseService {
     public SingleCourseDto update(Course course) {
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
-        checkInputData(course, singleCourseDto);
+        if (course.getName().isEmpty()) {
+            String message = "Wrong input name for course. Course should have not empty name.";
+            logger.debug(message);
+            singleCourseDto.setErrorPresent(true);
+            singleCourseDto.setErrorMessage(message);
+        }
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
         }
@@ -82,7 +87,7 @@ public class CourseService {
         return courseDAO.getAllByUserId(userId);
     }
 
-    private SingleCourseDto checkInputData(Course course, SingleCourseDto singleCourseDto) {
+    private SingleCourseDto checkInputDataAndName(Course course, SingleCourseDto singleCourseDto) {
         if (course.getStartingDate().isBefore(LocalDate.now().plus(1, ChronoUnit.DAYS))) {
             String message = String.format("Wrong input date for course. Course should have starting date at least tomorrow." +
                             "Course start date: %s Minimum date is: %s",
