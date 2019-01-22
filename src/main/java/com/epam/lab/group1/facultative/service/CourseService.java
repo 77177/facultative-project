@@ -58,7 +58,7 @@ public class CourseService {
         return isActiveCheck(courseDAO.findAll());
     }
 
-    public boolean isDateActive(Course course) {
+    private boolean isDateActive(Course course) {
         LocalDate today = LocalDate.now();
         boolean state;
         if (today.isBefore(course.getFinishingDate()) && today.isAfter(course.getStartingDate())) {
