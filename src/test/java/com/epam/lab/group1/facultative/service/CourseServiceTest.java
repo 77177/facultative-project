@@ -1,7 +1,5 @@
 package com.epam.lab.group1.facultative.service;
 
-import com.epam.lab.group1.facultative.exception.external.WrongDateInputException;
-import com.epam.lab.group1.facultative.exception.external.WrongNameInputException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.junit.Before;
@@ -13,6 +11,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 
 import java.time.LocalDate;
@@ -67,7 +66,7 @@ public class CourseServiceTest {
         assertEquals(course.isActive(), courseService.getById(course.getId()).isActive());
     }
 
-    @Test(expected = WrongDateInputException.class)
+    @Test(expected = PersistenceException.class)
     public void testCreateWithWrongDate() {
         Course course = new Course();
         course.setName("COURSE_4");
@@ -78,7 +77,7 @@ public class CourseServiceTest {
         courseService.create(course);
     }
 
-    @Test(expected = WrongNameInputException.class)
+    @Test(expected = PersistenceException.class)
     public void testCreateWithWrongName() {
         Course course = new Course();
         course.setName("");
@@ -97,14 +96,14 @@ public class CourseServiceTest {
         assertEquals("New_Course_Name", courseService.getById(1).getName());
     }
 
-    @Test(expected = WrongDateInputException.class)
+    @Test(expected = PersistenceException.class)
     public void testUpdateWithWrongDate() {
         Course course = courseService.getById(1);
         course.setStartingDate(LocalDate.of(2020, 01,01));
         courseService.update(course);
     }
 
-    @Test(expected = WrongNameInputException.class)
+    @Test(expected = PersistenceException.class)
     public void testUpdateWithWrongName() {
         Course course = courseService.getById(1);
         course.setName("");
@@ -124,11 +123,11 @@ public class CourseServiceTest {
         User user = new User();
         user.setId(1);
         user.setPosition("tutor");
-        List<Course> allCourseIdbyUserId = courseService.getAllById(user.getId());
+        List<Course> allCourseIdbyUserId = courseService.getAllByUserId(user.getId());
         assertEquals(1, allCourseIdbyUserId.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId.get(0).getName());
         user.setPosition("student");
-        List<Course> allCourseIdbyUserId1 = courseService.getAllById(user.getId());
+        List<Course> allCourseIdbyUserId1 = courseService.getAllByUserId(user.getId());
         assertEquals(1, allCourseIdbyUserId1.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId1.get(0).getName());
     }

@@ -78,6 +78,10 @@ public class CourseService {
         return courseDAO.findAll().stream().filter(Course::isActive).collect(Collectors.toList());
     }
 
+    public List<Course> getAllByUserId(int userId) {
+        return courseDAO.getAllByUserId(userId);
+    }
+
     private SingleCourseDto checkInputData(Course course, SingleCourseDto singleCourseDto) {
         if (course.getStartingDate().isBefore(LocalDate.now().plus(1, ChronoUnit.DAYS))) {
             String message = String.format("Wrong input date for course. Course should have starting date at least tomorrow." +

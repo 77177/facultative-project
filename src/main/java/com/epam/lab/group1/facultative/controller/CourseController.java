@@ -1,18 +1,13 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.dto.ErrorDto;
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
-import com.epam.lab.group1.facultative.exception.course.create.CourseCreationException;
-import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,7 +20,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
@@ -131,10 +125,4 @@ public class CourseController {
         }
         binder.addCustomFormatter(new LocalDateFormatter());
     }
-
-    @ExceptionHandler({CourseUpdateException.class, CourseCreationException.class})
-    public String persistingEntityExceptionHandler(Exception e) {
-        return COURSE;
-    }
-
 }

@@ -19,30 +19,30 @@
     <body>
         <%
             int tutorId = (int) request.getAttribute("tutorId");
-            Object errorMessageObject = request.getAttribute("error");
+            Object errorMessageObject = request.getAttribute("errorMessage");
         %>
         <sec:authorize access="isAuthenticated()">
             <%
                 if (!principal.isStudent()) {%>
-            <h2>Create Course Page</h2>
-            <%if(errorMessageObject != null) {
-                out.print(errorMessageObject.toString());
-            }%>
-            <form method="post" action="/course/action/create/">
-                Course name:
-                <input type="text" name="name" minlength="1" required><br>
-                Starting date:
-                <input type="date" name="startingDate" required><br>
-                Finishing date:
-                <input type="date" name="finishingDate" required><br>
-                <input type="radio" name="active" value="true" required>Active<br>
-                <input type="radio" name="active" value="false" required>Closed<br>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
-                <input type="submit" value="Submit">
-            </form>
-            <%
-            }
+                    <h2>Create Course Page</h2>
+                    <%if(errorMessageObject != null) {
+                        out.print(errorMessageObject.toString());
+                    }%>
+                    <form method="post" action="/course/action/create/">
+                        Course name:
+                        <input type="text" name="name" minlength="1" required><br>
+                        Starting date:
+                        <input type="date" name="startingDate" required><br>
+                        Finishing date:
+                        <input type="date" name="finishingDate" required><br>
+                        <input type="radio" name="active" value="true" required>Active<br>
+                        <input type="radio" name="active" value="false" required>Closed<br>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
+                        <input type="submit" value="Submit">
+                    </form>
+                    <%
+                }
             %>
         </sec:authorize>
         <br><br>
