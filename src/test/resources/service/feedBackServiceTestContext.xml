@@ -30,15 +30,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO">
-        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
+    <bean id="feedBackDAO" class="com.epam.lab.group1.facultative.persistance.FeedBackDAO">
+        <constructor-arg ref="sessionFactory"/>
     </bean>
 
-    <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">
-        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
-    <bean id="feedbackDAO" class="com.epam.lab.group1.facultative.persistance.FeedBackDAO">
-        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
+    <bean id="feedBackService" class="com.epam.lab.group1.facultative.service.FeedBackService">
+        <constructor-arg ref="feedBackDAO"/>
     </bean>
 </beans>

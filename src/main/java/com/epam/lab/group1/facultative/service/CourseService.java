@@ -1,11 +1,6 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
-import com.epam.lab.group1.facultative.exception.course.create.CourseCreationEmptyName;
-import com.epam.lab.group1.facultative.exception.course.create.CourseCreationWrongDateException;
-import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateCourseWithIdDoesNotExistException;
-import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateNonUniqueNameException;
-import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateWrongDateException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.apache.log4j.Logger;
@@ -72,38 +67,15 @@ public class CourseService {
             singleCourseDto.setErrorMessage(message);
         }
         return singleCourseDto;
-//
-//        try {
-//            courseFromDB = courseDAO.getById(course.getId());
-//        } catch (PersistenceException e) {
-//            logger.debug("course with id " + course.getId() + " was not found");
-//            throw new CourseUpdateCourseWithIdDoesNotExistException("course with id " + course.getId() + " was not found");
-//        }
-//        if (courseFromDB != null && courseFromDB.getName().equals(course.getName())) {
-//            courseDAO.update(course);
-//        } else {
-//            try {
-//                courseDAO.getByName(course.getName());
-//                courseDAO.update(course);
-//            } catch (PersistenceException e) {
-//                logger.debug("Course with name " + course.getName() + " already exists in the database. Course name should be unique.");
-//                throw new CourseUpdateNonUniqueNameException("Course with name " + course.getName() + " already exists in the database. Course name should be unique.");
-//            }
-//        }
     }
 
     public void deleteById(int id) {
         courseDAO.deleteById(id);
     }
-
-
+    
     //findAll methods.
     public List<Course> findAll() {
         return courseDAO.findAll().stream().filter(Course::isActive).collect(Collectors.toList());
-    }
-
-    public List<Course> getAllByUserId(int userId) {
-        return courseDAO.getAllByUserId(userId);
     }
 
     private SingleCourseDto checkInputData(Course course, SingleCourseDto singleCourseDto) {

@@ -33,7 +33,7 @@ public class FeedBackDAO {
             session.getTransaction().commit();
             return feedBack;
         } catch (HibernateException e) {
-            String error = String .format("Error during retrieving feedBack by courseId: %d and userId: %d", courseId
+            String error = String.format("Error during retrieving feedBack by courseId: %d and userId: %d", courseId
                 , userId);
             logger.error(error);
             throw e;
