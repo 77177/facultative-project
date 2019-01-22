@@ -33,6 +33,7 @@ public class CourseService {
 
     public SingleCourseDto create(Course course) {
         SingleCourseDto singleCourseDto = new SingleCourseDto();
+        singleCourseDto.setCourse(course);
         checkInputData(course, singleCourseDto);
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
@@ -40,13 +41,11 @@ public class CourseService {
         //Creation try
         try {
             courseDAO.create(course);
-            singleCourseDto.setCourse(course);
             singleCourseDto.setErrorPresent(false);
         } catch (PersistenceException e) {
             String message = String.format("Course was not created. Probably with name %s already exists. Course: %s",
-                    course.getName(), course.toString());
+                    course.getName(), course.getName());
             logger.debug(message, e);
-            singleCourseDto.setCourse(null);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
         }
@@ -55,6 +54,7 @@ public class CourseService {
 
     public SingleCourseDto update(Course course) {
         SingleCourseDto singleCourseDto = new SingleCourseDto();
+        singleCourseDto.setCourse(course);
         checkInputData(course, singleCourseDto);
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
@@ -63,13 +63,11 @@ public class CourseService {
         //Updating try
         try {
             courseDAO.update(course);
-            singleCourseDto.setCourse(course);
             singleCourseDto.setErrorPresent(false);
         } catch (PersistenceException e) {
             String message = String.format("Course was not updated. Probably with name %s already exists. Course: %s",
-                    course.getName(), course.toString());
+                    course.getName(), course.getName());
             logger.debug(message, e);
-            singleCourseDto.setCourse(course);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
         }

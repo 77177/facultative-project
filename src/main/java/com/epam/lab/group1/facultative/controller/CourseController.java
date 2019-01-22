@@ -70,14 +70,17 @@ public class CourseController {
     }
 
     @PostMapping(value = "/action/create")
-    public String createCourse(@ModelAttribute Course course, Model model) {
+    public ModelAndView createCourse(@ModelAttribute Course course) {
         SingleCourseDto singleCourseDto = courseService.create(course);
+        ModelAndView modelAndView = new ModelAndView();
         if (!singleCourseDto.isErrorPresent()) {
-            return "redirect:/user/profile";
+            modelAndView.setView(new RedirectView("/user/profile"));
+            return modelAndView;
         } else {
-            model.addAttribute("errorMessage");
-            model.addAttribute("tutorId", course.getTutorId());
-            return COURSE_CREATE;
+            modelAndView.setViewName(COURSE_CREATE);
+            modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
+            modelAndView.addObject("tutorId", course.getTutorId());
+            return modelAndView;
         }
     }
 
@@ -96,15 +99,18 @@ public class CourseController {
     }
 
     @PostMapping(value = "/action/edit")
-    public String editCourse(@ModelAttribute Course course, Model model) {
+    public ModelAndView editCourse(@ModelAttribute Course course) {
         SingleCourseDto singleCourseDto = courseService.update(course);
+        ModelAndView modelAndView = new ModelAndView();
         if (!singleCourseDto.isErrorPresent()) {
-            return "redirect:/user/profile";
+            modelAndView.setView(new RedirectView("/user/profile"));
+            return modelAndView;
         } else {
-            model.addAttribute("errorMessage");
-            model.addAttribute("tutorId", course.getTutorId());
-            model.addAttribute("course", singleCourseDto.getCourse());
-            return COURSE_EDIT;
+            modelAndView.setViewName(COURSE_EDIT);
+            modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
+            modelAndView.addObject("tutorId", singleCourseDto.getCourse().getTutorId());
+            modelAndView.addObject("course", course);
+            return modelAndView;
         }
     }
 

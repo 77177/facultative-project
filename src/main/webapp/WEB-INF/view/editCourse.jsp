@@ -21,7 +21,7 @@
     <%
         int tutorId = (int) request.getAttribute("tutorId");
         Course course = (Course) request.getAttribute("course");
-        Object errorMessageObject = request.getAttribute("error");
+        Object errorMessageObject = request.getAttribute("errorMessage");
         if (!principal.isStudent() && principal.getUserId() == course.getTutorId()) {
             %>
             <h2>Edit Course Page</h2>
