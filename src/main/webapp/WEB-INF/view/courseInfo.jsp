@@ -34,7 +34,7 @@
             starts: <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
             finishes: <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
             duration:
-            <span><%=Period.between(course.getFinishingDate(), course.getFinishingDate()).getDays()%> days.</span>
+            <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getDays()%> days.</span>
         </div>
         <sec:authorize access="hasAnyAuthority('student')">
             <div id="studentZone">
