@@ -38,8 +38,13 @@
         <input type="date" name="startingDate" value="<%=course.getStartingDate().toString()%>" required><br>
         Finishing date:
         <input type="date" name="finishingDate"  value="<%=course.getFinishingDate().toString()%>" required><br>
-        <input type="radio" name="active" value="true" required>Active<br>
-        <input type="radio" name="active" value="false" required>Closed<br>
+            <% if(course.isActive()) {%>
+                <input type = "radio" name = "active" value = "true" required checked>Active<br>
+                <input type = "radio" name = "active" value = "false" required> Closed <br>
+            <%} else {%>
+            <input type = "radio" name = "active" value = "true" required>Active<br>
+            <input type = "radio" name = "active" value = "false" required checked> Closed <br>
+           <% } %>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="tutorId" value="<%=tutorId%>">
         <input type="hidden" name="id" value="<%=course.getId()%>">
