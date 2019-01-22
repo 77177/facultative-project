@@ -23,12 +23,11 @@
         Course course = (Course) request.getAttribute("course");
         Object errorMessageObject = request.getAttribute("error");
         if (!principal.isStudent() && principal.getUserId() == course.getTutorId()) {
-
-    %>
-    <h2>Edit Course Page</h2>
-    <%if(errorMessageObject != null) {
-        out.print(errorMessageObject.toString());
-    }%>
+            %>
+            <h2>Edit Course Page</h2>
+            <%if(errorMessageObject != null) {
+                out.print(errorMessageObject.toString());
+            }%>
 <div class="input-group">
     <div class="header"> <h2>Edit the current Course</h2> </div>
     <form method="post" action="/course/action/edit/">

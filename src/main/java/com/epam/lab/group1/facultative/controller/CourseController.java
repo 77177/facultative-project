@@ -1,13 +1,16 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.course.create.CourseCreationException;
+import com.epam.lab.group1.facultative.exception.course.update.CourseUpdateException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -64,11 +68,17 @@ public class CourseController {
         modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
-    /////////////////////////////////////////////////////////////////////HERE
+
     @PostMapping(value = "/action/create")
-    public String createCourse(@ModelAttribute Course course) {
-        courseService.create(course);
-        return "redirect:/user/profile";
+    public String createCourse(@ModelAttribute Course course, Model model) {
+        SingleCourseDto singleCourseDto = courseService.create(course);
+        if (!singleCourseDto.isErrorPresent()) {
+            return "redirect:/user/profile";
+        } else {
+            model.addAttribute("errorMessage");
+            model.addAttribute("tutorId", course.getTutorId());
+            return COURSE_CREATE;
+        }
     }
 
     @GetMapping(value = "/action/delete/{courseId}")
@@ -86,9 +96,16 @@ public class CourseController {
     }
 
     @PostMapping(value = "/action/edit")
-    public String editCourse(@ModelAttribute Course course) {
-        courseService.update(course);
-        return "redirect:/user/profile";
+    public String editCourse(@ModelAttribute Course course, Model model) {
+        SingleCourseDto singleCourseDto = courseService.update(course);
+        if (!singleCourseDto.isErrorPresent()) {
+            return "redirect:/user/profile";
+        } else {
+            model.addAttribute("errorMessage");
+            model.addAttribute("tutorId", course.getTutorId());
+            model.addAttribute("course", singleCourseDto.getCourse());
+            return COURSE_EDIT;
+        }
     }
 
     @InitBinder
@@ -109,12 +126,9 @@ public class CourseController {
         binder.addCustomFormatter(new LocalDateFormatter());
     }
 
-    @ExceptionHandler(CourseCreationException.class)
-    public ModelAndView persistingEntityExceptionHandler(Exception e) {
-        ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
-        ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
+    @ExceptionHandler({CourseUpdateException.class, CourseCreationException.class})
+    public String persistingEntityExceptionHandler(Exception e) {
+        return COURSE;
     }
 
 }
