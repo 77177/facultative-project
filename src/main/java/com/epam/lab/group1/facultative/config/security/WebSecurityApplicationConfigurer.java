@@ -1,13 +1,13 @@
 package com.epam.lab.group1.facultative.config.security;
 
-import com.epam.lab.group1.facultative.persistance.CourseDAO;
-import com.epam.lab.group1.facultative.persistance.UserDAO;
-import com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +18,10 @@ import javax.servlet.Filter;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScans({
+        @ComponentScan("com.epam.lab.group1.facultative.config.security"),
+        @ComponentScan("com.epam.lab.group1.facultative.security")
+})
 public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -27,10 +31,14 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
     private Filter registrationFilter;
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.debug(true);
+    }
+
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Override
@@ -43,9 +51,11 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
                 .addFilterBefore(registrationFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin()
                 .loginPage("/authenticator/login")
+                .loginProcessingUrl("/login")
                 .failureUrl("/authenticator/login")
-                .successForwardUrl("/course")
+                .defaultSuccessUrl("/user/profile")
             .and()
+            .userDetailsService(userDetailsService)
             .logout()
                 .logoutUrl("/course")
                 .deleteCookies("JSESSIONID")
