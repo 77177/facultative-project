@@ -31,11 +31,6 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
     private Filter registrationFilter;
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.debug(true);
-    }
-
-    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder());
