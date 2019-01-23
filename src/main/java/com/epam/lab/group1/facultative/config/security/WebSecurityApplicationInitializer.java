@@ -35,10 +35,10 @@ public class WebSecurityApplicationInitializer extends WebSecurityConfigurerAdap
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/profile").hasAnyAuthority("student", "tutor")
+                .antMatchers("/profile**").hasAnyAuthority("student", "tutor")
             .and()
             .authorizeRequests()
-                .antMatchers("/").hasAnyAuthority("student", "tutor")
+                .antMatchers("/feedback/**").hasAnyAuthority("student", "tutor")
             .and()
             .authorizeRequests()
                 .antMatchers("/course/action/**").hasAuthority("tutor")
@@ -53,6 +53,11 @@ public class WebSecurityApplicationInitializer extends WebSecurityConfigurerAdap
                 .logoutUrl("/course")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
+
+
+//                <intercept-url pattern="/profile**" access="hasAnyAuthority('student', 'tutor')"/>
+//        <intercept-url pattern="/feedback/**" access="hasAnyAuthority('student', 'tutor')"/>
+//        <intercept-url pattern="/course/action/**" access="hasAnyAuthority('tutor')"/>
     }
 
     @Bean

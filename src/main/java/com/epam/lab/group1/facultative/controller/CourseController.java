@@ -6,6 +6,7 @@ import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.format.Formatter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,9 @@ public class CourseController {
 
     @GetMapping(value = "/")
     public ModelAndView getAllCourses() {
+//        System.out.println(SecurityContextHolder.getContext());
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         ModelAndView modelAndView = new ModelAndView(COURSE);
         modelAndView.addObject("courseList", courseService.findAll());
         return modelAndView;
