@@ -6,11 +6,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactoryBean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -21,24 +24,22 @@ public class DaoConfig {
 
     @Bean(name = "dataSource")
     public DataSource H2DataSource() {
-        EmbeddedDatabaseFactoryBean databaseFactoryBean = new EmbeddedDatabaseFactoryBean();
-        databaseFactoryBean.setDatabaseName("Facultative");
-        databaseFactoryBean.setDatabaseType(EmbeddedDatabaseType.H2);
-
-        ClassPathResource createScript = new ClassPathResource("classpath:create_script.sql");
-        ClassPathResource fillScriptResource = new ClassPathResource("classpath:fill_script.sql");
-        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(createScript, fillScriptResource);
-        databaseFactoryBean.setDatabasePopulator(databasePopulator);
-        return databaseFactoryBean.getObject();
+        EmbeddedDatabase embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setName("Facultative")
+                .setType(EmbeddedDatabaseType.H2)
+                .addScript("create_script.sql")
+                .addScript("fill_script.sql")
+                .build();
+        return embeddedDatabase;
     }
 
     @Bean(name = "sessionFactory")
     public SessionFactory sessionFactory() {
-        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-        sessionFactoryBean.setDataSource(H2DataSource());
-        sessionFactoryBean.setPackagesToScan("com.epam.lab.group1.facultative.model");
-        sessionFactoryBean.setHibernateProperties(getHibernateProperties());
-        return sessionFactoryBean.getObject();
+        SessionFactory sessionFactory = new LocalSessionFactoryBuilder(H2DataSource())
+                .scanPackages("com.epam.lab.group1.facultative.model")
+                .addProperties(getHibernateProperties())
+                .buildSessionFactory();
+        return sessionFactory;
     }
 
     @Bean
