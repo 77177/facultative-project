@@ -16,7 +16,7 @@
 
 <html>
     <head>
-        <title>Create Course Page</title>
+        <title><fmt:message key="title"/></title>
         <style> <%@include file="/theme/css/main.css"%> </style>
     </head>
     <body>
@@ -27,19 +27,19 @@
         <sec:authorize access="isAuthenticated()">
             <%
                 if (!principal.isStudent()) {%>
-                    <h2>Create Course Page</h2>
+                    <h2><fmt:message key="title"/></h2>
                     <%if(errorMessageObject != null) {
                         out.print(errorMessageObject.toString());
                     }%>
                     <form method="post" action="/course/action/create/">
-                        Course name:
+                        <fmt:message key="courseName"/>:
                         <input type="text" name="name" minlength="1" required><br>
-                        Starting date:
+                        <fmt:message key="startDate"/>:
                         <input type="date" name="startingDate" required><br>
-                        Finishing date:
+                        <fmt:message key="finishDate"/>:
                         <input type="date" name="finishingDate" required><br>
-                        <input type="radio" name="active" value="true" required>Active<br>
-                        <input type="radio" name="active" value="false" required>Closed<br>
+                        <input type="radio" name="active" value="true" required><fmt:message key="active"/><br>
+                        <input type="radio" name="active" value="false" required><fmt:message key="closed"/><br>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
                         <input type="submit" value="Submit">

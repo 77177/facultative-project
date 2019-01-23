@@ -4,7 +4,6 @@
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Optional" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
@@ -24,19 +23,19 @@
 </sec:authorize>
 <html>
     <head>
-        <title>Course Info</title>
+        <title><fmt:message key="title"/></title>
         <style> <%@include file="/theme/css/main.css"%> </style>
         <style> <%@include file="/theme/css/table.css"%> </style>
     </head>
     <body>
-        <div class="header"> <h2>Course Info</h2> </div>
+        <div class="header"> <h2><fmt:message key="title"/></h2> </div>
         <c:import url="header.jsp"/>
         <h2><%=course.getName()%></h2>
         <div id="courseInfo">
-            Maestro: <span>${tutorName}</span><br/>
-            starts: <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
-            finishes: <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
-            duration:
+            <fmt:message key="tutor"/>: <span>${tutorName}</span><br/>
+            <fmt:message key="courseStart"/>: <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
+            <fmt:message key="courseFinish"/>: <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
+            <fmt:message key="duration"/>:
             <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getDays()%> days.</span>
         </div>
         <sec:authorize access="hasAnyAuthority('student')">
@@ -45,21 +44,24 @@
                     if (principal.getCourseIdList().contains(course.getId())) {
                         %>
                             <p>
-                                You are going to participate in the <%=course.getName()%> <br>
-                                <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">Leave course</a>
+                                <fmt:message key="youParticipateInCourse"/> <%=course.getName()%> <br>
+                                <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">
+                                    <fmt:message key="leaveCourse"/>
+                                </a>
                             </p>
                             <p>
-                                Follow the link to see if you have a feedback from course's tutor.
+                                <fmt:message key="feedbackMessage"/>
                                 <a href="/feedback/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/">
-                                    See feedback
+                                    <fmt:message key="seeFeedback"/>
                                 </a>
                             </p>
                         <%
                     } else {
                         %>
                             <p>
-                                You can take place in the <%=course.getName()%> <br>
-                                <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">Subscribe</a>
+                                <fmt:message key="subscribeMessage"/> <%=course.getName()%> <br>
+                                <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe
+                                /"><fmt:message key="subscribe"/></a>
                             </p>
 
                         <%
@@ -69,14 +71,16 @@
         </sec:authorize>
         <sec:authorize access="hasAnyAuthority('tutor')">
             <div id="tutorZone">
-                <a href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">edit course</a><br>
-                <a href="/course/action/delete/<%=course.getId()%>/">delete course</a><br>
+                <a href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">
+                    <fmt:message key="editCourse"/>
+                </a><br>
+                <a href="/course/action/delete/<%=course.getId()%>/"><fmt:message key="deleteCourse"/></a><br>
                 <br>
-                <div class="header2"> <h3>Student List</h3> </div>
+                <div class="header2"> <h3><fmt:message key="studentList"/></h3> </div>
                 <table style="border: 2px double black; border-spacing: 7px 7px">
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th><fmt:message key="firstName"/></th>
+                        <th><fmt:message key="lastName"/></th>
                     </tr>
                     <%
                         for (User user : studentList) {
@@ -84,7 +88,8 @@
                             <tr>
                                 <td><% out.println(user.getFirstName());%></td>
                                 <td><% out.println(user.getLastName());%></td>
-                                <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/">feedback</a></td>
+                                <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/">
+                                    <fmt:message key="seeFeedback"/></a></td>
                             </tr>
                             <%
                         }

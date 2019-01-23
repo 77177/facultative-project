@@ -16,7 +16,7 @@
 </sec:authorize>
 <html>
 <head>
-    <title>Edit Course</title>
+    <title><fmt:message key="title"/></title>
     <style> <%@include file="/theme/css/main.css"%> </style>
 </head>
 <body>
@@ -27,26 +27,25 @@
         Object errorMessageObject = request.getAttribute("errorMessage");
         if (!principal.isStudent() && principal.getUserId() == course.getTutorId()) {
             %>
-            <h2>Edit Course Page</h2>
             <%if(errorMessageObject != null) {
                 out.print(errorMessageObject.toString());
             }%>
 <div class="input-group">
-    <div class="header"> <h2>Edit the current Course</h2> </div>
+    <div class="header"> <h2><fmt:message key="title"/></h2> </div>
     <form method="post" action="/course/action/edit/">
         <div class="input-group">
-        Course name:
+            <fmt:message key="courseName"/>:
         <input type="text" name="name" value="<%=course.getName()%>" minlength="1" required><br>
-        Starting date:
+            <fmt:message key="startDate"/>:
         <input type="date" name="startingDate" value="<%=course.getStartingDate().toString()%>" required><br>
-        Finishing date:
+            <fmt:message key="finishDate"/>:
         <input type="date" name="finishingDate"  value="<%=course.getFinishingDate().toString()%>" required><br>
             <% if(course.isActive()) {%>
-                <input type = "radio" name = "active" value = "true" required checked>Active<br>
-                <input type = "radio" name = "active" value = "false" required> Closed <br>
+                <input type = "radio" name = "active" value = "true" required checked><fmt:message key="active"/><br>
+                <input type = "radio" name = "active" value = "false" required> <fmt:message key="closed"/> <br>
             <%} else {%>
-            <input type = "radio" name = "active" value = "true" required>Active<br>
-            <input type = "radio" name = "active" value = "false" required checked> Closed <br>
+            <input type = "radio" name = "active" value = "true" required><fmt:message key="active"/><br>
+            <input type = "radio" name = "active" value = "false" required checked> <fmt:message key="closed"/> <br>
            <% } %>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="tutorId" value="<%=tutorId%>">

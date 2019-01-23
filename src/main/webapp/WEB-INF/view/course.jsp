@@ -19,7 +19,7 @@
 </sec:authorize>
 <html>
     <head>
-        <title>Courses</title>
+        <title><fmt:message key="title"/></title>
         <style>
             <%@include file="/theme/css/main.css"%>
         </style> <style>
@@ -31,7 +31,6 @@
             <h2><fmt:message key="allCourses"/></h2>
         </div>
             <c:import url="header.jsp"/>
-
             <br>
             <form action="/course/" method="get">
                 <select name="locale">
@@ -48,9 +47,9 @@
                     %>
                     <table style="border: 2px solid black; border-spacing: 7px 7px">
                         <tr>
-                            <th>Title</th>
-                            <th>Starting date</th>
-                            <th>Finishing date</th>
+                            <th><fmt:message key="title"/></th>
+                            <th><fmt:message key="startDate"/></th>
+                            <th><fmt:message key="finishDate"/></th>
                         </tr>
                         <%
                             List<Course> list = (List<Course>) listObject;
@@ -72,7 +71,7 @@
                     <%
                 }
             } else { %>
-                <p>There is not a single course.</p>
+                <p><fmt:message key="noCourses"/></p>
         <% } %> </center> </form>
     </body>
 </html>

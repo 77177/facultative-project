@@ -17,15 +17,15 @@
 %>
 <html>
 <head>
-    <title>Students</title>
+    <title><fmt:message key="title"/></title>
     <style> <%@include file="/theme/css/main.css"%> </style>
     <style> <%@include file="/theme/css/table.css"%> </style>
 </head>
 <body>
-<div class="header"> <h2>Go back to all courses.</h2> </div>
+<div class="header"> <h2><fmt:message key="backToCourses"/></h2> </div>
     <form action="/course">
         <div class="input-group">
-            <center> <button>All courses</button> </center>
+            <center> <button><fmt:message key="allCourses"/></button> </center>
         </div>
     </form>
 <div class="header">
@@ -35,7 +35,7 @@
     <form method="post" action="/logout">
         <sec:csrfInput/>
         <div class="input-group">
-            <center> <button> Logout </button> </center>
+            <center> <button> <fmt:message key="logout"/> </button> </center>
         </div>
     </form>
 </sec:authorize>
@@ -48,19 +48,19 @@
     if (courseList.isEmpty()) {
 %>
 <form>
-    <center> <span>You are not assigned on any course</span> </center>
+    <center> <span><fmt:message key="noCoursesMessage"/></span> </center>
 </form>
 <%
 } else {
 %>
-<form> <center> Your courses: </center> </form>
+<form> <center> <fmt:message key="yourCourses"/>: </center> </form>
 <br>
 <table>
     <tr>
-        <th>CourseName</th>
-        <th>StartingDate</th>
-        <th>FinishingDate</th>
-        <th>FeedBack</th>
+        <th><fmt:message key="courseName"/></th>
+        <th><fmt:message key="start"/></th>
+        <th><fmt:message key="finish"/></th>
+        <th><fmt:message key="feedback"/></th>
     </tr>
     <%
         for (Course course : courseList) {
@@ -70,7 +70,7 @@
         <td><% out.println(course.getStartingDate());%></td>
         <td><% out.println(course.getFinishingDate());%></td>
         <td><a href="/course/<%=course.getId()%>">course info</a></td>
-        <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/">See feedback</a></td>
+        <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/"><fmt:message key="seeFeedback"/></a></td>
     </tr>
     <%
         }

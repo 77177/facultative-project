@@ -24,7 +24,7 @@
 </sec:authorize>
 <html>
     <head>
-        <title>Feedback</title>
+        <title><fmt:message key="title"/></title>
     </head>
     <body>
         <c:import url="header.jsp"/>
@@ -32,12 +32,12 @@
         <sec:authorize access="hasAnyAuthority('tutor')">
             <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>
             <form:form action="/feedback/" method="post" modelAttribute="feedback">
-                Feedback for <span><%=student.getFullName()%></span> for course <span><%=course.getName()%></span><br>
+                <span><%=student.getFullName()%></span>, <fmt:message key="feedbackForCourse"/><span><%=course.getName()%></span><br>
                 <br/>
                 <form:textarea path="text" rows="4" cols="50"
                                readonly="<%=!(course.getTutorId()==principal.getUserId())%>"></form:textarea>
                 <br/>
-                Mark
+                <fmt:message key="mark"/>
                 <br/>
                 <form:input path="mark" readonly="<%=!(course.getTutorId()==principal.getUserId())%>"/>
                 <form:hidden path="courseId"/>
@@ -49,14 +49,14 @@
             </form:form>
         </sec:authorize>
         <sec:authorize access="hasAuthority('student')">
-            Feedback for course <span><%=course.getName()%></span>:<br>
+            <fmt:message key="feedbackForCourse"/> <span><%=course.getName()%></span>:<br>
             <div>
                 <p>
                     <%=feedBack.getText()%>
                 </p>
                 <p>
                     <br><br>
-                    Your mark for this course: <%=feedBack.getMark()%>
+                    <fmt:message key="yourMarkForCourse"/>: <%=feedBack.getMark()%>
                 </p>
             </div>
         </sec:authorize>
