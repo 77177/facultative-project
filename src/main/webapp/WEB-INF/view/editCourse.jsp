@@ -32,6 +32,14 @@
             }%>
 <div class="input-group">
     <div class="header"> <h2><fmt:message key="title"/></h2> </div>
+    <form action="/course/<%=course.getId()%>/action/edit/<%=principal.getUserId()%>" method="get">
+        <select name="locale">
+            <option value="ru_RU">Русский</option>
+            <option value="en_US">English</option>
+            <option value="es_ES">Español</option>
+        </select>
+        <input type="submit" value="change language"/>
+    </form>
     <form method="post" action="/course/action/edit/">
         <div class="input-group">
             <fmt:message key="courseName"/>:

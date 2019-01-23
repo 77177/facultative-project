@@ -24,6 +24,15 @@
             int tutorId = (int) request.getAttribute("tutorId");
             Object errorMessageObject = request.getAttribute("errorMessage");
         %>
+        <a href="/courses">all courses</a>
+        <form action="/course/action/create/<%=principal.getUserId()%>" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
         <sec:authorize access="isAuthenticated()">
             <%
                 if (!principal.isStudent()) {%>

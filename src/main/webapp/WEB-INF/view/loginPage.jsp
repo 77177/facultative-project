@@ -27,6 +27,14 @@
                     <sec:csrfInput/>
                 </div>
         </form>
+        <form action="/authenticator/login" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
         <br><br>
             <div class="header">
                 <fmt:message key="noRegistration"/>

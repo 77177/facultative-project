@@ -21,63 +21,75 @@
     <style> <%@include file="/theme/css/main.css"%> </style>
     <style> <%@include file="/theme/css/table.css"%> </style>
 </head>
-<body>
-<div class="header"> <h2><fmt:message key="backToCourses"/></h2> </div>
-    <form action="/course">
-        <div class="input-group">
-            <center> <button><fmt:message key="allCourses"/></button> </center>
+    <body>
+        <div class="header">
+            <h2><fmt:message key="title"/></h2>
         </div>
-    </form>
-<div class="header">
-<sec:authorize access="isAuthenticated()">
-    <h3>Hello, <%=user.getFirstName() + " " + user.getLastName()%></h3>
-</div>
-    <form method="post" action="/logout">
-        <sec:csrfInput/>
-        <div class="input-group">
-            <center> <button> <fmt:message key="logout"/> </button> </center>
-        </div>
-    </form>
-</sec:authorize>
-<sec:authorize access="!isAuthenticated()">
-    <form action="/authenticator/login">
-        <center> <button> Login </button> </center>
-    </form>
-</sec:authorize>
-<%
-    if (courseList.isEmpty()) {
-%>
-<form>
-    <center> <span><fmt:message key="noCoursesMessage"/></span> </center>
-</form>
-<%
-} else {
-%>
-<form> <center> <fmt:message key="yourCourses"/>: </center> </form>
-<br>
-<table>
-    <tr>
-        <th><fmt:message key="courseName"/></th>
-        <th><fmt:message key="start"/></th>
-        <th><fmt:message key="finish"/></th>
-        <th><fmt:message key="feedback"/></th>
-    </tr>
-    <%
-        for (Course course : courseList) {
-    %>
-    <tr>
-        <td><% out.println(course.getName());%></td>
-        <td><% out.println(course.getStartingDate());%></td>
-        <td><% out.println(course.getFinishingDate());%></td>
-        <td><a href="/course/<%=course.getId()%>">course info</a></td>
-        <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/"><fmt:message key="seeFeedback"/></a></td>
-    </tr>
-    <%
-        }
-    %>
-</table>
-<%
-    }
-%>
-</body>
+        <form action="/course" method="get">
+            <div class="input-group">
+                <center> <button><fmt:message key="backToCourses"/></button> </center>
+            </div>
+        </form>
+
+        <form action="/user/profile" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
+
+        <sec:authorize access="isAuthenticated()">
+            <div class="header">
+                <h3>Hello, <%=user.getFirstName() + " " + user.getLastName()%></h3>
+            </div>
+            <form method="post" action="/logout">
+                <sec:csrfInput/>
+                <div class="input-group">
+                    <center> <button> <fmt:message key="logout"/> </button> </center>
+                </div>
+            </form>
+        </sec:authorize>
+        <sec:authorize access="!isAuthenticated()">
+            <form action="/authenticator/login">
+                <center> <button> Login </button> </center>
+            </form>
+        </sec:authorize>
+        <%
+            if (courseList.isEmpty()) {
+                %>
+                <form>
+                    <center> <span><fmt:message key="noCoursesMessage"/></span> </center>
+                </form>
+                <%
+                } else {
+                %>
+                <form> <center> <fmt:message key="yourCourses"/>: </center> </form>
+                <br>
+                <table>
+                    <tr>
+                        <th><fmt:message key="courseName"/></th>
+                        <th><fmt:message key="start"/></th>
+                        <th><fmt:message key="finish"/></th>
+                        <th><fmt:message key="feedback"/></th>
+                    </tr>
+                    <%
+                        for (Course course : courseList) {
+                        %>
+                        <tr>
+                            <td><% out.println(course.getName());%></td>
+                            <td><% out.println(course.getStartingDate());%></td>
+                            <td><% out.println(course.getFinishingDate());%></td>
+                            <td><a href="/course/<%=course.getId()%>">course info</a></td>
+                            <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/"><fmt:message key="seeFeedback"/></a></td>
+                        </tr>
+                        <%
+                        }
+                    %>
+                </table>
+                <%
+                }
+        %>
+    </body>
 </html>

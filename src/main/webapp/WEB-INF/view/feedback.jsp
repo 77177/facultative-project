@@ -28,6 +28,14 @@
     </head>
     <body>
         <c:import url="header.jsp"/>
+        <form action="/feedback/user/<%=principal.getUserId()%>/course/<%=course.getId()%>" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
         <br/>
         <sec:authorize access="hasAnyAuthority('tutor')">
             <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>

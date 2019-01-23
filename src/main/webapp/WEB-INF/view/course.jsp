@@ -30,16 +30,16 @@
         <div class="header">
             <h2><fmt:message key="allCourses"/></h2>
         </div>
-            <c:import url="header.jsp"/>
-            <br>
-            <form action="/course/" method="get">
-                <select name="locale">
-                  <option value="ru_RU">ru_RU</option>
-                  <option value="en_US">en_US</option>
-                  <option value="es_ES">es_ES</option>
-                </select>
-                <input type="submit" value="change language"/>
-            </form>
+        <c:import url="header.jsp"/>
+        <br>
+        <form action="/course/" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
         <%
             Object listObject = request.getAttribute("courseList");
             if (listObject != null) {

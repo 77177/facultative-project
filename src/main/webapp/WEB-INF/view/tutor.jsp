@@ -29,6 +29,14 @@
     <body>
         <div class="header"> <h2><fmt:message key="myCourses"/></h2> </div>
         <c:import url="header.jsp"/>
+        <form action="/user/profile" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
         <br>
         <center><fmt:message key="myProfile"/></center>
         <table>

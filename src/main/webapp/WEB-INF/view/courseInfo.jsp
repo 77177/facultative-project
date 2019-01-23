@@ -29,6 +29,14 @@
     </head>
     <body>
         <div class="header"> <h2><fmt:message key="title"/></h2> </div>
+        <form action="/course/<%=course.getId()%>" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
         <c:import url="header.jsp"/>
         <h2><%=course.getName()%></h2>
         <div id="courseInfo">

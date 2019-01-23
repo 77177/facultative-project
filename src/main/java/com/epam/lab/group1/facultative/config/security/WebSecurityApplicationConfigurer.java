@@ -51,7 +51,8 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
             .and()
             .userDetailsService(userDetailsService)
             .logout()
-                .logoutUrl("/course")
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/course/")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
     }

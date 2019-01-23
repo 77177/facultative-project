@@ -14,6 +14,14 @@
         <div class="header">
             <h2><fmt:message key="welcome"/></h2><br/>
         </div>
+        <form action="/authenticator/registration/" method="get">
+            <select name="locale">
+                <option value="ru_RU">Русский</option>
+                <option value="en_US">English</option>
+                <option value="es_ES">Español</option>
+            </select>
+            <input type="submit" value="change language"/>
+        </form>
         <form method="post" action="/login">
             <div class="input-group">
                 <label><fmt:message key="firstName"/>:</label>  <input type="text"     name="firstName"  placeholder="first name"/><br><br>
