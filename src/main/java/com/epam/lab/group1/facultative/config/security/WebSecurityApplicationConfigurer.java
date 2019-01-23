@@ -1,8 +1,10 @@
 package com.epam.lab.group1.facultative.config.security;
 
+import com.epam.lab.group1.facultative.persistance.CourseDAO;
+import com.epam.lab.group1.facultative.persistance.UserDAO;
+import com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,9 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.Filter;
 
 @Configuration
-@ComponentScan(value = "com.epam.lab.group1.facultative.security")
 @EnableWebSecurity
-public class WebSecurityApplicationInitializer extends WebSecurityConfigurerAdapter {
+public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -36,12 +37,9 @@ public class WebSecurityApplicationInitializer extends WebSecurityConfigurerAdap
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/profile**").hasAnyAuthority("student", "tutor")
-            .and()
-            .authorizeRequests()
                 .antMatchers("/feedback/**").hasAnyAuthority("student", "tutor")
-            .and()
-            .authorizeRequests()
                 .antMatchers("/course/action/**").hasAuthority("tutor")
+                .anyRequest().authenticated()
             .and()
                 .addFilterBefore(registrationFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin()
@@ -53,11 +51,6 @@ public class WebSecurityApplicationInitializer extends WebSecurityConfigurerAdap
                 .logoutUrl("/course")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
-
-
-//                <intercept-url pattern="/profile**" access="hasAnyAuthority('student', 'tutor')"/>
-//        <intercept-url pattern="/feedback/**" access="hasAnyAuthority('student', 'tutor')"/>
-//        <intercept-url pattern="/course/action/**" access="hasAnyAuthority('tutor')"/>
     }
 
     @Bean

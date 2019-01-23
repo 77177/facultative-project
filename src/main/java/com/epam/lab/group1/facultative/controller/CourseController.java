@@ -42,9 +42,7 @@ public class CourseController {
 
     @GetMapping(value = "/")
     public ModelAndView getAllCourses() {
-//        System.out.println(SecurityContextHolder.getContext());
-//        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        System.out.println(SecurityContextHolder.getContext());
         ModelAndView modelAndView = new ModelAndView(COURSE);
         modelAndView.addObject("courseList", courseService.findAll());
         return modelAndView;
