@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -34,8 +35,11 @@ public class AuthenticationController {
      * @return page of REGISTER form.
      */
     @GetMapping("/registration")
-    public ModelAndView registration() {
+    public ModelAndView registration(@RequestParam(required = false) String error) {
         ModelAndView modelAndView = new ModelAndView(REGISTER);
+        if (error != null) {
+            modelAndView.addObject("error", "User with this email already exists");
+        }
         return modelAndView;
     }
 

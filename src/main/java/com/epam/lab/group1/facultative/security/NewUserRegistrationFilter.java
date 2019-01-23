@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
 import com.epam.lab.group1.facultative.service.AuthenticationService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,6 +12,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class NewUserRegistrationFilter implements Filter {
@@ -35,7 +37,11 @@ public class NewUserRegistrationFilter implements Filter {
         logger.debug("Entering to the new user creation zone.");
         if (isRegistration) {
             PersonRegistrationFormDTO personRegistrationFormDTO = formDtoFromRequest(servletRequest);
-            authenticationService.createUser(personRegistrationFormDTO);
+            try {
+                authenticationService.createUser(personRegistrationFormDTO);
+            } catch (ConstraintViolationException e) {
+                ((HttpServletResponse)response).sendRedirect("/authenticator/registration?error=true");
+            }
         }
         filterChain.doFilter(servletRequest, response);
     }
