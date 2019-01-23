@@ -1,8 +1,11 @@
 package com.epam.lab.group1.facultative.config.application;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 @ComponentScans(value = {
@@ -13,5 +16,11 @@ import org.springframework.context.annotation.Configuration;
     }
 )
 public class MainContextConfig {
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        return localeResolver;
+    }
 
 }

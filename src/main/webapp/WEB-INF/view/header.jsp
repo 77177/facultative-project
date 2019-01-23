@@ -1,7 +1,10 @@
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${pageContext.response.locale}"/>
+<fmt:setBundle basename="bundle.header"/>
 <%
     SecurityContextUser principal = null;
 %>

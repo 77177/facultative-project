@@ -1,11 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${pageContext.response.locale}"/>
+<fmt:setBundle basename="bundle.course"/>
 <%
     SecurityContextUser principal = null;
 %>
@@ -25,10 +28,19 @@
     </head>
     <body>
         <div class="header">
-            <h2>All Courses</h2>
+            <h2><fmt:message key="allCourses"/></h2>
         </div>
             <c:import url="header.jsp"/>
+
             <br>
+            <form action="/course/" method="get">
+                <select name="locale">
+                  <option value="ru_RU">ru_RU</option>
+                  <option value="en_US">en_US</option>
+                  <option value="es_ES">es_ES</option>
+                </select>
+                <input type="submit" value="change language"/>
+            </form>
         <%
             Object listObject = request.getAttribute("courseList");
             if (listObject != null) {

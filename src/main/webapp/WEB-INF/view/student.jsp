@@ -1,10 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="java.util.Collections" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${pageContext.response.locale}"/>
+<fmt:setBundle basename="bundle.student"/>
 <%
     Object userObject = request.getAttribute("user");
     User user = userObject != null ? (User) userObject : null;
