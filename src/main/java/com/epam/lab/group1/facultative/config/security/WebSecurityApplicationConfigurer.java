@@ -39,7 +39,6 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
                 .antMatchers("/profile**").hasAnyAuthority("student", "tutor")
                 .antMatchers("/feedback/**").hasAnyAuthority("student", "tutor")
                 .antMatchers("/course/action/**").hasAuthority("tutor")
-                .anyRequest().authenticated()
             .and()
                 .addFilterBefore(registrationFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin()
