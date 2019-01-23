@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Implementation of the UserDetailsService. Retrieves data from DB and creates UserDetails.
  */
-@Component
+@Component(value = "userDetailsService")
 public class FacultativeJdbcUserDetailsService implements UserDetailsService {
 
     private final Logger logger = Logger.getLogger(this.getClass());

@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
 import com.epam.lab.group1.facultative.service.AuthenticationService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
+@Component(value = "registrationFilter")
 public class NewUserRegistrationFilter implements Filter {
 
     private final Logger logger = Logger.getLogger(this.getClass());
