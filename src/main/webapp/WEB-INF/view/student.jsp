@@ -55,7 +55,7 @@
         <%
             if (courseList.isEmpty()) {
                 %>
-                    <div><fmt:message key="noCoursesMessage"/></div>
+                <div><fmt:message key="noCoursesMessage"/></div>
                 <%
                 } else {
                 %>

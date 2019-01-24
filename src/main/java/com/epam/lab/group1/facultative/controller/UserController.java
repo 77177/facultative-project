@@ -64,7 +64,7 @@ public class UserController {
         if (action != null) {
             switch (action) {
                 case "leave": {
-                    principal.getCourseIdList().remove(courseId);
+                    principal.getCourseIdList().remove(new Integer(courseId));
                     userService.leaveCourse(userId, courseId);
                     break;
                 }
