@@ -20,13 +20,13 @@
 <html>
     <head>
         <title>Courses</title>
-        <%--<style>--%>
-        <%--    <%@include file="/theme/css/main.css"%>--%>
-        <%--</style>--%>
-        <%--<style>--%>
-         <%--   <%@include file="/theme/css/table.css"%>--%>
-        <%--</style>--%>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <style>
+            <%@include file="/theme/css/main.css"%>
+        </style>
+        <style>
+            <%@include file="/theme/css/table.css"%>
+        </style>
+        <%--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">--%>
     </head>
     <body class=>
         <div class="header jumbotron ">
