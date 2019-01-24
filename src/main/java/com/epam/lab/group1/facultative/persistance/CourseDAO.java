@@ -12,6 +12,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -139,13 +140,15 @@ public class CourseDAO {
                 .select(u)
                 .where(criteriaBuilder.equal(u.get("id"), userId));
             User user = session.createQuery(query).getSingleResult();
-            session.getTransaction().commit();
 
+            List<Course> courseList;
             if (user.getPosition().equals("tutor")) {
-                return getAllByTutorID(userId, pageNumber, pageSize);
+                courseList = getAllByTutorId(session, userId, pageNumber, pageSize);
             } else {
-                return getAllByStudentId(userId, pageNumber, pageSize);
+                courseList = getAllByStudentId(session, userId, pageNumber, pageSize);
             }
+            session.getTransaction().commit();
+            return courseList != null ? courseList : Collections.emptyList();
         } catch (PersistenceException e) {
             String error = "Error during retrieving all courses by user id: " + userId;
             logger.error(error);
@@ -153,53 +156,22 @@ public class CourseDAO {
         }
     }
 
-    private List<Course> getAllByTutorID(int id, int pageNumber, int pageSize) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
-
-            Root<Course> courseRoot = criteriaQuery.from(Course.class);
-            criteriaQuery
+    private List<Course> getAllByTutorId(Session session, int tutorId, int pageNumber, int pageSize) {
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
+        Root<Course> courseRoot = criteriaQuery.from(Course.class);
+        criteriaQuery
                 .select(courseRoot)
-                .where(criteriaBuilder.equal(courseRoot.get("tutorId"), id));
-            List<Course> resultList = session
+                .where(criteriaBuilder.equal(courseRoot.get("tutorId"), tutorId));
+        return session
                 .createQuery(criteriaQuery)
                 .setFirstResult(pageNumber * pageSize)
-                .setMaxResults(pageSize)
-                .getResultList();
-
-            session.getTransaction().commit();
-            return resultList;
-        } catch (PersistenceException e) {
-            String error = "Error during retrieving all courses by tutor id: " + id;
-            logger.error(error);
-            throw e;
-        }
+                .setMaxResults(pageSize).getResultList();
     }
 
-    private List<Course> getAllByStudentId(int userId, int pageNumber, int pageSize) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-//            String sql = "SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id " +
-//                "WHERE student_id =" + userId + ";";
-//            List<Course> resultList = session
-//                .createSQLQuery(sql)
-//                .addEntity(Course.class)
-//                .setFirstResult(pageNumber * pageSize)
-//                .setMaxResults(pageSize)
-//                .list();
-
-            String sql = "SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id " +
+    private List<Course> getAllByStudentId(Session session, int userId, int pageNumber, int pageSize) {
+        String sql = "SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id " +
                 "WHERE student_id =" + userId + ";";
-            List<Course> resultList = session.createSQLQuery(sql).addEntity(Course.class).list();
-
-            session.getTransaction().commit();
-            return resultList;
-        } catch (PersistenceException e) {
-            String error = "Error during retrieving all courses by user id: " + userId;
-            logger.error(error);
-            throw e;
-        }
+        return (List<Course>) session.createSQLQuery(sql).addEntity(Course.class).list();
     }
 }
