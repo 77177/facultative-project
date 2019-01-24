@@ -30,7 +30,7 @@
         </script>
     </head>
     <body>
-        <div class="header jumbotron">
+        <div class="jumbotron">
             <h2><fmt:message key="welcome"/></h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
