@@ -3,26 +3,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${pageContext.response.locale}"/>
 <fmt:setBundle basename="bundle.header"/>
+<%
+    String changeLanguageLink = null;
+%>
 <html>
     <head>
         <title>header</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-              integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-              crossorigin="anonymous"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <sec:authorize access="isAuthenticated()">
-            <div class="header">
-                <h3>Hello, <sec:authentication property="name"/></h3>
-            </div>
-            <a href="/user/profile">My Profile</a>
-            <form method="post" action="/logout">
-                <sec:csrfInput/>
-                <button type="submit" value="Logout"> Logout </button>
-            </form>
-        </sec:authorize>
-        <sec:authorize access="!isAuthenticated()">
-            <a href="/authenticator/login">Login</a>
-        </sec:authorize>
+
     </body>
 </html>
