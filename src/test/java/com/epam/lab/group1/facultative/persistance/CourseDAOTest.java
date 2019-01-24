@@ -45,7 +45,9 @@ public class CourseDAOTest {
 
     @Test
     public void testGetAllByUserID() {
-        List<Course> allByUserID = courseDAO.getAllByUserId(3);
+        int page = 0;
+        int pageSize = 5;
+        List<Course> allByUserID = courseDAO.getAllByUserId(3, page, pageSize);
         assertEquals(1, allByUserID.get(0).getId());
         assertEquals("COURSE_1", allByUserID.get(0).getName());
         assertEquals(1, allByUserID.size());
@@ -64,7 +66,7 @@ public class CourseDAOTest {
 
     @Test
     public void testGetList() {
-        int page = 1;
+        int page = 0;
         int pageSize = 5;
         List<Course> list = courseDAO.findAll(page, pageSize);
         assertEquals(2, list.size());
@@ -99,14 +101,16 @@ public class CourseDAOTest {
 
     @Test
     public void testGetAllCourseIdbyUserId() {
+        int page = 0;
+        int pageSize = 5;
         User user = new User();
         user.setId(1);
         user.setPosition("tutor");
-        List<Course> allCourseIdbyUserId = courseDAO.getAllByUserId(user.getId());
+        List<Course> allCourseIdbyUserId = courseDAO.getAllByUserId(user.getId(), page, pageSize);
         assertEquals(1, allCourseIdbyUserId.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId.get(0).getName());
         user.setPosition("student");
-        List<Course> allCourseIdbyUserId1 = courseDAO.getAllByUserId(user.getId());
+        List<Course> allCourseIdbyUserId1 = courseDAO.getAllByUserId(user.getId(), page, pageSize);
         assertEquals(1, allCourseIdbyUserId1.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId1.get(0).getName());
     }

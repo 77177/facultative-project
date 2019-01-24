@@ -10,7 +10,6 @@ import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -51,12 +50,7 @@ public class CourseService {
     public SingleCourseDto update(Course course) {
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
-        if (course.getName().isEmpty()) {
-            String message = "Wrong input name for course. Course should have not empty name.";
-            logger.debug(message);
-            singleCourseDto.setErrorPresent(true);
-            singleCourseDto.setErrorMessage(message);
-        }
+        checkNameInCourse(course, singleCourseDto);
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
         }
@@ -78,7 +72,7 @@ public class CourseService {
     public void deleteById(int id) {
         courseDAO.deleteById(id);
     }
-    
+
     public List<Course> findAll(int page) {
         if (page < 0) {
             page = 0;
@@ -90,8 +84,8 @@ public class CourseService {
         return courseList;
     }
 
-    public List<Course> getAllByUserId(int userId) {
-        return courseDAO.getAllByUserId(userId);
+    public List<Course> getAllByUserId(int userId, int pageNumber) {
+        return courseDAO.getAllByUserId(userId, pageNumber, pageSize);
     }
 
     private SingleCourseDto checkInputDataAndName(Course course, SingleCourseDto singleCourseDto) {
@@ -109,12 +103,16 @@ public class CourseService {
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
-        } else if (course.getName().isEmpty()) {
+        } else checkNameInCourse(course, singleCourseDto);
+        return singleCourseDto;
+    }
+
+    private void checkNameInCourse(Course course, SingleCourseDto singleCourseDto) {
+        if (course.getName().isEmpty()) {
             String message = "Wrong input name for course. Course should have not empty name.";
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
         }
-        return singleCourseDto;
     }
 }

@@ -89,14 +89,15 @@ public class CourseServiceTest {
 
     @Test
     public void testGetAllById() {
+        int page = 0;
         User user = new User();
         user.setId(1);
         user.setPosition("tutor");
-        List<Course> allCourseIdbyUserId = courseService.getAllByUserId(user.getId());
+        List<Course> allCourseIdbyUserId = courseService.getAllByUserId(user.getId(), page);
         assertEquals(1, allCourseIdbyUserId.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId.get(0).getName());
         user.setPosition("student");
-        List<Course> allCourseIdbyUserId1 = courseService.getAllByUserId(user.getId());
+        List<Course> allCourseIdbyUserId1 = courseService.getAllByUserId(user.getId(), page);
         assertEquals(1, allCourseIdbyUserId1.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId1.get(0).getName());
     }
