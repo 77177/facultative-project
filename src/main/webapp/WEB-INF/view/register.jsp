@@ -14,6 +14,16 @@
         <div class="header">
             <h2><fmt:message key="welcome"/></h2><br/>
         </div>
+        <%
+            Object error = request.getAttribute("error");
+            if(error != null) {
+                %>
+                <div>
+                    ${error}
+                </div>
+                <%
+            }
+        %>
         <form method="post" action="/login">
             <div class="input-group">
                 <label><fmt:message key="firstName"/>:</label>  <input type="text"     name="firstName"  placeholder="first name"/><br><br>
