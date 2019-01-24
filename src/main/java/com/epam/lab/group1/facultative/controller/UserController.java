@@ -36,6 +36,7 @@ public class UserController {
 
     @RequestMapping("/profile")
     public ModelAndView sendRedirectToProfile() {
+        int page = 0;
         ModelAndView modelAndView;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
@@ -47,7 +48,7 @@ public class UserController {
             }
         } else {
             modelAndView = new ModelAndView(COURSE);
-            modelAndView.addObject("courseList", courseService.findAll());
+            modelAndView.addObject("courseList", courseService.findAll(page));
         }
         return modelAndView;
     }

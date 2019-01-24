@@ -53,15 +53,20 @@ public class CourseDAOTest {
 
     @Test
     public void testDeleteById() {
+        int page = 1;
+        int pageSize = 5;
         courseDAO.deleteById(1);
-        assertEquals(1, courseDAO.findAll().size());
-        assertEquals(2, courseDAO.findAll().get(0).getId());
-        assertEquals("COURSE_2", courseDAO.findAll().get(0).getName());
+
+        assertEquals(1, courseDAO.findAll(page, pageSize).size());
+        assertEquals(2, courseDAO.findAll(page, pageSize).get(0).getId());
+        assertEquals("COURSE_2", courseDAO.findAll(page, pageSize).get(0).getName());
     }
 
     @Test
     public void testGetList() {
-        List<Course> list = courseDAO.findAll();
+        int page = 1;
+        int pageSize = 5;
+        List<Course> list = courseDAO.findAll(page, pageSize);
         assertEquals(2, list.size());
         assertEquals("COURSE_1", list.get(0).getName());
         assertEquals("COURSE_2", list.get(1).getName());

@@ -17,6 +17,7 @@ public class CourseService {
 
     private final Logger logger = Logger.getLogger(this.getClass());
     private CourseDAO courseDAO;
+    private final int pageSize = 10;
 
     public CourseService(CourseDAO courseDAO) {
         this.courseDAO = courseDAO;
@@ -78,9 +79,15 @@ public class CourseService {
         courseDAO.deleteById(id);
     }
     
-    //findAll methods.
-    public List<Course> findAll() {
-        return courseDAO.findAll().stream().filter(Course::isActive).collect(Collectors.toList());
+    public List<Course> findAll(int page) {
+        if (page < 0) {
+            page = 0;
+        }
+        List<Course> courseList = courseDAO.findAll(page, pageSize);
+        if (courseList.size() == 0) {
+            courseList = courseDAO.findAll(page - 1, pageSize);
+        }
+        return courseList;
     }
 
     public List<Course> getAllByUserId(int userId) {

@@ -18,7 +18,7 @@
     </center> </form>
     <form action="/course">
         <div class="input-group">
-            <center> <button>All courses</button> <center>
+            <center> <button>All courses</button> </center>
         </div>
     </form>
 </body>

@@ -102,12 +102,26 @@ public class CourseDAO {
         }
     }
 
-    public List<Course> findAll() {
+    public List<Course> findAll(int pageNumber, int pageSize) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            List<Course> courses = session.createSQLQuery("SELECT * FROM courses").addEntity(Course.class).list();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
+
+            Root<Course> courseRoot = criteriaQuery.from(Course.class);
+            criteriaQuery
+                .select(courseRoot)
+                .where(criteriaBuilder.equal(courseRoot.get("active"), true));
+
+            List<Course> resultList = session
+                .createQuery(criteriaQuery)
+                .setFirstResult(pageNumber * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+
+
             session.getTransaction().commit();
-            return courses;
+            return resultList;
         } catch (PersistenceException e) {
             String error = "Error during retrieving all courses.";
             logger.error(error);
