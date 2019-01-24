@@ -3,25 +3,23 @@
 <fmt:setLocale value="${pageContext.response.locale}"/>
 <fmt:setBundle basename="bundle.errorPage"/>
 <html>
-<head>
-    <title><fmt:message key="title"/></title>
-    <style> <%@include file="/theme/css/main.css"%> </style>
-</head>
-<body>
-    <div class="error"><fmt:message key="errorMessage"/></div>
-    <form> <center>
-        <fmt:message key="errorInfo"/>. <br>
-        <fmt:message key="status"/>:<%=request.getAttribute("errorStatus")%><br>
-        <fmt:message key="message"/>:<%=request.getAttribute("message")%><br>
-        <fmt:message key="exceptionType"/>:<%=request.getAttribute("exception_type")%><br>
-        <fmt:message key="exception"/>:<%=request.getAttribute("exception")%><br>
-        <fmt:message key="request_Uri"/>:<%=request.getAttribute("request_uri")%><br><br>
-        <fmt:message key="reason"/>:<%=request.getAttribute("errorReason")%><br><br>
-    </center> </form>
-    <form action="/course" method="get">
-        <div class="input-group">
-            <center> <button><fmt:message key="allCourses"/></button> </center>
-        </div>
-    </form>
-</body>
+    <head>
+        <title><fmt:message key="title"/></title>
+        <style> <%@include file="/theme/css/main.css"%> </style>
+    </head>
+    <body>
+        <fmt:message key="errorMessage"/>
+        <form>
+            <fmt:message key="errorInfo"/>. <br>
+            <fmt:message key="status"/>:        ${errorStatus}<br>
+            <fmt:message key="message"/>:       ${message}<br>
+            <fmt:message key="exceptionType"/>: ${exception_type}<br>
+            <fmt:message key="exception"/>:     ${exception}<br>
+            <fmt:message key="request_Uri"/>:   ${request_uri}<br>
+            <fmt:message key="reason"/>:        ${errorReason}<br><br>
+        </form>
+        <a href="/course/">
+            <fmt:message key="allCourses"/>
+        </a>
+    </body>
 </html>
