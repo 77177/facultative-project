@@ -7,24 +7,21 @@
 <fmt:setBundle basename="bundle.createCourse"/>
 <%
     SecurityContextUser principal = null;
+    int tutorId = (int) request.getAttribute("tutorId");
+    Object errorMessageObject = request.getAttribute("errorMessage");
 %>
 <sec:authorize access="isAuthenticated()">
     <%
         principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     %>
 </sec:authorize>
-
 <html>
     <head>
         <title><fmt:message key="title"/></title>
-        <style> <%@include file="/theme/css/main.css"%> </style>
     </head>
     <body>
-        <%
-            int tutorId = (int) request.getAttribute("tutorId");
-            Object errorMessageObject = request.getAttribute("errorMessage");
-        %>
         <a href="/courses">all courses</a>
+
         <form action="/course/action/create/<%=principal.getUserId()%>" method="get">
             <select name="locale">
                 <option value="ru_RU">Русский</option>
@@ -33,13 +30,16 @@
             </select>
             <input type="submit" value="change language"/>
         </form>
+
         <sec:authorize access="isAuthenticated()">
             <%
                 if (!principal.isStudent()) {%>
                     <h2><fmt:message key="title"/></h2>
-                    <%if(errorMessageObject != null) {
-                        out.print(errorMessageObject.toString());
-                    }%>
+                    <%
+                        if(errorMessageObject != null) {
+                            out.print(errorMessageObject.toString());
+                        }
+                    %>
                     <form method="post" action="/course/action/create/">
                         <fmt:message key="courseName"/>:
                         <input type="text" name="name" minlength="1" required><br>

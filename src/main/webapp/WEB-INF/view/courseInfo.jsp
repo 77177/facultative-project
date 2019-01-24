@@ -24,8 +24,6 @@
 <html>
     <head>
         <title><fmt:message key="title"/></title>
-        <style> <%@include file="/theme/css/main.css"%> </style>
-        <style> <%@include file="/theme/css/table.css"%> </style>
     </head>
     <body>
         <h2>
