@@ -62,63 +62,59 @@
         <%
             if (!courseList.isEmpty()) {
             %>
-        <div class="row">
-            <div class="col-sm-1"></div>
-            <table class="table-striped table-hover col">
-                <thead>
-                    <tr>
-                        <th><fmt:message key="title"/></th>
-                        <th><fmt:message key="startDate"/></th>
-                        <th><fmt:message key="finishDate"/></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        for (Course course : courseList) {
-                    %>
-                    <tr>
-                        <td><%= course.getName()%></td>
-                        <td><%= course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
-                        <td><%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
-                        <td><a href="/course/<%=course.getId()%>">info</a></td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
-
-            </table>
-            <div class="col-sm-1"></div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-sm-1"></div>
-            <ul class="pagination">
-                <%
-                    if (pageNumber > 0) {
-                %>
-                <li class="page-item">
-                    <a class="page-link" href="/course/?page=${pageNumber - 1}">previous 10</a>
-                </li>
-                <%
-                    }
-                %>
-                <li class="page-item">
-                    <a class="page-link" href="#"> ... </a>
-                </li>
-                <%
-                    if (courseList.size() == pageSize) {
-                %>
-                <li class="page-item">
-                    <a class="page-link" href="/course/?page=${pageNumber + 1}">next 10</a>
-                </li>
-                <%
-                    }
-                %>
-            </ul>
-        </div>
-
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col">
+                    <table class="table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th><fmt:message key="title"/></th>
+                                <th><fmt:message key="startDate"/></th>
+                                <th><fmt:message key="finishDate"/></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                for (Course course : courseList) {
+                            %>
+                            <tr>
+                                <td><%= course.getName()%></td>
+                                <td><%= course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
+                                <td><%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
+                                <td><a href="/course/<%=course.getId()%>">info</a></td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        <%
+                            if (pageNumber > 0) {
+                        %>
+                        <li class="page-item">
+                            <a class="page-link" href="/course/?page=${pageNumber - 1}">previous 10</a>
+                        </li>
+                        <%
+                            }
+                        %>
+                        <li class="page-item">
+                            <a class="page-link" href="#"> ... </a>
+                        </li>
+                        <%
+                            if (courseList.size() == pageSize) {
+                        %>
+                        <li class="page-item">
+                            <a class="page-link" href="/course/?page=${pageNumber + 1}">next 10</a>
+                        </li>
+                        <%
+                            }
+                        %>
+                    </ul>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
             <%
             } else {
             %>
@@ -126,6 +122,5 @@
             <%
             }
         %>
-
     </body>
 </html>
