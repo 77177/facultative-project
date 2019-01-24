@@ -37,10 +37,11 @@ public class CourseController {
     }
 
     @GetMapping(value = "/")
-    public ModelAndView getAllCourses(@RequestParam(name = "page", required = false) int page) {
+    public ModelAndView getAllCourses(@RequestParam(name = "page", required = false) Integer page) {
+        int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView = new ModelAndView(COURSE);
-        modelAndView.addObject("courseList", courseService.findAll(page));
-        modelAndView.addObject("pageNumber", page);
+        modelAndView.addObject("courseList", courseService.findAll(pageNumber));
+        modelAndView.addObject("pageNumber", pageNumber);
         return modelAndView;
     }
 

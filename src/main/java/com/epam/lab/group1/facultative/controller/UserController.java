@@ -32,21 +32,22 @@ public class UserController {
     }
 
     @RequestMapping("/profile")
-    public ModelAndView sendRedirectToProfile(@RequestParam(name = "page", required = false) int page) {
+    public ModelAndView sendRedirectToProfile(@RequestParam(name = "page", required = false) Integer page) {
+        int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
             if (principal.isStudent()) {
-                modelAndView = studentProfile(principal.getUserId(), page);
+                modelAndView = studentProfile(principal.getUserId(), pageNumber);
             } else {
-                modelAndView = tutorProfile(principal.getUserId(), page);
+                modelAndView = tutorProfile(principal.getUserId(), pageNumber);
             }
         } else {
             modelAndView = new ModelAndView(COURSE);
-            modelAndView.addObject("courseList", courseService.findAll(page));
-            modelAndView.addObject("pageNumber", page);
+            modelAndView.addObject("courseList", courseService.findAll(pageNumber));
         }
+        modelAndView.addObject("pageNumber", pageNumber);
         return modelAndView;
     }
 
@@ -63,7 +64,7 @@ public class UserController {
         if (action != null) {
             switch (action) {
                 case "leave": {
-                    principal.getCourseIdList().remove(new Integer(courseId));
+                    principal.getCourseIdList().remove(courseId);
                     userService.leaveCourse(userId, courseId);
                     break;
                 }
