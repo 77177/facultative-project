@@ -1,0 +1,61 @@
+package com.epam.lab.group1.facultative.persistance;
+
+import com.epam.lab.group1.facultative.model.FeedBack;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.sql.DataSource;
+
+import static org.junit.Assert.*;
+
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration("/dao/userDaoTestContext.xml")
+public class FeedBackDAOTest {
+
+    @Before
+    public void init() {
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScripts(
+                new ClassPathResource("/dao/sql/create_script.sql"),
+                new ClassPathResource("/dao/sql/fill_script.sql"));
+        populator.execute(this.dataSource);
+    }
+
+    @Autowired
+    private FeedBackDAO feedBackDAO;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Test
+    public void testGetFeedBack() {
+        FeedBack feedBack = feedBackDAO.getFeedBack(1, 3);
+        assertEquals(3, feedBack.getStudentId());
+        assertEquals(1, feedBack.getCourseId());
+        assertEquals(4, feedBack.getMark());
+        assertEquals("Good performance", feedBack.getText());
+
+    }
+
+    @Test
+    public void testSaveOrUpdate() {
+        FeedBack feedBackIn = new FeedBack();
+        feedBackIn.setStudentId(4);
+        feedBackIn.setCourseId(2);
+        feedBackIn.setMark(4);
+        feedBackIn.setText("Good");
+        feedBackDAO.saveOrUpdate(feedBackIn);
+        FeedBack feedBack = feedBackDAO.getFeedBack(2, 4);
+        assertEquals(4, feedBack.getStudentId());
+        assertEquals(2, feedBack.getCourseId());
+        assertEquals(4, feedBack.getMark());
+        assertEquals("Good", feedBack.getText());
+    }
+}

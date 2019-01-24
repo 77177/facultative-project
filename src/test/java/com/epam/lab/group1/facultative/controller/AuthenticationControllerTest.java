@@ -1,0 +1,42 @@
+package com.epam.lab.group1.facultative.controller;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static com.epam.lab.group1.facultative.controller.ViewName.LOGIN;
+import static com.epam.lab.group1.facultative.controller.ViewName.REGISTER;
+
+import static org.junit.Assert.*;
+
+@RunWith(SpringRunner.class)
+@WebAppConfiguration
+@ContextConfiguration("/controller/authenticationControllerTestContext.xml")
+public class AuthenticationControllerTest {
+
+    private MockMvc mockMvc;
+
+    public AuthenticationControllerTest() {
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(new AuthenticationController())
+                .build();
+    }
+
+    @Test
+    public void testLogin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/authenticator/login"))
+                .andExpect(MockMvcResultMatchers.view().name(LOGIN));
+    }
+
+    @Test
+    public void TestRegistration() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/authenticator/registration"))
+                .andExpect(MockMvcResultMatchers.view().name(REGISTER));
+    }
+}

@@ -1,46 +1,49 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.dto.ErrorDto;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+
+import javax.persistence.PersistenceException;
+
+import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
+import static com.epam.lab.group1.facultative.controller.ViewName.LOGIN;
+import static com.epam.lab.group1.facultative.controller.ViewName.REGISTER;
 
 @Controller
 @RequestMapping("/authenticator")
 public class AuthenticationController {
 
-    private final String loginViewName = "login";
-    private final String registrationViewName = "register";
-    private final String courseViewName = "course";
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     /**
-     * @return official project login page.
+     * @return official project LOGIN page.
      */
     @RequestMapping("/login")
     public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView(loginViewName);
+        ModelAndView modelAndView = new ModelAndView(LOGIN);
         return modelAndView;
     }
 
     /**
-     * @return page of registration form.
+     * @return page of REGISTER form.
      */
     @GetMapping("/registration")
     public ModelAndView registration() {
-        ModelAndView modelAndView = new ModelAndView(registrationViewName);
+        ModelAndView modelAndView = new ModelAndView(REGISTER);
         return modelAndView;
     }
 
-    /**
-     * Receive information from user and passes it to AuthenticationService to process.
-     *
-     * @return page of all courses.
-     */
-    @PostMapping("/registration")
-    public ModelAndView registerNewUser(@ModelAttribute PersonRegistrationFormDTO personRegistrationFormDTO) {
-        //TODO redirect param-list to AuthenticationService. Which should create new UserDetails and save in DB.
-        //AuthenticationService creates new user, sets Authentication in SecurityContextHolder
-        ModelAndView modelAndView = new ModelAndView(courseViewName);
+    @ExceptionHandler(PersistenceException.class)
+    public ModelAndView persistingEntityExceptionHandler(Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
+        modelAndView.addObject("error", errorDto);
         return modelAndView;
     }
 }

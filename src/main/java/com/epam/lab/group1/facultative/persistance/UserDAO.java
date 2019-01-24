@@ -1,84 +1,184 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.User;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class UserDAO {
 
-    private JdbcTemplate jdbcTemplate;
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private String sql;
+    private final Logger logger = Logger.getLogger(this.getClass());
+    private SessionFactory sessionFactory;
 
-    public UserDAO(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    public UserDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    public Optional<User> getById(int id) {
-        sql = String.format("SELECT * FROM users WHERE id = %d;", id);
-        User user = null;
-        try {
-            user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class));
-        } finally {
-            return Optional.ofNullable(user);
+    public User getById(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> u = criteriaQuery.from(User.class);
+            criteriaQuery.select(u).where(criteriaBuilder.equal(u.get("id"), id));
+            User user = session.createQuery(criteriaQuery).getSingleResult();
+            session.getTransaction().commit();
+            return user;
+        } catch (PersistenceException e) {
+            String error = "Error during user getting by id: " + id;
+            logger.error(error);
+            throw e;
         }
     }
 
-    public Optional<User> getByEmail(String email) {
-        sql = "SELECT * FROM users WHERE email = :email;";
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource("email", email);
-        User user = null;
-        try {
-            user = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, new BeanPropertyRowMapper<>(User.class));
-            System.out.println("asd");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            return Optional.ofNullable(user);
+    public User getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> userRoot = criteriaQuery.from(User.class);
+            criteriaQuery.select(userRoot).where(criteriaBuilder.equal(userRoot.get("email"), email));
+            User user = session.createQuery(criteriaQuery).getSingleResult();
+            session.getTransaction().commit();
+            return user;
+        } catch (PersistenceException e) {
+            String error = "Error retrieving  user by email: " + email;
+            logger.error(error);
+            throw e;
         }
-    }
-
-    public void deleteById(int id) {
-        sql = String.format("DELETE FROM users WHERE id = %d;", id);
-        jdbcTemplate.execute(sql);
-    }
-
-    public List<User> getList() {
-        sql = "SELECT * FROM users";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
     public User create(User user) {
-        sql = "INSERT INTO users (first_name, last_name, email, password) VALUES(:firstName,:lastName,:email,:password);";
-        MapSqlParameterSource sqlParameterSource;
-        sqlParameterSource = new MapSqlParameterSource("firstName", user.getFirstName());
-        sqlParameterSource.addValue("lastName", user.getLastName());
-        sqlParameterSource.addValue("email", user.getEmail());
-        sqlParameterSource.addValue("password", user.getPassword());
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
+            session.beginTransaction();
 
-        user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?;"
-                , new BeanPropertyRowMapper<>(User.class), user.getEmail());
-        return user;
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> u = criteriaQuery.from(User.class);
+            criteriaQuery.select(u).where(criteriaBuilder.equal(u.get("email"), user.getEmail()));
+            User userReturn = session.createQuery(criteriaQuery).getSingleResult();
+            session.getTransaction().commit();
+            return userReturn;
+        } catch (PersistenceException e) {
+            String error = "Error during user creating. " + user;
+            logger.error(error);
+            throw e;
+        }
     }
 
     public void update(User user) {
-        sql = "UPDATE users SET first_name=:firstName, last_name=:lastName, email=:email, password=:password WHERE id = :id ";
-        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource("firstName", user.getFirstName());
-        sqlParameterSource.addValue("lastName", user.getLastName());
-        sqlParameterSource.addValue("email", user.getEmail());
-        sqlParameterSource.addValue("password", user.getPassword());
-        sqlParameterSource.addValue("id", user.getId());
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(user);
+        session.getTransaction().commit();
+    }
 
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+    public void deleteById(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            User user = session.load(User.class, id);
+            session.delete(user);
+            session.getTransaction().commit();
+        } catch (HibernateException | EntityNotFoundException e) {
+            String error = "Error during course deleting by id. " + id;
+            logger.error(error);
+            throw e;
+        }
+    }
+
+    public List<User> getAllStudents() {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+            Root<User> u = query.from(User.class);
+            query.select(u).where(criteriaBuilder.equal(u.get("position"), "student"));
+            Query<User> query1 = session.createQuery(query);
+            List<User> user = query1.getResultList();
+            session.getTransaction().commit();
+            return user;
+        } catch (PersistenceException e) {
+            String error = "Error during retrieving all users with position 'student'.";
+            logger.error(error);
+            throw e;
+        }
+    }
+
+    public List<User> getAllTutors() {
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+            Root<User> u = query.from(User.class);
+            query.select(u).where(criteriaBuilder.equal(u.get("position"), "tutor"));
+            Query<User> query1 = session.createQuery(query);
+            session.beginTransaction();
+            List<User> users = query1.getResultList();
+            session.getTransaction().commit();
+            return users;
+        } catch (PersistenceException e) {
+            String error = "Error during retrieving all users with position 'tutor'.";
+            logger.error(error);
+            throw e;
+        }
+    }
+
+    public List<User> getAllStudentByCourseId(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            String sql = "SELECT * FROM student_course JOIN users ON student_course.student_id  = users.id " +
+                         "WHERE course_id =" + id + " AND position = 'student';";
+            List<User> users = session.createSQLQuery(sql).addEntity(User.class).list();
+            session.getTransaction().commit();
+            return users;
+        } catch (PersistenceException e) {
+            String error = "Error during retrieving all users with position 'student' and by courseId: " + id;
+            logger.error(error);
+            throw e;
+        }
+    }
+
+    public void subscribeCourse(int userId, int courseId) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            String sql = String.format("INSERT INTO student_course(student_id, course_id, mark, feedback) VALUES (%d, %d, -1, '')",
+                userId, courseId);
+            Query query = session.createSQLQuery(sql);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } catch (PersistenceException e) {
+            String error = String.format("Error during subscribing user with id %d, on course with id %d", userId, courseId);
+            logger.error(error);
+            throw e;
+        }
+    }
+
+    public void leaveCourse(int userId, int courseId) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query query = session.createSQLQuery("DELETE FROM student_course " +
+                "WHERE student_id='" + userId + "' AND course_id='" + courseId + "'");
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            String error = String.format("Error during unsubscribing user with id %d, on course with id %d", userId,
+                courseId);
+            logger.error(error);
+            throw e;
+        }
     }
 }
