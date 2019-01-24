@@ -29,7 +29,6 @@
                 <fmt:message key="allCourses"/>
             </h1>
         </div>
-
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
