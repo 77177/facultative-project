@@ -7,26 +7,18 @@
 <html>
     <head>
         <title>Login to facultative</title>
-        <style>
-            <%@include file="/theme/css/main.css"%>
-        </style>
     </head>
     <body>
-        <div class="header">
-            <h2><fmt:message key="welcome"/></h2>
-        </div>
+        <h2><fmt:message key="welcome"/></h2>
         <form method="post" action="/login">
-            <div class="input-group">
-                    <label><fmt:message key="email"/>:</label>     <input type="text" name="username" placeholder="yourEmail@company.com"/>
-                </div><br>
-                <div class="input-group">
-                    <label><fmt:message key="password"/>:</label>   <input type="password" name="password" placeholder="password"/>
-                </div><br>
-                <div class="input-group">
-                    <center><button type="submit"><fmt:message key="button.loginIn"/></button></center>
-                    <sec:csrfInput/>
-                </div>
+            <fmt:message key="email"/>:
+            <input type="text" name="username" placeholder="yourEmail@company.com"/>
+            <fmt:message key="password"/>:
+            <input type="password" name="password" placeholder="password"/>
+            <button type="submit"><fmt:message key="button.loginIn"/></button>
+            <sec:csrfInput/>
         </form>
+
         <form action="/authenticator/login" method="get">
             <select name="locale">
                 <option value="ru_RU">Русский</option>
@@ -36,13 +28,10 @@
             <input type="submit" value="change language"/>
         </form>
         <br><br>
-            <div class="header">
-                <fmt:message key="noRegistration"/>
-            </div>
-            <form action="/authenticator/registration">
-                <div class="input-group">
-                    <center><button type="submit"><fmt:message key="button.register"/></button></center>
-                </div>
-            </form>
+
+        <fmt:message key="noRegistration"/>
+        <a href="/authenticator/registration">
+            <fmt:message key="button.register"/>
+        </a>
     </body>
 </html>

@@ -5,7 +5,6 @@
 <html>
     <head>
         <title><fmt:message key="title"/></title>
-        <style> <%@include file="/theme/css/main.css"%> </style>
     </head>
     <body>
         <fmt:message key="errorMessage"/>

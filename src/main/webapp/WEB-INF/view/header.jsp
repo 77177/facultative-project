@@ -7,7 +7,6 @@
     <head>
         <title>header</title>
         <style>
-            <%@include file="/theme/css/main.css"%>
         </style>
     </head>
     <body>

@@ -26,12 +26,11 @@
 <html>
     <head>
         <title><fmt:message key="title"/></title>
-        <style> <%@include file="/theme/css/main.css"%> </style>
-        <style> <%@include file="/theme/css/table.css"%> </style>
     </head>
     <body>
-        <div class="header"> <h2><fmt:message key="myCourses"/></h2> </div>
+        <h2><fmt:message key="myCourses"/></h2>
         <c:import url="header.jsp"/>
+
         <form action="/user/profile" method="get">
             <select name="locale">
                 <option value="ru_RU">Русский</option>
@@ -41,7 +40,8 @@
             <input type="submit" value="change language"/>
         </form>
         <br>
-        <center><fmt:message key="myProfile"/></center>
+
+        <fmt:message key="myProfile"/>
         <table>
             <tr>
                 <th><fmt:message key="titleTitle"/></th>
@@ -74,6 +74,7 @@
                 }
             %>
         </table>
+
         <ul class="pagination">
             <%
                 if (pageNumber > 0) {
@@ -97,12 +98,9 @@
                 }
             %>
         </ul>
-        <br> <form>
-            <center>
-                <button>
-                    <a href="/course/action/create/<%=principal.getUserId()%>"><fmt:message key="createNewCourse"/></a>
-                </button>
-            </center>
-        </form>
+        <br>
+        <a href="/course/action/create/<%=principal.getUserId()%>">
+            <fmt:message key="createNewCourse"/>
+        </a>
     </body>
 </html>

@@ -6,14 +6,9 @@
 <html>
     <head>
         <title>Facultative registration</title>
-        <style>
-            <%@include file="/theme/css/main.css"%>
-        </style>
     </head>
     <body>
-        <div class="header">
-            <h2><fmt:message key="welcome"/></h2><br/>
-        </div>
+        <h2><fmt:message key="welcome"/></h2>
         <form action="/authenticator/registration/" method="get">
             <select name="locale">
                 <option value="ru_RU">Русский</option>
@@ -22,16 +17,7 @@
             </select>
             <input type="submit" value="change language"/>
         </form>
-        <%
-            Object error = request.getAttribute("error");
-            if(error != null) {
-                %>
-                <div>
-                    ${error}
-                </div>
-                <%
-            }
-        %>
+        ${error}
         <form method="post" action="/login">
             <div class="input-group">
                 <label><fmt:message key="firstName"/>:</label>  <input type="text"     name="firstName"  placeholder="first name"/><br><br>
@@ -48,17 +34,17 @@
             <div class="input-group">
                 <label><fmt:message key="position"/>:</label>
             </div>
+
             <div class="input-group">
                 <select name="position">
                     <option><fmt:message key="option.student"/></option>
                     <option><fmt:message key="option.tutor"/></option>
                 </select>
                 <input type="hidden" name="registration" value="true"/>
-                <center>
-                    <button type="submit"><fmt:message key="button.register"/></button>
-                </center>
+                <button type="submit"><fmt:message key="button.register"/></button>
                 <sec:csrfInput/>
             </div>
         </form>
+
     </body>
 </html>
