@@ -4,7 +4,6 @@ import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 
 import java.time.LocalDate;
@@ -82,23 +80,24 @@ public class CourseServiceTest {
 
     @Test
     public void testDeleteById() {
+        int page = 0;
         courseService.deleteById(2);
-
-        assertEquals(1, courseService.findAll().size());
-        assertEquals(1, courseService.findAll().get(0).getId());
-        assertEquals("COURSE_1", courseService.findAll().get(0).getName());
+        assertEquals(1, courseService.findAll(page).size());
+        assertEquals(1, courseService.findAll(page).get(0).getId());
+        assertEquals("COURSE_1", courseService.findAll(page).get(0).getName());
     }
 
     @Test
     public void testGetAllById() {
+        int page = 0;
         User user = new User();
         user.setId(1);
         user.setPosition("tutor");
-        List<Course> allCourseIdbyUserId = courseService.getAllByUserId(user.getId());
+        List<Course> allCourseIdbyUserId = courseService.getAllByUserId(user.getId(), page);
         assertEquals(1, allCourseIdbyUserId.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId.get(0).getName());
         user.setPosition("student");
-        List<Course> allCourseIdbyUserId1 = courseService.getAllByUserId(user.getId());
+        List<Course> allCourseIdbyUserId1 = courseService.getAllByUserId(user.getId(), page);
         assertEquals(1, allCourseIdbyUserId1.get(0).getId());
         assertEquals("COURSE_1", allCourseIdbyUserId1.get(0).getName());
     }

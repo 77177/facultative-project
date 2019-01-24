@@ -5,6 +5,12 @@ VALUES ('Mark', 'Rasane', '0tutor@gmail.com', '$2a$05$1MRWimua526pMo7b7c0ynuxzjB
 INSERT INTO users (first_name, last_name, email, password, position)
 VALUES ('Lewis', 'Meckln', '1tutor@gmail.com', '$2a$05$cX8f.TnQczI2tbvsYVNEkegQD.MuHbqWXnTzjzdoTwp/ezyY5wNpC', 'tutor');
 
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Maksimus', 'III', '2tutor@gmail.com', '$2a$05$Aw7dHahBXbmP1RUYWIaBreN1zcAxh.ki5hzIlNfI9NN8VXHwIlkKO', 'tutor');
+
+INSERT INTO users (first_name, last_name, email, password, position)
+VALUES ('Andre', 'Koromyslov', '3tutor@gmail.com', '$2a$05$QRlaZ2zwxU3K7tFYO9STTuhMb6UGkbsr8H8BebO5sug3Cv2I3MxDG', 'tutor');
+
 --users - students
 INSERT INTO users (first_name, last_name, email, password, position)
 VALUES ('Laura', 'Hieme', '0student@gmail.com', '$2a$05$GyjRzb11IYENptTcv22BeehLWiufsyynVSJqvyY0wuJFiNZftRD3G', 'student');
@@ -23,10 +29,40 @@ VALUES ('Ken', 'Ham', '4student@gmail.com', '$2a$05$t3ClColpM159lc2y2CsXYekuDKGy
 
 --courses
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
-VALUES ('COURSE_1', 1, '2015-11-10', '2015-11-12', 'true');
+VALUES ('COURSE_1', 1, '2019-02-01', '2019-03-01', 'true');
 
 INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
-VALUES ('COURSE_2', 2, '2015-11-18', '2015-11-19', 'false');
+VALUES ('COURSE_2', 2, '2019-02-01', '2019-03-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_3', 3, '2019-02-01', '2019-03-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_4', 4, '2019-02-01', '2019-03-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_5', 1, '2019-03-01', '2019-05-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_6', 2, '2019-03-01', '2019-05-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_7', 3, '2019-03-01', '2019-05-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_8', 4, '2019-03-01', '2019-06-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_9', 1, '2019-04-01', '2019-06-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_10', 2, '2019-04-01', '2019-06-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_11', 3, '2019-04-01', '2019-06-01', 'true');
+
+INSERT INTO courses (course_name, tutor_id, starting_date, finishing_date, active)
+VALUES ('COURSE_12', 4, '2019-04-01', '2019-06-01', 'true');
 
 --student_course
 

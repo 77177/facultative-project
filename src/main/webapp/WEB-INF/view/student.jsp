@@ -14,12 +14,16 @@
 
     Object courseListObject = request.getAttribute("courseList");
     List<Course> courseList = courseListObject != null ? (List) courseListObject : Collections.emptyList();
+
+    int pageNumber = (int) request.getAttribute("pageNumber");
+    int pageSize = 10;
 %>
 <html>
 <head>
     <title><fmt:message key="title"/></title>
     <style> <%@include file="/theme/css/main.css"%> </style>
     <style> <%@include file="/theme/css/table.css"%> </style>
+    <%--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">--%>
 </head>
     <body>
         <div class="header">
@@ -88,6 +92,29 @@
                         }
                     %>
                 </table>
+                <ul class="pagination">
+                    <%
+                        if (pageNumber > 0) {
+                            %>
+                            <li class="page-item">
+                                <a class="page-link" href="/user/profile?page=${pageNumber - 1}">previous 10</a>
+                            </li>
+                            <%
+                        }
+                    %>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> ... </a>
+                    </li>
+                    <%
+                        if (courseList.size() == pageSize) {
+                            %>
+                            <li class="page-item">
+                                <a class="page-link" href="/user/profile?page=${pageNumber + 1}">next 10</a>
+                            </li>
+                            <%
+                        }
+                    %>
+                </ul>
                 <%
                 }
         %>

@@ -8,10 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.PersistenceException;
@@ -35,26 +32,27 @@ public class UserController {
     }
 
     @RequestMapping("/profile")
-    public ModelAndView sendRedirectToProfile() {
+    public ModelAndView sendRedirectToProfile(@RequestParam(name = "page", required = false) Integer page) {
+        int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
             if (principal.isStudent()) {
-                modelAndView = studentProfile(principal.getUserId());
+                modelAndView = studentProfile(principal.getUserId(), pageNumber);
             } else {
-                modelAndView = tutorProfile(principal.getUserId());
+                modelAndView = tutorProfile(principal.getUserId(), pageNumber);
             }
         } else {
             modelAndView = new ModelAndView(COURSE);
-            modelAndView.addObject("courseList", courseService.findAll());
+            modelAndView.addObject("courseList", courseService.findAll(pageNumber));
         }
+        modelAndView.addObject("pageNumber", pageNumber);
         return modelAndView;
     }
 
     @GetMapping("/{userId}/course/{courseId}/{action}")
-    public String action(@PathVariable int userId, @PathVariable int courseId,
-                               @PathVariable String action) {
+    public String action(@PathVariable int userId, @PathVariable int courseId, @PathVariable String action) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return "redirect:/course";
@@ -66,7 +64,7 @@ public class UserController {
         if (action != null) {
             switch (action) {
                 case "leave": {
-                    principal.getCourseIdList().remove(new Integer(courseId));
+                    principal.getCourseIdList().remove(courseId);
                     userService.leaveCourse(userId, courseId);
                     break;
                 }
@@ -80,17 +78,17 @@ public class UserController {
         return "redirect:/course/" + courseId;
     }
 
-    private ModelAndView studentProfile(int studentId) {
+    private ModelAndView studentProfile(int studentId, int pageNumber) {
         ModelAndView modelAndView = new ModelAndView(USER_STUDENT);
         modelAndView.addObject("user", userService.getById(studentId));
-        modelAndView.addObject("courseList", courseService.getAllByUserId(studentId));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(studentId, pageNumber));
         return modelAndView;
     }
 
-    private ModelAndView tutorProfile(int tutorId) {
+    private ModelAndView tutorProfile(int tutorId, int pageNumber) {
         ModelAndView modelAndView = new ModelAndView(USER_TUTOR);
         modelAndView.addObject("user", userService.getById(tutorId));
-        modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId, pageNumber));
         return modelAndView;
     }
 
@@ -98,14 +96,6 @@ public class UserController {
     public ModelAndView persistingEntityExceptionHandler(Exception e) {
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(PersistenceException.class)
-    public ModelAndView userWithIdDoesNotExistExceptionHandler(Exception e) {
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        ErrorDto errorDto = new ErrorDto("UserWithIdDoesNotExistException", e.getMessage());
         modelAndView.addObject("error", errorDto);
         return modelAndView;
     }

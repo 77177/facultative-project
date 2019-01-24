@@ -22,6 +22,16 @@
             </select>
             <input type="submit" value="change language"/>
         </form>
+        <%
+            Object error = request.getAttribute("error");
+            if(error != null) {
+                %>
+                <div>
+                    ${error}
+                </div>
+                <%
+            }
+        %>
         <form method="post" action="/login">
             <div class="input-group">
                 <label><fmt:message key="firstName"/>:</label>  <input type="text"     name="firstName"  placeholder="first name"/><br><br>
@@ -44,7 +54,9 @@
                     <option><fmt:message key="option.tutor"/></option>
                 </select>
                 <input type="hidden" name="registration" value="true"/>
-                    <center><button type="submit"><fmt:message key="button.register"/></button></center>
+                <center>
+                    <button type="submit"><fmt:message key="button.register"/></button>
+                </center>
                 <sec:csrfInput/>
             </div>
         </form>

@@ -24,7 +24,7 @@ public class WelcomeController {
 
     @RequestMapping("/**")
     public String welcome() {
-        return "redirect:/course/";
+        return "redirect:/course/?page=0";
     }
 
     @ExceptionHandler(PersistenceException.class)

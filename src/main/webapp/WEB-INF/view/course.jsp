@@ -11,6 +11,9 @@
 <fmt:setBundle basename="bundle.course"/>
 <%
     SecurityContextUser principal = null;
+    List<Course> courseList = (List) request.getAttribute("courseList");
+    int pageNumber = (int) request.getAttribute("pageNumber");
+    int pageSize = 10;
 %>
 <sec:authorize access="isAuthenticated()">
     <%
@@ -22,12 +25,14 @@
         <title><fmt:message key="title"/></title>
         <style>
             <%@include file="/theme/css/main.css"%>
-        </style> <style>
+        </style>
+        <style>
             <%@include file="/theme/css/table.css"%>
         </style>
+        <%--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">--%>
     </head>
     <body>
-        <div class="header">
+        <div class="header jumbotron">
             <h2><fmt:message key="allCourses"/></h2>
         </div>
         <c:import url="header.jsp"/>
@@ -41,35 +46,53 @@
             <input type="submit" value="change language"/>
         </form>
         <%
-            Object listObject = request.getAttribute("courseList");
-            if (listObject != null) {
-                if (listObject instanceof List) {
+            if (!courseList.isEmpty()) {
+            %>
+            <table class="table-striped table-hover col-sm-12">
+                <tr>
+                    <th><fmt:message key="title"/></th>
+                    <th><fmt:message key="startDate"/></th>
+                    <th><fmt:message key="finishDate"/></th>
+                    <th></th>
+                </tr>
+                <%
+                    for (Course course : courseList) {
                     %>
-                    <table style="border: 2px solid black; border-spacing: 7px 7px">
-                        <tr>
-                            <th><fmt:message key="title"/></th>
-                            <th><fmt:message key="startDate"/></th>
-                            <th><fmt:message key="finishDate"/></th>
-                        </tr>
-                        <%
-                            List<Course> list = (List<Course>) listObject;
-                            for (Course course : list) {
-                                %>
-                                <tr>
-                                    <td><%= course.getName()%></td>
-                                    <td><%=
-                                        course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
-                                    <td><%=
-                                        course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
-                                    <td><a href="/course/<%=course.getId()%>">info</a></td>
-                                </tr>
-                                <%
-                            }
-                        %>
-                    </table>
-                    <br><br>
+                    <tr>
+                        <td><%= course.getName()%></td>
+                        <td><%= course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
+                        <td><%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
+                        <td><a href="/course/<%=course.getId()%>">info</a></td>
+                    </tr>
                     <%
-                }
+                    }
+                %>
+            </table>
+            <br><br>
+            <ul class="pagination">
+                <%
+                    if (pageNumber > 0) {
+                    %>
+                    <li class="page-item">
+                        <a class="page-link" href="/course/?page=${pageNumber - 1}">previous 10</a>
+                    </li>
+                    <%
+                    }
+                %>
+                <li class="page-item">
+                    <a class="page-link" href="#"> ... </a>
+                </li>
+                <%
+                    if (courseList.size() == pageSize) {
+                    %>
+                    <li class="page-item">
+                        <a class="page-link" href="/course/?page=${pageNumber + 1}">next 10</a>
+                    </li>
+                    <%
+                    }
+                %>
+            </ul>
+            <%
             } else { %>
                 <p><fmt:message key="noCourses"/></p>
         <% } %> </center> </form>

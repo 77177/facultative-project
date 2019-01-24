@@ -6,18 +6,13 @@ import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.format.Formatter;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -26,6 +21,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
+import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Controller
 @RequestMapping("/course")
@@ -41,10 +37,11 @@ public class CourseController {
     }
 
     @GetMapping(value = "/")
-    public ModelAndView getAllCourses() {
-        System.out.println(SecurityContextHolder.getContext());
+    public ModelAndView getAllCourses(@RequestParam(name = "page", required = false) Integer page) {
+        int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView = new ModelAndView(COURSE);
-        modelAndView.addObject("courseList", courseService.findAll());
+        modelAndView.addObject("courseList", courseService.findAll(pageNumber));
+        modelAndView.addObject("pageNumber", pageNumber);
         return modelAndView;
     }
 
@@ -108,6 +105,14 @@ public class CourseController {
             modelAndView.addObject("course", course);
             return modelAndView;
         }
+    }
+
+    @ExceptionHandler(PersistenceException.class)
+    public ModelAndView persistenceExceptionHandler(PersistenceException e) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject("exception_type", "db exception");
+        modelAndView.addObject("message", e.getMessage());
+        return modelAndView;
     }
 
     @InitBinder

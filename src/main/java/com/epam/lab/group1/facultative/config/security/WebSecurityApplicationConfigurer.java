@@ -47,7 +47,7 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
                 .loginPage("/authenticator/login")
                 .loginProcessingUrl("/login")
                 .failureUrl("/authenticator/login")
-                .defaultSuccessUrl("/user/profile")
+                .defaultSuccessUrl("/course/?pageNumber=0")
             .and()
             .userDetailsService(userDetailsService)
             .logout()
