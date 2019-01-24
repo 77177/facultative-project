@@ -28,7 +28,7 @@
     </head>
     <body>
         <c:import url="header.jsp"/>
-        <form action="/feedback/user/<%=principal.getUserId()%>/course/<%=course.getId()%>" method="get">
+        <form action="/feedback/user/<%=student.getId()%>/course/<%=course.getId()%>" method="get">
             <select name="locale">
                 <option value="ru_RU">Русский</option>
                 <option value="en_US">English</option>
@@ -40,7 +40,7 @@
         <sec:authorize access="hasAnyAuthority('tutor')">
             <%--@elvariable id="feedback" type="com.epam.lab.group1.facultative.model.FeedBack"--%>
             <form:form action="/feedback/" method="post" modelAttribute="feedback">
-                <span><%=student.getFullName()%></span>, <fmt:message key="feedbackForCourse"/><span><%=course.getName()%></span><br>
+                <span><%=student.getFullName()%></span>, <fmt:message key="feedbackForCourse"/> <span><%=course.getName()%></span><br>
                 <br/>
                 <form:textarea path="text" rows="4" cols="50"
                                readonly="<%=!(course.getTutorId()==principal.getUserId())%>"></form:textarea>
