@@ -93,6 +93,7 @@ public class CourseController {
 
     @PostMapping(value = "/action/edit")
     public ModelAndView editCourse(@ModelAttribute Course course) {
+        //TODO Could come null dates. Check necessary!
         SingleCourseDto singleCourseDto = courseService.update(course);
         ModelAndView modelAndView = new ModelAndView();
         if (!singleCourseDto.isErrorPresent()) {
