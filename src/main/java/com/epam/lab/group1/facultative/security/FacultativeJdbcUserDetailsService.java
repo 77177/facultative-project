@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Implementation of the UserDetailsService. Retrieves data from DB and creates UserDetails.
  */
-@Component
+@Component(value = "userDetailsService")
 public class FacultativeJdbcUserDetailsService implements UserDetailsService {
 
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -64,7 +64,7 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         SecurityContextUser securityContextUser = new SecurityContextUser(username, user.getPassword(), authorities);
         securityContextUser.setUserId(user.getId());
         securityContextUser
-                .setCourseIdList(courseDAO.getAllByUserId(user.getId())
+                .setCourseIdList(courseDAO.getAllByUserId(user.getId(), 0, 500)
                         .stream()
                         .map(Course::getId)
                         .collect(Collectors.toList()));

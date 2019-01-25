@@ -11,7 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@Component
 public class SecurityContextUser extends User {
 
     private int userId;
