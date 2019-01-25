@@ -52,7 +52,7 @@ public class FeedBackController {
     }
 
     @GetMapping(value = "/user/{userId}/course/{courseId}")
-    public ModelAndView getFeedbackPage(HttpServletRequest request,@PathVariable int userId, @PathVariable int courseId) {
+    public ModelAndView getFeedbackPage(HttpServletRequest request, @PathVariable int userId, @PathVariable int courseId) {
         logger.info("Caught request " + request.getRequestURL());
         SecurityContextUser principal =
                 (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -71,13 +71,17 @@ public class FeedBackController {
             logger.info("Fetch feedback " + feedBack);
         }
         modelAndView.addObject("feedback", feedBack);
+        logger.info("Adding Model " + modelAndView.getModel());
         modelAndView.addObject("student", userService.getById(userId));
+        logger.info("Adding Model " + modelAndView.getModel());
         modelAndView.addObject("course", courseService.getById(courseId));
+        logger.info("Adding Model " + modelAndView.getModel());
         return modelAndView;
     }
 
     @ExceptionHandler(PersistenceException.class)
     public ModelAndView sqlExceptionHandler(Exception e) {
+        logger.error("Persistence Exception Encountered. Message: " + e.getMessage());
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
         modelAndView.addObject("error", errorDto);

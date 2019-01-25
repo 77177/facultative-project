@@ -10,15 +10,11 @@ import org.springframework.format.Formatter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +24,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
 import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
+import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Controller
 @RequestMapping("/course")
@@ -43,11 +40,13 @@ public class CourseController {
     }
 
     @GetMapping(value = "/")
-    public ModelAndView getAllCourses(HttpServletRequest request) {
-        logger.info("Caught request " + request.getRequestURL());
+    public ModelAndView getAllCourses(HttpServletRequest request,@RequestParam(name = "page", required = false) Integer page) {
+        int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView = new ModelAndView(COURSE);
         logger.info("Create ModelAndView with View " + modelAndView.getViewName());
-        modelAndView.addObject("courseList", courseService.findAll());
+        modelAndView.addObject("courseList", courseService.findAll(pageNumber));
+        logger.info("Adding Model " + modelAndView.getModel());
+        modelAndView.addObject("pageNumber", pageNumber);
         logger.info("Adding Model " + modelAndView.getModel());
         logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
@@ -152,6 +151,15 @@ public class CourseController {
             logger.info("Send Model " + modelAndView.getViewName());
             return modelAndView;
         }
+    }
+
+    @ExceptionHandler(PersistenceException.class)
+    public ModelAndView persistenceExceptionHandler(PersistenceException e) {
+        logger.error("Persistence Exception Encountered. Message: " + e.getMessage());
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject("exception_type", "db exception");
+        modelAndView.addObject("message", e.getMessage());
+        return modelAndView;
     }
 
     @InitBinder
