@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -38,11 +39,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
-            if (principal.isStudent()) {
-                modelAndView = studentProfile(principal.getUserId(), pageNumber);
-            } else {
-                modelAndView = tutorProfile(principal.getUserId(), pageNumber);
-            }
+            modelAndView = userProfile(principal.getUserId(), pageNumber);
         } else {
             modelAndView = new ModelAndView(COURSE);
             modelAndView.addObject("courseList", courseService.findAll(pageNumber));
@@ -78,17 +75,16 @@ public class UserController {
         return "redirect:/course/" + courseId;
     }
 
-    private ModelAndView studentProfile(int studentId, int pageNumber) {
-        ModelAndView modelAndView = new ModelAndView(USER_STUDENT);
-        modelAndView.addObject("user", userService.getById(studentId));
-        modelAndView.addObject("courseList", courseService.getAllByUserId(studentId, pageNumber));
-        return modelAndView;
-    }
-
-    private ModelAndView tutorProfile(int tutorId, int pageNumber) {
-        ModelAndView modelAndView = new ModelAndView(USER_TUTOR);
-        modelAndView.addObject("user", userService.getById(tutorId));
-        modelAndView.addObject("courseList", courseService.getAllByUserId(tutorId, pageNumber));
+    private ModelAndView userProfile(int userId, int pageNumber) {
+        User user = userService.getById(userId);
+        ModelAndView modelAndView = new ModelAndView();
+        if (user.getPosition().equals("student")) {
+            modelAndView.setViewName(USER_STUDENT);
+        } else if (user.getPosition().equals("tutor")) {
+            modelAndView.setViewName(USER_TUTOR);
+        }
+        modelAndView.addObject("user", userService.getById(userId));
+        modelAndView.addObject("courseList", courseService.getAllByUserId(userId, pageNumber));
         return modelAndView;
     }
 

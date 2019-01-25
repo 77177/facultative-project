@@ -92,7 +92,7 @@
                         %>
                         <p>
                             <a class="btn btn-outline-primary"
-                               href="/feedback/user/<%=principal.getUserId()%>/course /<%=course.getId()%>/">
+                               href="/feedback/user/<%=principal.getUserId()%>/course/<%=course.getId()%>">
                                 <fmt:message key="feedbackMessage"/>
                             </a>
                         </p>
@@ -149,7 +149,7 @@
                                 <tr>
                                     <td><% out.println(user.getFirstName());%></td>
                                     <td><% out.println(user.getLastName());%></td>
-                                    <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/">
+                                    <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>">
                                         <fmt:message key="seeFeedback"/></a></td>
                                 </tr>
                                 <%
