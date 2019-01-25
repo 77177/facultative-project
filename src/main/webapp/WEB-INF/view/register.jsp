@@ -97,33 +97,33 @@
                     <label for="firstName" class="col-sm-2 col-form-label"><fmt:message key="firstName"/>:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control-plaintext" id="firstName" name="firstName"
-                               placeholder="first name">
+                               placeholder="first name" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="lastName" class="col-sm-2 col-form-label"><fmt:message key="lastName"/>:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control-plaintext" id="lastName" name="lastName"
-                               placeholder="last name">
+                               placeholder="last name" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="email" class="col-sm-2 col-form-label"><fmt:message key="email"/>:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control-plaintext" id="email" name="username"
-                               placeholder="e-mail">
+                        <input type="email" class="form-control-plaintext" name="username" id="email"
+                               placeholder="yourEmail@company.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="password" class="col-sm-2 col-form-label"><fmt:message key="password"/>:</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control" id="password" name="password"
-                               placeholder="Password">
+                               placeholder="Password" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="position" class="col-sm-2 col-form-label"><fmt:message key="position"/>:</label>
-                    <select class="form-control" id="position" name="position">
+                    <select class="form-control" id="position" name="position" required>
                         <option><fmt:message key="option.student"/></option>
                         <option><fmt:message key="option.tutor"/></option>
                     </select>
