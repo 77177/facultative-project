@@ -25,7 +25,7 @@ public class WelcomeControllerTest {
     public WelcomeControllerTest() {
         CourseService courseService = mock(CourseService.class);
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new WelcomeController(courseService))
+                .standaloneSetup(new WelcomeController())
                 .build();
     }
 

@@ -80,9 +80,9 @@ public class CourseDAOTest {
         int pageSize = 5;
         courseDAO.deleteById(1);
 
-        assertEquals(1, courseDAO.findAll(page, pageSize).size());
-        assertEquals(2, courseDAO.findAll(page, pageSize).get(0).getId());
-        assertEquals("COURSE_2", courseDAO.findAll(page, pageSize).get(0).getName());
+        assertEquals(1, courseDAO.findAllActive(page, pageSize).size());
+        assertEquals(2, courseDAO.findAllActive(page, pageSize).get(0).getId());
+        assertEquals("COURSE_2", courseDAO.findAllActive(page, pageSize).get(0).getName());
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -97,7 +97,7 @@ public class CourseDAOTest {
     public void testGetAllActive() {
         int page = 0;
         int pageSize = 5;
-        List<Course> list = courseDAO.findAll(page, pageSize);
+        List<Course> list = courseDAO.findAllActive(page, pageSize);
         assertEquals(2, list.size());
         assertEquals("COURSE_1", list.get(0).getName());
         assertEquals("COURSE_2", list.get(1).getName());

@@ -11,6 +11,7 @@ import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -175,16 +176,6 @@ public class CourseController {
         return modelAndView;
     }
 
-    @ExceptionHandler(PersistenceException.class)
-    public ModelAndView persistenceExceptionHandler(PersistenceException e) {
-        logger.error("Persistence Exception Encountered. Message: " + e.getMessage());
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("exception_type", "db exception");
-        modelAndView.addObject("message", e.getMessage());
-        ErrorDto errorDto = new ErrorDto("PersistingEntityException in /course/** path", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
-    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
