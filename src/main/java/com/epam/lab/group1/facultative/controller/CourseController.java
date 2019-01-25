@@ -41,6 +41,7 @@ public class CourseController {
 
     @GetMapping(value = "/")
     public ModelAndView getAllCourses(HttpServletRequest request,@RequestParam(name = "page", required = false) Integer page) {
+        logger.info("Caught request " + request.getRequestURL());
         int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView = new ModelAndView(COURSE);
         logger.info("Create ModelAndView with View " + modelAndView.getViewName());
@@ -54,6 +55,7 @@ public class CourseController {
 
     @GetMapping(value = "/{courseId}")
     public ModelAndView getById(HttpServletRequest request, @PathVariable int courseId) {
+
         logger.info("Caught request " + request.getRequestURL());
         ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
         logger.info("Create ModelAndView with View " + modelAndView.getViewName());
