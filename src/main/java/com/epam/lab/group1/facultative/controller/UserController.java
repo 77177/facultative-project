@@ -66,30 +66,42 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/course/{courseId}/{action}")
-    public String action(@PathVariable int userId, @PathVariable int courseId, @PathVariable String action) {
+    public String action(HttpServletRequest request, @PathVariable int userId, @PathVariable int courseId, @PathVariable String action) {
+        logger.info("Caught request " + request.getRequestURL());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("Fetch authentication" + authentication);
         if (authentication == null) {
+            logger.info("Redirect to /course");
             return "redirect:/course";
         }
         SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
+        logger.info("Fetch principal " + principal);
         if (principal == null) {
+            logger.info("Redirect to /course");
             return "redirect:/course";
         }
+        logger.warn("action may not exist");
         if (action != null) {
+
+            logger.info("action exists");
             switch (action) {
                 case "leave": {
+                    logger.info("action=" + action);
                     principal.getCourseIdList().remove(new Integer(courseId));
                     userService.leaveCourse(userId, courseId);
                     break;
                 }
                 case "subscribe": {
+                    logger.info("action=" + action);
                     principal.getCourseIdList().add(courseId);
                     userService.subscribeCourse(userId, courseId);
                     break;
                 }
             }
         }
+        logger.info("redirect to /course/" + courseId);
         return "redirect:/course/" + courseId;
+
     }
 
     private ModelAndView studentProfile(int studentId, int pageNumber) {
@@ -108,6 +120,7 @@ public class UserController {
 
     @ExceptionHandler(PersistenceException.class)
     public ModelAndView persistingEntityExceptionHandler(Exception e) {
+        logger.error("Persistence entity exception caught. Message: " + e.getMessage());
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
         modelAndView.addObject("error", errorDto);

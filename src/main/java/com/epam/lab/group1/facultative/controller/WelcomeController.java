@@ -33,6 +33,7 @@ public class WelcomeController {
 
     @ExceptionHandler(PersistenceException.class)
     public ModelAndView persistingEntityExceptionHandler(Exception e) {
+        logger.error("Persistence entity exception caught. Message: " + e.getMessage());
         ModelAndView modelAndView = new ModelAndView(ERROR);
         ErrorDto errorDto = new ErrorDto("PersistingEntityException", e.getMessage());
         modelAndView.addObject("error", errorDto);
