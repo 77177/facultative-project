@@ -103,7 +103,7 @@ public class CourseDAO {
         }
     }
 
-    public List<Course> findAll(int pageNumber, int pageSize) {
+    public List<Course> findAllActive(int pageNumber, int pageSize) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

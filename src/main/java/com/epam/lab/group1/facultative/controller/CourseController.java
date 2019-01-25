@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
+import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
@@ -86,8 +87,15 @@ public class CourseController {
     @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
     public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
         ModelAndView modelAndView = new ModelAndView(COURSE_EDIT);
+
+        logger.info("Create ModelAndView with View " + modelAndView.getViewName());
         modelAndView.addObject("tutorId", tutorId);
+
+        logger.info("Adding Model " + modelAndView.getModel());
         modelAndView.addObject("course", courseService.getById(courseId));
+
+        logger.info("Adding Model " + modelAndView.getModel());
+        logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
     }
 
@@ -108,8 +116,27 @@ public class CourseController {
         }
     }
 
+    @ExceptionHandler(NoResultException.class)
+    public ModelAndView noResultExceptionHandler(NoResultException e) {
+        logger.error("No such course in database. Message: " + e.getMessage(), e);
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject("exception_type", "no result in data base");
+        modelAndView.addObject("message", e.getMessage());
+        return modelAndView;
+    }
+
+    @ExceptionHandler(CourseDoesNotExistException.class)
+    public ModelAndView courseDoesNotExistException(CourseDoesNotExistException e) {
+        logger.error(e.getMessage(), e);
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject("exception_type", e.getClass().getSimpleName());
+        modelAndView.addObject("message", e.getMessage());
+        return modelAndView;
+    }
+
     @ExceptionHandler(PersistenceException.class)
     public ModelAndView persistenceExceptionHandler(PersistenceException e) {
+        logger.error("Persistence Exception Encountered. Message: " + e.getMessage(), e);
         ModelAndView modelAndView = new ModelAndView(ERROR);
         modelAndView.addObject("exception_type", "db exception");
         modelAndView.addObject("message", e.getMessage());

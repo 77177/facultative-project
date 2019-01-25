@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.USER_STUDENT;
@@ -85,6 +86,15 @@ public class UserController {
         }
         modelAndView.addObject("user", userService.getById(userId));
         modelAndView.addObject("courseList", courseService.getAllByUserId(userId, pageNumber));
+        return modelAndView;
+    }
+
+    @ExceptionHandler(NoResultException.class)
+    public ModelAndView noResultExceptionHandler(NoResultException e) {
+        logger.error("No such user in database. Message: " + e.getMessage());
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject("exception_type", "no result in data base");
+        modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
 

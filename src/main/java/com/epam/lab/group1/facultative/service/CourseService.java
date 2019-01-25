@@ -1,12 +1,13 @@
 package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
+import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -23,6 +24,10 @@ public class CourseService {
     }
 
     public Course getById(int courseId) {
+        Course course = courseDAO.getById(courseId);
+        if (course == null) {
+            throw new CourseDoesNotExistException("Course was not found in db by id: " + courseId);
+        }
         return courseDAO.getById(courseId);
     }
 
@@ -33,11 +38,11 @@ public class CourseService {
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
         }
-        //Creation try
+
         try {
             courseDAO.create(course);
             singleCourseDto.setErrorPresent(false);
-        } catch (PersistenceException e) {
+        } catch (ConstraintViolationException e) {
             String message = String.format("Course was not created. Probably with name %s already exists. Course: %s",
                     course.getName(), course.getName());
             logger.debug(message, e);
@@ -55,11 +60,10 @@ public class CourseService {
             return singleCourseDto;
         }
 
-        //Updating try
         try {
             courseDAO.update(course);
             singleCourseDto.setErrorPresent(false);
-        } catch (PersistenceException e) {
+        } catch (ConstraintViolationException e) {
             String message = String.format("Course was not updated. Probably with name %s already exists. Course: %s",
                     course.getName(), course.getName());
             logger.debug(message, e);
@@ -77,9 +81,9 @@ public class CourseService {
         if (page < 0) {
             page = 0;
         }
-        List<Course> courseList = courseDAO.findAll(page, pageSize);
+        List<Course> courseList = courseDAO.findAllActive(page, pageSize);
         if (courseList.size() == 0) {
-            courseList = courseDAO.findAll(page - 1, pageSize);
+            courseList = courseDAO.findAllActive(page - 1, pageSize);
         }
         return courseList;
     }

@@ -28,16 +28,6 @@ public class UserService {
         return userDAO.getByEmail(string);
     }
 
-    public boolean isEmailAvailable(String email) {
-        try {
-            getByEmail(email);
-            return false;
-        } catch (PersistenceException e) {
-            logger.debug("user with email " + email + "does not exist in the db");
-            return true;
-        }
-    }
-
     public User create(User user) {
         return userDAO.create(user);
     }

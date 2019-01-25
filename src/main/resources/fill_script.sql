@@ -74,7 +74,7 @@ INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (4, 1, 3, 'feedback good');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)
-VALUES (5, 1, 2, 'excelent');
+VALUES (5, 1, 2, 'excellent');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (6, 1, 0, 'not bad');

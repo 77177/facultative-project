@@ -10,7 +10,9 @@
               crossorigin="anonymous"/>
     </head>
     <body>
-        <fmt:message key="errorMessage"/>
+        <div class="alert alert-danger">
+            <fmt:message key="errorMessage"/>
+        </div>
         <form>
             <fmt:message key="errorInfo"/>. <br>
             <fmt:message key="status"/>:        ${errorStatus}<br>
