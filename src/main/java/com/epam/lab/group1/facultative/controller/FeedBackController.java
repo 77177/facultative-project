@@ -78,13 +78,4 @@ public class FeedBackController {
         logger.info("Adding Model " + modelAndView.getModel());
         return modelAndView;
     }
-
-    @ExceptionHandler(PersistenceException.class)
-    public ModelAndView sqlExceptionHandler(Exception e) {
-        logger.error("Persistence Exception Encountered. Message: " + e.getMessage());
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        ErrorDto errorDto = new ErrorDto("PersistingEntityException in /feedback/** path", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
-    }
 }

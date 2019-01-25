@@ -122,13 +122,4 @@ public class UserController {
         modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
-
-    @ExceptionHandler(PersistenceException.class)
-    public ModelAndView persistingEntityExceptionHandler(Exception e) {
-        logger.error("Persistence entity exception caught. Message: " + e.getMessage());
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        ErrorDto errorDto = new ErrorDto("PersistingEntityException in /user/** path", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
-    }
 }

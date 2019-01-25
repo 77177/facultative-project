@@ -19,32 +19,28 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(PersistenceException.class)
     public ModelAndView persistenceExceptionHandler(PersistenceException e) {
         logger.error("Persistence Exception Encountered. Message: " + e.getMessage());
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("exception_type", "db exception");
-        modelAndView.addObject("message", e.getMessage());
         ErrorDto errorDto = new ErrorDto("PersistingEntityException in /course/** path", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
+        return createAndPopulateErrorPage(e, errorDto);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ModelAndView methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e) {
         logger.error("ArgumentTypeMismatchException encountered. Message: " + e.getMessage());
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("exception_type", e.getClass().getSimpleName());
-        modelAndView.addObject("message", e.getMessage());
         ErrorDto errorDto = new ErrorDto("ArgumentTypeMismatchException in /course/** path", e.getMessage());
-        modelAndView.addObject("error", errorDto);
-        return modelAndView;
+        return createAndPopulateErrorPage(e, errorDto);
     }
 
     @ExceptionHandler(Exception.class)
     public ModelAndView exceptionHandler(Exception e) {
         logger.error("Exception encountered. Message: " + e.getMessage());
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("exception_type", e.getClass().getSimpleName());
-        modelAndView.addObject("message", e.getMessage());
         ErrorDto errorDto = new ErrorDto("Exception in /course/** path", e.getMessage());
+        return createAndPopulateErrorPage(e, errorDto);
+    }
+
+    private <T extends Exception> ModelAndView createAndPopulateErrorPage(T e, ErrorDto errorDto) {
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject("exception_type", "db exception");
+        modelAndView.addObject("message", e.getMessage());
         modelAndView.addObject("error", errorDto);
         return modelAndView;
     }

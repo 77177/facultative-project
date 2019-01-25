@@ -43,8 +43,7 @@ public class CourseService {
             courseDAO.create(course);
             singleCourseDto.setErrorPresent(false);
         } catch (ConstraintViolationException e) {
-            String message = String.format("Course was not created. Probably with name %s already exists. Course: %s",
-                    course.getName(), course.getName());
+            String message = String.format("Course was not created. Probably with name %s already exists.", course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
@@ -64,8 +63,7 @@ public class CourseService {
             courseDAO.update(course);
             singleCourseDto.setErrorPresent(false);
         } catch (ConstraintViolationException e) {
-            String message = String.format("Course was not updated. Probably with name %s already exists. Course: %s",
-                    course.getName(), course.getName());
+            String message = String.format("Course was not updated. Probably with name %s already exists", course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);

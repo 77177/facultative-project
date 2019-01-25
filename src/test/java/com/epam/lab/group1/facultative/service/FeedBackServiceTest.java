@@ -36,11 +36,11 @@ public class FeedBackServiceTest {
 
     @Test
     public void testGetFeedBack() {
-        FeedBack feedBack = feedBackService.getFeedBack(1, 3);
-        assertEquals(3, feedBack.getStudentId());
+        FeedBack feedBack = feedBackService.getFeedBack(1, 5);
+        assertEquals(5, feedBack.getStudentId());
         assertEquals(1, feedBack.getCourseId());
-        assertEquals(4, feedBack.getMark());
-        assertEquals("Good performance", feedBack.getText());
+        assertEquals(-1, feedBack.getMark());
+        assertEquals("feed back bad", feedBack.getText());
     }
 
     @Test

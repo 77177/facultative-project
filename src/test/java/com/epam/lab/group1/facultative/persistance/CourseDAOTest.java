@@ -2,7 +2,6 @@ package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
-import org.hibernate.PersistentObjectException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +15,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,8 +34,8 @@ public class CourseDAOTest {
     public void init() {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScripts(
-                new ClassPathResource("/dao/sql/create_script.sql"),
-                new ClassPathResource("/dao/sql/fill_script.sql"));
+            new ClassPathResource("/dao/sql/create_script.sql"),
+            new ClassPathResource("/dao/sql/fill_script.sql"));
         populator.execute(this.dataSource);
     }
 
@@ -51,19 +49,21 @@ public class CourseDAOTest {
     @Test
     public void testGetByIdWrongId() {
         Course course = courseDAO.getById(-1);
-        assertNull( course);
+        assertNull(course);
         course = courseDAO.getById(Integer.MAX_VALUE);
-        assertNull( course);
+        assertNull(course);
     }
 
     @Test
     public void testGetAllByUserID() {
         int page = 0;
-        int pageSize = 5;
-        List<Course> allByUserID = courseDAO.getAllByUserId(3, page, pageSize);
+        int pageSize = 20;
+        List<Course> allByUserID = courseDAO.getAllByUserId(5, page, pageSize);
+        assertNotNull(allByUserID);
+        assertFalse(allByUserID.isEmpty());
+        assertEquals(2, allByUserID.size());
         assertEquals(1, allByUserID.get(0).getId());
-        assertEquals("COURSE_1", allByUserID.get(0).getName());
-        assertEquals(1, allByUserID.size());
+        assertEquals(2, allByUserID.get(1).getId());
     }
 
     @Test(expected = NoResultException.class)
@@ -76,13 +76,11 @@ public class CourseDAOTest {
 
     @Test
     public void testDeleteById() {
-        int page = 1;
-        int pageSize = 5;
+        int page = 0;
+        int pageSize = 20;
+        assertEquals(12, courseDAO.findAllActive(page, pageSize).size());
         courseDAO.deleteById(1);
-
-        assertEquals(1, courseDAO.findAllActive(page, pageSize).size());
-        assertEquals(2, courseDAO.findAllActive(page, pageSize).get(0).getId());
-        assertEquals("COURSE_2", courseDAO.findAllActive(page, pageSize).get(0).getName());
+        assertEquals(11, courseDAO.findAllActive(page, pageSize).size());
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -98,9 +96,15 @@ public class CourseDAOTest {
         int page = 0;
         int pageSize = 5;
         List<Course> list = courseDAO.findAllActive(page, pageSize);
-        assertEquals(2, list.size());
+        assertNotNull(list);
+        assertFalse(list.isEmpty());
+        assertEquals(5, list.size());
         assertEquals("COURSE_1", list.get(0).getName());
         assertEquals("COURSE_2", list.get(1).getName());
+
+        List<Course> getAllNonExisting = courseDAO.findAllActive(5, 5);
+        assertNotNull(getAllNonExisting);
+        assertTrue(getAllNonExisting.isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -120,7 +124,7 @@ public class CourseDAOTest {
     @Test
     public void testCreate() {
         Course course = new Course();
-        course.setName("COURSE_3");
+        course.setName("COURSE_13");
         course.setTutorId(1);
         course.setStartingDate(LocalDate.of(1, 1, 1));
         course.setFinishingDate(LocalDate.of(2, 2, 2));
@@ -150,9 +154,13 @@ public class CourseDAOTest {
         assertEquals("New_Course_Name", courseDAO.getById(1).getName());
     }
 
-    @Test
+    /**
+     * In fact, update in this test throws ConstraintViolationException, but magic happens and we can get only
+     * it's grand-grand-..-parent PersistenceException.
+     * But in non-test environment catching of ConstraintViolationException will be successful.
+     */
+    @Test(expected = PersistenceException.class)
     public void testUpdateSameName() {
-        //TODO kill the test
         Course course1 = courseDAO.getById(1);
         assertNotNull(course1);
         assertEquals(1, course1.getId());
@@ -165,8 +173,6 @@ public class CourseDAOTest {
 
         course1.setName("COURSE_2");
         courseDAO.update(course1);
-
-        assertEquals(course1.getName(), course2.getName());
     }
 
     @Test

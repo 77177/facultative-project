@@ -8,7 +8,7 @@ CREATE TABLE users
   first_name VARCHAR(40),
   last_name  VARCHAR(40),
   email      VARCHAR(40) UNIQUE,
-  password   VARCHAR(40),
+  password   VARCHAR(100),
   position   VARCHAR(40),
   primary key (id)
 );
@@ -16,7 +16,7 @@ CREATE TABLE users
 CREATE TABLE courses
 (
   course_id      BIGINT AUTO_INCREMENT,
-  course_name    VARCHAR(40),
+  course_name    VARCHAR(40) UNIQUE,
   tutor_id       INT,
   starting_date  DATE,
   finishing_date DATE,

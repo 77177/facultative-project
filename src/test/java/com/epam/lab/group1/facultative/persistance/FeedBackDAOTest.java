@@ -36,24 +36,24 @@ public class FeedBackDAOTest {
 
     @Test
     public void testGetFeedBack() {
-        FeedBack feedBack = feedBackDAO.getFeedBack(1, 3);
-        assertEquals(3, feedBack.getStudentId());
+        FeedBack feedBack = feedBackDAO.getFeedBack(1, 5);
+        assertEquals(5, feedBack.getStudentId());
         assertEquals(1, feedBack.getCourseId());
-        assertEquals(4, feedBack.getMark());
-        assertEquals("Good performance", feedBack.getText());
+        assertEquals(-1, feedBack.getMark());
+        assertEquals("feed back bad", feedBack.getText());
 
     }
 
     @Test
     public void testSaveOrUpdate() {
         FeedBack feedBackIn = new FeedBack();
-        feedBackIn.setStudentId(4);
+        feedBackIn.setStudentId(6);
         feedBackIn.setCourseId(2);
         feedBackIn.setMark(4);
         feedBackIn.setText("Good");
         feedBackDAO.saveOrUpdate(feedBackIn);
-        FeedBack feedBack = feedBackDAO.getFeedBack(2, 4);
-        assertEquals(4, feedBack.getStudentId());
+        FeedBack feedBack = feedBackDAO.getFeedBack(2, 6);
+        assertEquals(6, feedBack.getStudentId());
         assertEquals(2, feedBack.getCourseId());
         assertEquals(4, feedBack.getMark());
         assertEquals("Good", feedBack.getText());

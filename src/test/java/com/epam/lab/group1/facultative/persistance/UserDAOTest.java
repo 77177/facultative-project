@@ -47,7 +47,7 @@ public class UserDAOTest {
     public void testGetAllTutors() {
         List<User> allTutors = userDAO.getAllTutors();
         assertNotNull(allTutors);
-        assertEquals(2, allTutors.size());
+        assertEquals(4, allTutors.size());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class UserDAOTest {
         assertEquals("Mark", user.getFirstName());
         assertEquals("Rasane", user.getLastName());
         assertEquals("0tutor@gmail.com", user.getEmail());
-        assertEquals("0", user.getPassword());
+        assertEquals("$2a$05$1MRWimua526pMo7b7c0ynuxzjBQGkW/nNGD2CfQ7m6UUsNda5Do/m", user.getPassword());
         assertEquals("tutor", user.getPosition());
     }
 
@@ -77,7 +77,7 @@ public class UserDAOTest {
         assertEquals("Sam", user.getFirstName());
         assertEquals("Garrison", user.getLastName());
         assertEquals("1student@gmail.com", user.getEmail());
-        assertEquals("1", user.getPassword());
+        assertEquals("$2a$05$GYIJLW9IhhmzCqOtMlAxZOhDCHxWEA3YD/xwb5tTD1VAk2l1dAOSe", user.getPassword());
         assertEquals("student", user.getPosition());
     }
 
@@ -133,9 +133,9 @@ public class UserDAOTest {
         user.setPassword("email");
         user.setPosition("position");
         User dbUser = userDAO.create(user);
-        assertEquals(8, dbUser.getId());
-        userDAO.deleteById(8);
-        userDAO.deleteById(8);
+        assertEquals(10, dbUser.getId());
+        userDAO.deleteById(10);
+        userDAO.deleteById(10);
     }
 
     @Test
@@ -155,7 +155,7 @@ public class UserDAOTest {
     public void testGetAllStudentByCourseId() {
         int courseId = 1;
         List<User> allStudentByCourseId = userDAO.getAllStudentByCourseId(courseId);
-        assertEquals(2, allStudentByCourseId.size());
+        assertEquals(5, allStudentByCourseId.size());
         assertEquals("Laura", allStudentByCourseId.get(0).getFirstName());
         assertEquals("Hieme", allStudentByCourseId.get(0).getLastName());
         assertEquals("Sam", allStudentByCourseId.get(1).getFirstName());

@@ -44,15 +44,15 @@ public class CourseServiceTest {
         assertEquals("COURSE_1", course.getName());
         assertEquals(1, course.getId());
         assertEquals(1, course.getTutorId());
-        assertEquals(LocalDate.of(2015, 11, 10), course.getStartingDate());
-        assertEquals(LocalDate.of(2015,11,12), course.getFinishingDate());
+        assertEquals(LocalDate.of(2019, 02, 01), course.getStartingDate());
+        assertEquals(LocalDate.of(2019,03,01), course.getFinishingDate());
         assertEquals(Boolean.TRUE, course.isActive());
     }
 
     @Test()
     public void testCreate() {
         Course course = new Course();
-        course.setName("COURSE_3");
+        course.setName("COURSE_13");
         course.setTutorId(1);
         course.setStartingDate(LocalDate.of(2019, 1, 30));
         course.setFinishingDate(LocalDate.of(2020, 1, 30));
@@ -78,13 +78,17 @@ public class CourseServiceTest {
         assertEquals("New_Course_Name", courseService.getById(1).getName());
     }
 
+    /**
+     * picked page = 1 because pageSize in courseService is hardCoded to 10.
+     */
     @Test
     public void testDeleteById() {
-        int page = 0;
-        courseService.deleteById(2);
+        int page = 1;
+        assertEquals(2, courseService.findAll(page).size());
+        courseService.deleteById(1);
         assertEquals(1, courseService.findAll(page).size());
-        assertEquals(1, courseService.findAll(page).get(0).getId());
-        assertEquals("COURSE_1", courseService.findAll(page).get(0).getName());
+        assertEquals(12, courseService.findAll(page).get(0).getId());
+        assertEquals("COURSE_12", courseService.findAll(page).get(0).getName());
     }
 
     @Test

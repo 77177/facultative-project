@@ -32,7 +32,7 @@ public class WelcomeControllerTest {
     @Test
     public void testWelcome() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(""))
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/course/?page=0"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/course/"));
         mockMvc.perform(MockMvcRequestBuilders.get("/student"))
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/course/"));
         mockMvc.perform(MockMvcRequestBuilders.get("/tutor"))

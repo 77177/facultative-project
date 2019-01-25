@@ -170,6 +170,7 @@ public class CourseDAO {
     }
 
     private List<Course> getAllByStudentId(Session session, int userId, int pageNumber, int pageSize) {
+        //TODO to get or not to get by pages?
         String sql = "SELECT * FROM student_course JOIN courses ON student_course.course_id  = courses.course_id " +
                 "WHERE student_id =" + userId + ";";
         return (List<Course>) session.createSQLQuery(sql).addEntity(Course.class).list();
