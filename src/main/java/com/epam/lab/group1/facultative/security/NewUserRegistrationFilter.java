@@ -1,6 +1,6 @@
 package com.epam.lab.group1.facultative.security;
 
-import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
+import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.AuthenticationService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
@@ -38,9 +38,9 @@ public class NewUserRegistrationFilter implements Filter {
         boolean isRegistration = servletRequest.getParameter("registration") != null;
         logger.debug("Entering to the new user creation zone.");
         if (isRegistration) {
-            PersonRegistrationFormDTO personRegistrationFormDTO = formDtoFromRequest(servletRequest);
+            User user = createUserFromRequest(servletRequest);
             try {
-                authenticationService.createUser(personRegistrationFormDTO);
+                authenticationService.processNewUser(user);
             } catch (ConstraintViolationException e) {
                 ((HttpServletResponse)response).sendRedirect("/authenticator/registration?error=true");
             }
@@ -53,14 +53,15 @@ public class NewUserRegistrationFilter implements Filter {
 
     }
 
-    private PersonRegistrationFormDTO formDtoFromRequest (ServletRequest req){
-        PersonRegistrationFormDTO dto = new PersonRegistrationFormDTO();
-        dto.setFirstName(req.getParameter("firstName"));
-        dto.setLastName(req.getParameter("lastName"));
-        dto.setEmail(req.getParameter("username"));
-        dto.setPosition(req.getParameter("position"));
-        dto.setPassword(req.getParameter("password"));
-        logger.debug("Created PersonRegistrationFormDTO from request: " + dto);
-        return dto;
+    private User createUserFromRequest(ServletRequest req){
+        User user = new User();
+        user.setFirstName(req.getParameter("firstName"));
+        user.setLastName(req.getParameter("lastName"));
+        user.setEmail(req.getParameter("username"));
+        user.setPassword(req.getParameter("password"));
+        user.setPosition(req.getParameter("position"));
+
+        logger.debug("Created PersonRegistrationFormDTO from request: " + user);
+        return user;
     }
 }

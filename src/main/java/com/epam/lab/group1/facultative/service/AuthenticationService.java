@@ -1,6 +1,5 @@
 package com.epam.lab.group1.facultative.service;
 
-import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
 import com.epam.lab.group1.facultative.model.User;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,11 +22,11 @@ public class AuthenticationService {
      * Forwards PersonRegistrationFormDTO object to UserService to retrieve User entity and to save it in database.
      * Creates UserDetails and sets it into SecurityContextHolder.
      *
-     * @param personRegistrationFormDTO user's data from registration form.
+     * @param user user's data from registration form.
      */
-    public User createUser(PersonRegistrationFormDTO personRegistrationFormDTO) {
+    public User processNewUser(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        personRegistrationFormDTO.setPassword(encoder.encode(personRegistrationFormDTO.getPassword()));
-        return userService.createUserFromDto(personRegistrationFormDTO);
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userService.create(user);
     }
 }

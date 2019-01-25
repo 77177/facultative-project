@@ -1,6 +1,5 @@
 package com.epam.lab.group1.facultative.service;
 
-import com.epam.lab.group1.facultative.dto.PersonRegistrationFormDTO;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.apache.log4j.Logger;
@@ -69,15 +68,5 @@ public class UserService {
 
     public void subscribeCourse(int userId, int courseId) {
         userDAO.subscribeCourse(userId, courseId);
-    }
-
-    public User createUserFromDto(PersonRegistrationFormDTO personRegistrationFormDTO) {
-        User user = new User();
-        user.setFirstName(personRegistrationFormDTO.getFirstName());
-        user.setLastName(personRegistrationFormDTO.getLastName());
-        user.setEmail(personRegistrationFormDTO.getEmail());
-        user.setPassword(personRegistrationFormDTO.getPassword());
-        user.setPosition(personRegistrationFormDTO.getPosition());
-        return create(user);
     }
 }
