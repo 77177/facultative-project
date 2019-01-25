@@ -5,6 +5,7 @@
 <fmt:setBundle basename="bundle.register"/>
 <%
     String changeLanguageLink = "/authenticator/registration/";
+    Object errorMessageObject = request.getAttribute("error");
 %>
 <html>
     <head>
@@ -72,6 +73,9 @@
         </nav>
         <div class="row">
             <div class="col-sm-1"></div>
+            <%
+            if(errorMessageObject != null) {
+            %>
             <div class="toast col" data-autohide="false">
                 <div class="toast-header">
                     <strong class="mr-auto text-primary">Account was not created!</strong>
@@ -83,6 +87,7 @@
                     </div>
                 </div>
             </div>
+            <% } %>
             <div class="col-sm-1"></div>
         </div>
         <div class="row">

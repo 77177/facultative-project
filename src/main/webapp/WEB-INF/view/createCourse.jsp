@@ -88,7 +88,7 @@
             %>
                     <div class="toast col" data-autohide="false">
                         <div class="toast-header">
-                            <strong class="mr-auto text-primary">Course was not created!</strong>
+                            <strong class="mr-auto text-primary">Course creation!</strong>
                             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
                         </div>
                         <div class="toast-body">
@@ -116,7 +116,7 @@
                         <div class="form-group row">
                             <label for="finishDate" class="col-sm-2 col-form-label"><fmt:message key="finishDate"/>:</label>
                             <div class="col-sm-2">
-                                <input type="date" class="form-control-plaintext" id="finishDate" name="startingDate"
+                                <input type="date" class="form-control-plaintext" id="finishDate" name="finishingDate"
                                        required>
                             </div>
                         </div>

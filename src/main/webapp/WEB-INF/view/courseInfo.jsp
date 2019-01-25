@@ -162,45 +162,47 @@
             </div>
             <div class="col-sm-1"></div>
         </div>
-        <!-- The leave modal -->
-        <div class="modal" id="leave">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Leaving course</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body ">
-                        Are you sure that you want unsubscribe from this course?
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-danger"
-                           href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">
-                            <fmt:message key="leaveCourse"/>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- The delete modal -->
-        <div class="modal" id="delete">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Delete course</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body ">
-                        Do you want to delete the course?
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-danger"
-                           href="/course/action/delete/<%=course.getId()%>/">
-                            <fmt:message key="deleteCourse"/>
-                        </a>
+        <sec:authorize access="isAuthenticated()">
+            <!-- The leave modal -->
+            <div class="modal" id="leave">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Leaving course</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body ">
+                            Are you sure that you want unsubscribe from this course?
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger"
+                               href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">
+                                <fmt:message key="leaveCourse"/>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <!-- The delete modal -->
+            <div class="modal" id="delete">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Delete course</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body ">
+                            Do you want to delete the course?
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger"
+                               href="/course/action/delete/<%=course.getId()%>/">
+                                <fmt:message key="deleteCourse"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </sec:authorize>
     </body>
 </html>
