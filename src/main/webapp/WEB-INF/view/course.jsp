@@ -11,7 +11,6 @@
     List<Course> courseList = (List) request.getAttribute("courseList");
     int pageNumber = (int) request.getAttribute("pageNumber");
     int pageSize = 10;
-
     String changeLanguageLink = "/course/";
 %>
 <html>
@@ -52,7 +51,7 @@
                     </sec:authorize>
                 </li>
                 <sec:authorize access="isAuthenticated()">
-                    <form class="form-inline" method="post" action="/logout">
+                    <form class="form-inline justify-content-end" method="post" action="/logout">
                         <input class="btn btn-warning" type="submit" value="Logout"/>
                         <sec:csrfInput/>
                     </form>
@@ -65,7 +64,7 @@
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col">
-                    <table class="table-striped table-hover">
+                    <table class="table-striped table-hover col">
                         <thead>
                             <tr>
                                 <th><fmt:message key="title"/></th>

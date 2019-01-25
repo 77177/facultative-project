@@ -64,72 +64,78 @@
                 </sec:authorize>
             </ul>
         </nav>
-        <%
-            if (courseList.isEmpty()) {
-                %>
-                <div><fmt:message key="noCoursesMessage"/></div>
-                <%
-                } else {
-                %>
-                <div class="row">
-                    <div class="col-sm-1"></div>
-                    <div class="col">
-                        <h5><fmt:message key="yourCourses"/>:</h5>
-                        <table class="table-striped table-hover">
-                            <caption><fmt:message key="yourCourses"/></caption>
-                            <thead>
-                            <tr>
-                                <th><fmt:message key="courseName"/></th>
-                                <th><fmt:message key="start"/></th>
-                                <th><fmt:message key="finish"/></th>
-                                <th>info</th>
-                                <th><fmt:message key="feedback"/></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <%
-                                for (Course course : courseList) {
-                            %>
-                            <tr>
-                                <td><% out.println(course.getName());%></td>
-                                <td><% out.println(course.getStartingDate());%></td>
-                                <td><% out.println(course.getFinishingDate());%></td>
-                                <td><a href="/course/<%=course.getId()%>">course info</a></td>
-                                <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/"><fmt:message key="seeFeedback"/></a></td>
-                            </tr>
-                            <%
-                                }
-                            %>
-                            </tbody>
-                        </table>
-                        <ul class="pagination ">
-                            <%
-                                if (pageNumber > 0) {
-                            %>
-                            <li class="page-item">
-                                <a class="page-link" href="/user/profile?page=${pageNumber - 1}">previous 10</a>
-                            </li>
-                            <%
-                                }
-                            %>
-                            <li class="page-item">
-                                <a class="page-link" href="#"> ... </a>
-                            </li>
-                            <%
-                                if (courseList.size() == pageSize) {
-                            %>
-                            <li class="page-item">
-                                <a class="page-link" href="/user/profile?page=${pageNumber + 1}">next 10</a>
-                            </li>
-                            <%
-                                }
-                            %>
-                        </ul>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col">
+            <%
+                if (courseList.isEmpty()) {
+                    %>
+                    <div>
+                        <fmt:message key="noCoursesMessage"/>
+                        <a class="nav-link btn btn-outline-primary btn-lg" href="/course/"
+                           data-toggle="allCourses" data-placement="top" title="Back to the main facultative page!">
+                            all courses
+                        </a>
                     </div>
-                    <div class="col-sm-1"></div>
-                </div>
-                <%
+                    <%
+                    } else {
+                    %>
+                    <h5><fmt:message key="yourCourses"/>:</h5>
+                    <table class="table-striped table-hover col">
+                        <caption><fmt:message key="yourCourses"/></caption>
+                        <thead>
+                        <tr>
+                            <th><fmt:message key="courseName"/></th>
+                            <th><fmt:message key="start"/></th>
+                            <th><fmt:message key="finish"/></th>
+                            <th>info</th>
+                            <th><fmt:message key="feedback"/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                            for (Course course : courseList) {
+                        %>
+                        <tr>
+                            <td><% out.println(course.getName());%></td>
+                            <td><% out.println(course.getStartingDate());%></td>
+                            <td><% out.println(course.getFinishingDate());%></td>
+                            <td><a href="/course/<%=course.getId()%>">course info</a></td>
+                            <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>/"><fmt:message key="seeFeedback"/></a></td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                        </tbody>
+                    </table>
+                    <ul class="pagination ">
+                        <%
+                            if (pageNumber > 0) {
+                        %>
+                        <li class="page-item">
+                            <a class="page-link" href="/user/profile?page=${pageNumber - 1}">previous 10</a>
+                        </li>
+                        <%
+                            }
+                        %>
+                        <li class="page-item">
+                            <a class="page-link" href="#"> ... </a>
+                        </li>
+                        <%
+                            if (courseList.size() == pageSize) {
+                        %>
+                        <li class="page-item">
+                            <a class="page-link" href="/user/profile?page=${pageNumber + 1}">next 10</a>
+                        </li>
+                        <%
+                            }
+                        %>
+                    </ul>
+                    <%
                 }
-        %>
+            %>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
     </body>
 </html>

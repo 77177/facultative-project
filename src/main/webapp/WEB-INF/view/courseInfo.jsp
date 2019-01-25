@@ -29,6 +29,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('[data-toggle="allCourses"]').tooltip();
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $('[data-toggle="login"]').tooltip();
+            });
+        </script>
     </head>
     <body>
         <div class="jumbotron">
@@ -81,23 +91,24 @@
                             if (principal.getCourseIdList().contains(course.getId())) {
                         %>
                         <p>
-                            <fmt:message key="youParticipateInCourse"/> <%=course.getName()%> <br>
-                            <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">
-                                <fmt:message key="leaveCourse"/>
+                            <a class="btn btn-outline-primary"
+                               href="/feedback/user/<%=principal.getUserId()%>/course /<%=course.getId()%>/">
+                                <fmt:message key="feedbackMessage"/>
                             </a>
                         </p>
                         <p>
-                            <fmt:message key="feedbackMessage"/>
-                            <a href="/feedback/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/">
-                                <fmt:message key="seeFeedback"/>
-                            </a>
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
+                                    data-target="#leave">
+                                <fmt:message key="leaveCourse"/>
+                            </button>
                         </p>
                         <%
                         } else {
                         %>
                         <p>
                             <fmt:message key="subscribeMessage"/> <%=course.getName()%> <br>
-                            <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe /">
+                            <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">
                                 <fmt:message key="subscribe"/>
                             </a>
                         </p>
@@ -107,16 +118,19 @@
                         %>
                     </div>
                 </sec:authorize>
+
                 <sec:authorize access="hasAnyAuthority('tutor')">
                     <div id="tutorZone">
                         <div class="btn-group">
-                            <a class="btn btn-primary"  href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">
+                            <a class="btn btn-outline-primary"  href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">
                                 <fmt:message key="editCourse"/>
                             </a><br><br>
 
-                            <a class="btn btn-outline-danger btn-sm" href="/course/action/delete/<%=course.getId()%>/">
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
+                                    data-target="#delete">
                                 <fmt:message key="deleteCourse"/>
-                            </a>
+                            </button>
                         </div>
                         <br>
                         <h3><fmt:message key="studentList"/></h3>
@@ -147,6 +161,46 @@
                 </sec:authorize>
             </div>
             <div class="col-sm-1"></div>
+        </div>
+        <!-- The leave modal -->
+        <div class="modal" id="leave">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Leaving course</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body ">
+                        Are you sure that you want unsubscribe from this course?
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-danger"
+                           href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">
+                            <fmt:message key="leaveCourse"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- The delete modal -->
+        <div class="modal" id="delete">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete course</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body ">
+                        Do you want to delete the course?
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-danger"
+                           href="/course/action/delete/<%=course.getId()%>/">
+                            <fmt:message key="deleteCourse"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public class UserService {
 
+    //TODO check email
+
     private final Logger logger = Logger.getLogger(this.getClass());
     private UserDAO userDAO;
 
