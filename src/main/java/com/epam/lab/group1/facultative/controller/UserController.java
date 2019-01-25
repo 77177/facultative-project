@@ -5,6 +5,7 @@ import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,8 @@ public class UserController {
     }
 
     @RequestMapping("/profile")
-    public ModelAndView sendRedirectToProfile() {
+    public ModelAndView sendRedirectToProfile()
+    { logger.info("");
         ModelAndView modelAndView;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
