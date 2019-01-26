@@ -41,15 +41,10 @@ public class CourseController {
 
     @GetMapping(value = "/")
     public ModelAndView getAllCourses(HttpServletRequest request, @RequestParam(name = "page", required = false) Integer page) {
-        logger.info("Caught request " + request.getRequestURL());
         int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView = new ModelAndView(COURSE);
-        logger.info("Create ModelAndView with View " + modelAndView.getViewName());
         modelAndView.addObject("courseList", courseService.findAll(pageNumber));
-        logger.info("Adding Model " + modelAndView.getModel());
         modelAndView.addObject("pageNumber", pageNumber);
-        logger.info("Adding Model " + modelAndView.getModel());
-        logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
     }
 
@@ -57,29 +52,18 @@ public class CourseController {
     public ModelAndView getById(HttpServletRequest request, @PathVariable int courseId) {
         //TODO add information about having feedback by a student on this course. Depend on existence of feedback
         // mark students with/without it.
-        logger.info("Caught request " + request.getRequestURL());
         ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
-        logger.info("Create ModelAndView with View " + modelAndView.getViewName());
         Course course = courseService.getById(courseId);
-        logger.info("Creating Course " + course);
         modelAndView.addObject("tutorName", userService.getById(course.getTutorId()).getFullName());
-        logger.info("Adding Model " + modelAndView.getModel());
         modelAndView.addObject("course", course);
-        logger.info("Adding Model " + modelAndView.getModel());
         modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
-        logger.info("Adding Model " + modelAndView.getModel());
-        logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
     }
 
     @GetMapping(value = "/action/create/{tutorId}")
     public ModelAndView createCourse(HttpServletRequest request, @PathVariable int tutorId) {
-        logger.info("Caught request " + request.getRequestURL());
         ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
-        logger.info("Create ModelAndView with View " + modelAndView.getViewName());
         modelAndView.addObject("tutorId", tutorId);
-        logger.info("Adding Model " + modelAndView.getModel());
-        logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
     }
 
@@ -87,22 +71,14 @@ public class CourseController {
     public ModelAndView createCourse(HttpServletRequest request, @ModelAttribute Course course) {
         logger.info("Caught request " + request.getRequestURL());
         SingleCourseDto singleCourseDto = courseService.create(course);
-        logger.info("Create " + singleCourseDto);
         ModelAndView modelAndView = new ModelAndView();
-        logger.info("Create ModelAndView");
         if (!singleCourseDto.isErrorPresent()) {
             modelAndView.setView(new RedirectView("/user/profile"));
-            logger.info("Set View " + modelAndView.getViewName());
-            logger.info("Send Model to " + modelAndView.getViewName());
             return modelAndView;
         } else {
             modelAndView.setViewName(COURSE_CREATE);
-            logger.info("Set View " + modelAndView.getViewName());
             modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
-            logger.info("Adding Model " + modelAndView.getModel());
             modelAndView.addObject("tutorId", course.getTutorId());
-            logger.info("Adding Model " + modelAndView.getModel());
-            logger.info("Send Model to " + modelAndView.getViewName());
             return modelAndView;
         }
     }

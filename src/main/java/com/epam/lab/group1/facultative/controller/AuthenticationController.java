@@ -23,10 +23,7 @@ public class AuthenticationController {
      */
     @RequestMapping("/login")
     public ModelAndView login(HttpServletRequest request) {
-        logger.info("Caught request " + request.getRequestURL());
         ModelAndView modelAndView = new ModelAndView(LOGIN);
-        logger.info("Create ModelAndView with View " + modelAndView.getViewName());
-        logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
     }
 
@@ -35,14 +32,10 @@ public class AuthenticationController {
      */
     @GetMapping("/registration")
     public ModelAndView registration(HttpServletRequest request, @RequestParam(required = false) String error) {
-        logger.info("Caught request " + request.getRequestURL());
         ModelAndView modelAndView = new ModelAndView(REGISTER);
-        logger.info("Create ModelAndView with View " + modelAndView.getViewName());
         if (error != null) {
             modelAndView.addObject("error", "User with this email already exists");
-            logger.info("User already exists -> adding Model: " + modelAndView.getModel());
         }
-        logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
     }
 }

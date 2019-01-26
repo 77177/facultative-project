@@ -14,8 +14,6 @@ public class WelcomeController {
 
     @RequestMapping("/**")
     public String welcome(HttpServletRequest request) {
-        logger.info("Caught request " + request.getRequestURL());
-        logger.info("Send redirect to /course/");
         return "redirect:/course/";
     }
 }
