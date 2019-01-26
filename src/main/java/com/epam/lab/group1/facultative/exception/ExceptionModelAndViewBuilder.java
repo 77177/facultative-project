@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.exception;
 
 import lombok.Data;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -10,6 +11,7 @@ import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 
 @Data
 @Component
+@Scope(value = "request")
 public class ExceptionModelAndViewBuilder {
 
     private Exception e;

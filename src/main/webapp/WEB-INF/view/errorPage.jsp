@@ -25,7 +25,9 @@
             </div>
             <button data-toggle="collapse" data-target="#details">Details</button>
             <div id="details" class="collapse">
-                ${message}
+                <div>
+                    ${message}
+                </div>
                 <button data-toggle="collapse" data-target="#moreDetails">More details</button>
                 <div id="moreDetails" class="collapse">
                     ${stackTrace}
