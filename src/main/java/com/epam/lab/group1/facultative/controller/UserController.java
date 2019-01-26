@@ -74,7 +74,6 @@ public class UserController {
                 }
             }
         }
-        logger.info("redirect to /course/" + courseId);
         return "redirect:/course/" + courseId;
     }
 

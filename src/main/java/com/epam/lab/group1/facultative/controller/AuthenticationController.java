@@ -22,7 +22,7 @@ public class AuthenticationController {
      * @return official project LOGIN page.
      */
     @RequestMapping("/login")
-    public ModelAndView login(HttpServletRequest request) {
+    public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView(LOGIN);
         return modelAndView;
     }
@@ -34,6 +34,7 @@ public class AuthenticationController {
     public ModelAndView registration(@RequestParam(required = false) String error) {
         ModelAndView modelAndView = new ModelAndView(REGISTER);
         if (error != null) {
+            logger.error("User with this email already exists");
             modelAndView.addObject("error", "User with this email already exists");
         }
         return modelAndView;

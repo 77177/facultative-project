@@ -85,8 +85,6 @@ public class CourseController {
     @GetMapping(value = "/action/delete/{courseId}")
     public String deleteCourse(@PathVariable int courseId) {
         courseService.deleteById(courseId);
-        logger.info("Deleted course with id=" + courseId);
-        logger.info("Send redirect to /user/profile");
         return "redirect:/user/profile";
     }
 

@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/")
 public class WelcomeController {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
-
     @RequestMapping("/**")
     public String welcome() {
         return "redirect:/course/";
