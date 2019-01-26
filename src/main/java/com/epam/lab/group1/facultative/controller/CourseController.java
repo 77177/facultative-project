@@ -101,8 +101,8 @@ public class CourseController {
 
     @PostMapping(value = "/action/edit")
     public ModelAndView editCourse(@ModelAttribute Course course) {
-        if(course.getStartingDate() == null || course.getStartingDate() == null){
-            throw new IllegalArgumentException("The course dates are null");
+        if(course.getStartingDate() == null || course.getFinishingDate() == null){
+            throw new IllegalArgumentException("The one or both of the course dates are null");
         }
         SingleCourseDto singleCourseDto = courseService.update(course);
         ModelAndView modelAndView = new ModelAndView();
