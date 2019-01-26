@@ -84,15 +84,13 @@ public class FeedBackController {
 
     @ExceptionHandler(NoResultException.class)
     public ModelAndView noResultExceptionHandler(NoResultException e) {
-        String error = "We don't have what you require.";
-        logger.error(error + e.getMessage(), e);
-        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
+        logger.error(e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).replaceUserMessage("No such course is here.").build();
     }
 
     @ExceptionHandler(CourseDoesNotExistException.class)
     public ModelAndView courseDoesNotExistException(CourseDoesNotExistException e) {
-        String error = "Invalid course's id.";
-        logger.error(error + e.getMessage(), e);
-        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
+        logger.error(e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).replaceUserMessage("No such course is here.").build();
     }
 }

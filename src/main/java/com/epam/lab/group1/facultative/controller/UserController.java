@@ -117,8 +117,7 @@ public class UserController {
 
     @ExceptionHandler(NoResultException.class)
     public ModelAndView noResultExceptionHandler(NoResultException e) {
-        String error = "No such user is here.";
-        logger.error(error + e.getMessage(), e);
-        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
+        logger.error(e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).replaceUserMessage("No such user is here.").build();
     }
 }

@@ -5,25 +5,32 @@
 <html>
     <head>
         <title><fmt:message key="title"/></title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-              integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div class="alert alert-danger">
-            <fmt:message key="errorMessage"/>
+        <div class="alert alert-danger jumbotron">
+            <h5>
+                <fmt:message key="errorMessage"/>
+            </h5>
+            <a href="/course/">
+                <fmt:message key="allCourses"/>
+            </a>
         </div>
-        <form>
-            <fmt:message key="errorInfo"/>. <br>
-            <fmt:message key="status"/>:        ${errorStatus}<br>
-            <fmt:message key="message"/>:       ${message}<br>
-            <fmt:message key="exceptionType"/>: ${exception_type}<br>
-            <fmt:message key="exception"/>:     ${exception}<br>
-            <fmt:message key="request_Uri"/>:   ${request_uri}<br>
-            <fmt:message key="reason"/>:        ${errorReason}<br><br>
-        </form>
-        <a href="/course/">
-            <fmt:message key="allCourses"/>
-        </a>
+        <div>
+            <div>
+                ${userMessage}
+            </div>
+            <button data-toggle="collapse" data-target="#details">Details</button>
+            <div id="details" class="collapse">
+                ${message}
+                <button data-toggle="collapse" data-target="#moreDetails">More details</button>
+                <div id="moreDetails" class="collapse">
+                    ${stackTrace}
+                </div>
+            </div>
+        </div>
     </body>
 </html>
