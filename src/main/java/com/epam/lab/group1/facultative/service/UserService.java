@@ -5,7 +5,6 @@ import com.epam.lab.group1.facultative.persistance.UserDAO;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 
 @Service

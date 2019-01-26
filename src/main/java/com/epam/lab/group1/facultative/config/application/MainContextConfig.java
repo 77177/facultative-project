@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.config.application;
 
+import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
@@ -21,6 +22,11 @@ public class MainContextConfig {
     public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         return localeResolver;
+    }
+
+    @Bean
+    public ExceptionModelAndViewBuilder exceptionModelAndViewBuilder() {
+        return new ExceptionModelAndViewBuilder();
     }
 
 }

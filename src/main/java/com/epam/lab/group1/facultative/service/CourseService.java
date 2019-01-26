@@ -38,7 +38,6 @@ public class CourseService {
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
         }
-
         try {
             courseDAO.create(course);
             singleCourseDto.setErrorPresent(false);
@@ -58,7 +57,6 @@ public class CourseService {
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
         }
-
         try {
             courseDAO.update(course);
             singleCourseDto.setErrorPresent(false);
@@ -105,7 +103,9 @@ public class CourseService {
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
-        } else checkNameInCourse(course, singleCourseDto);
+        } else {
+            checkNameInCourse(course, singleCourseDto);
+        }
         return singleCourseDto;
     }
 

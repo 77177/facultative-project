@@ -1,11 +1,12 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,13 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.USER_STUDENT;
-import static com.epam.lab.group1.facultative.controller.ViewName.USER_TUTOR;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
-import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
+import static com.epam.lab.group1.facultative.controller.ViewName.*;
 
 @Controller
 @RequestMapping("/user")
@@ -28,6 +25,9 @@ public class UserController {
     private final Logger logger = Logger.getLogger(this.getClass());
     private UserService userService;
     private CourseService courseService;
+
+    @Autowired
+    private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
 
     public UserController(UserService userService, CourseService courseService) {
         this.userService = userService;
@@ -96,6 +96,7 @@ public class UserController {
     }
 
     private ModelAndView userProfile(int userId, int pageNumber) {
+        //TODO mark courses where the student has gotten feedback.
         User user = userService.getById(userId);
         ModelAndView modelAndView = new ModelAndView();
         if (user.getPosition().equals("student")) {
@@ -116,10 +117,8 @@ public class UserController {
 
     @ExceptionHandler(NoResultException.class)
     public ModelAndView noResultExceptionHandler(NoResultException e) {
-        logger.error("No such user in database. Message: " + e.getMessage());
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("exception_type", "no result in data base");
-        modelAndView.addObject("message", e.getMessage());
-        return modelAndView;
+        String error = "No such user is here.";
+        logger.error(error + e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
     }
 }

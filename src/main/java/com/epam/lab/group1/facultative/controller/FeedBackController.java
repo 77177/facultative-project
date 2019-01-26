@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.dto.ErrorDto;
+import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
+import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
@@ -13,10 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.PersistenceException;
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
 import static com.epam.lab.group1.facultative.controller.ViewName.FEEDBACK;
 
 @Controller
@@ -27,6 +27,9 @@ public class FeedBackController {
     private UserService userService;
     private CourseService courseService;
     private FeedBackService feedBackService;
+
+    @Autowired
+    private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
 
     public FeedBackController(UserService userService, CourseService courseService, FeedBackService feedBackService) {
         this.userService = userService;
@@ -55,7 +58,7 @@ public class FeedBackController {
     public ModelAndView getFeedbackPage(HttpServletRequest request, @PathVariable int userId, @PathVariable int courseId) {
         logger.info("Caught request " + request.getRequestURL());
         SecurityContextUser principal =
-                (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         logger.info("Fetch principal" + principal);
         int principalUserId = principal.getUserId();
         ModelAndView modelAndView = new ModelAndView(FEEDBACK);
@@ -77,5 +80,19 @@ public class FeedBackController {
         modelAndView.addObject("course", courseService.getById(courseId));
         logger.info("Adding Model " + modelAndView.getModel());
         return modelAndView;
+    }
+
+    @ExceptionHandler(NoResultException.class)
+    public ModelAndView noResultExceptionHandler(NoResultException e) {
+        String error = "We don't have what you require.";
+        logger.error(error + e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
+    }
+
+    @ExceptionHandler(CourseDoesNotExistException.class)
+    public ModelAndView courseDoesNotExistException(CourseDoesNotExistException e) {
+        String error = "Invalid course's id.";
+        logger.error(error + e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
     }
 }

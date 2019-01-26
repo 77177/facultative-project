@@ -1,32 +1,27 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.dto.ErrorDto;
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
+import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
-import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
+import static com.epam.lab.group1.facultative.controller.ViewName.*;
 
 @Controller
 @RequestMapping("/course")
@@ -36,13 +31,16 @@ public class CourseController {
     private CourseService courseService;
     private UserService userService;
 
+    @Autowired
+    private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
+
     public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
         this.userService = userService;
     }
 
     @GetMapping(value = "/")
-    public ModelAndView getAllCourses(HttpServletRequest request,@RequestParam(name = "page", required = false) Integer page) {
+    public ModelAndView getAllCourses(HttpServletRequest request, @RequestParam(name = "page", required = false) Integer page) {
         logger.info("Caught request " + request.getRequestURL());
         int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView = new ModelAndView(COURSE);
@@ -57,7 +55,8 @@ public class CourseController {
 
     @GetMapping(value = "/{courseId}")
     public ModelAndView getById(HttpServletRequest request, @PathVariable int courseId) {
-
+        //TODO add information about having feedback by a student on this course. Depend on existence of feedback
+        // mark students with/without it.
         logger.info("Caught request " + request.getRequestURL());
         ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
         logger.info("Create ModelAndView with View " + modelAndView.getViewName());
@@ -160,22 +159,17 @@ public class CourseController {
 
     @ExceptionHandler(NoResultException.class)
     public ModelAndView noResultExceptionHandler(NoResultException e) {
-        logger.error("No such course in database. Message: " + e.getMessage(), e);
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("exception_type", "no result in data base");
-        modelAndView.addObject("message", e.getMessage());
-        return modelAndView;
+        String error = "No such course is here.";
+        logger.error(error + e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
     }
 
     @ExceptionHandler(CourseDoesNotExistException.class)
     public ModelAndView courseDoesNotExistException(CourseDoesNotExistException e) {
-        logger.error(e.getMessage(), e);
-        ModelAndView modelAndView = new ModelAndView(ERROR);
-        modelAndView.addObject("exception_type", e.getClass().getSimpleName());
-        modelAndView.addObject("message", e.getMessage());
-        return modelAndView;
+        String error = "Invalid course's id.";
+        logger.error(error + e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).addMessage(error).build();
     }
-
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
