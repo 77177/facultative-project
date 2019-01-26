@@ -40,7 +40,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/")
-    public ModelAndView getAllCourses(HttpServletRequest request, @RequestParam(name = "page", required = false) Integer page) {
+    public ModelAndView getAllCourses(@RequestParam(name = "page", required = false) Integer page) {
         int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView = new ModelAndView(COURSE);
         modelAndView.addObject("courseList", courseService.findAll(pageNumber));
@@ -49,7 +49,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/{courseId}")
-    public ModelAndView getById(HttpServletRequest request, @PathVariable int courseId) {
+    public ModelAndView getById(@PathVariable int courseId) {
         //TODO add information about having feedback by a student on this course. Depend on existence of feedback
         // mark students with/without it.
         ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
@@ -61,15 +61,14 @@ public class CourseController {
     }
 
     @GetMapping(value = "/action/create/{tutorId}")
-    public ModelAndView createCourse(HttpServletRequest request, @PathVariable int tutorId) {
+    public ModelAndView createCourse(@PathVariable int tutorId) {
         ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
         modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
 
     @PostMapping(value = "/action/create")
-    public ModelAndView createCourse(HttpServletRequest request, @ModelAttribute Course course) {
-        logger.info("Caught request " + request.getRequestURL());
+    public ModelAndView createCourse(@ModelAttribute Course course) {
         SingleCourseDto singleCourseDto = courseService.create(course);
         ModelAndView modelAndView = new ModelAndView();
         if (!singleCourseDto.isErrorPresent()) {
@@ -84,8 +83,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/action/delete/{courseId}")
-    public String deleteCourse(HttpServletRequest request, @PathVariable int courseId) {
-        logger.info("Caught request " + request.getRequestURL());
+    public String deleteCourse(@PathVariable int courseId) {
         courseService.deleteById(courseId);
         logger.info("Deleted course with id=" + courseId);
         logger.info("Send redirect to /user/profile");
@@ -93,42 +91,27 @@ public class CourseController {
     }
 
     @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
-    public ModelAndView editCourse(HttpServletRequest request, @PathVariable int tutorId, @PathVariable int courseId) {
-        logger.info("Caught request " + request.getRequestURL());
+    public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
+
         ModelAndView modelAndView = new ModelAndView(COURSE_EDIT);
-        logger.info("Create ModelAndView with View " + modelAndView.getViewName());
         modelAndView.addObject("tutorId", tutorId);
-        logger.info("Adding Model " + modelAndView.getModel());
         modelAndView.addObject("course", courseService.getById(courseId));
-        logger.info("Adding Model " + modelAndView.getModel());
-        logger.info("Send Model to " + modelAndView.getViewName());
         return modelAndView;
     }
 
     @PostMapping(value = "/action/edit")
-    public ModelAndView editCourse(HttpServletRequest request, @ModelAttribute Course course) {
+    public ModelAndView editCourse(@ModelAttribute Course course) {
         //TODO Could come null dates. Check necessary!
-        logger.info("Caught request " + request.getRequestURL());
         SingleCourseDto singleCourseDto = courseService.update(course);
-        logger.info("Update " + course);
         ModelAndView modelAndView = new ModelAndView();
-        logger.info("Create ModelAndView");
         if (!singleCourseDto.isErrorPresent()) {
-            logger.info("No Error is present in " + singleCourseDto);
             modelAndView.setView(new RedirectView("/user/profile"));
-            logger.info("Send redirect to" + modelAndView.getView());
             return modelAndView;
         } else {
-            logger.warn("Error potentially present in " + singleCourseDto);
             modelAndView.setViewName(COURSE_EDIT);
-            logger.info("Set View " + modelAndView.getViewName());
             modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
-            logger.info("Adding Model " + modelAndView.getModel());
             modelAndView.addObject("tutorId", singleCourseDto.getCourse().getTutorId());
-            logger.info("Adding Model " + modelAndView.getModel());
             modelAndView.addObject("course", course);
-            logger.info("Adding Model " + modelAndView.getModel());
-            logger.info("Send Model " + modelAndView.getViewName());
             return modelAndView;
         }
     }

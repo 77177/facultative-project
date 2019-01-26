@@ -31,7 +31,7 @@ public class AuthenticationController {
      * @return page of REGISTER form.
      */
     @GetMapping("/registration")
-    public ModelAndView registration(HttpServletRequest request, @RequestParam(required = false) String error) {
+    public ModelAndView registration(@RequestParam(required = false) String error) {
         ModelAndView modelAndView = new ModelAndView(REGISTER);
         if (error != null) {
             modelAndView.addObject("error", "User with this email already exists");

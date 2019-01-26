@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @RequestMapping("/profile")
-    public ModelAndView sendRedirectToProfile(HttpServletRequest request, @RequestParam(name = "page", required = false) Integer page) {
+    public ModelAndView sendRedirectToProfile(@RequestParam(name = "page", required = false) Integer page) {
         int pageNumber = page == null ? 0 : page;
         ModelAndView modelAndView;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/course/{courseId}/{action}")
-    public String action(HttpServletRequest request, @PathVariable int userId, @PathVariable int courseId, @PathVariable String action) {
+    public String action(@PathVariable int userId, @PathVariable int courseId, @PathVariable String action) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return "redirect:/course";

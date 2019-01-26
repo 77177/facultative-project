@@ -35,7 +35,7 @@ public class ErrorController {
     }
 
     @RequestMapping("/access-denied")
-    public ModelAndView accessDenied(HttpServletRequest request, Exception e) {
+    public ModelAndView accessDenied(Exception e) {
         ModelAndView modelAndView = new ModelAndView(ACCESS_DENIED);
         return modelAndView;
     }

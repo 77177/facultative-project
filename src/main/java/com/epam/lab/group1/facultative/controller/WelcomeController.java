@@ -13,7 +13,7 @@ public class WelcomeController {
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @RequestMapping("/**")
-    public String welcome(HttpServletRequest request) {
+    public String welcome() {
         return "redirect:/course/";
     }
 }

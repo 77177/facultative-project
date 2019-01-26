@@ -38,7 +38,7 @@ public class FeedBackController {
     }
 
     @PostMapping(value = "/")
-    public ModelAndView createFeedBack(HttpServletRequest request, @ModelAttribute(name = "feedback") FeedBack feedback) {
+    public ModelAndView createFeedBack(@ModelAttribute(name = "feedback") FeedBack feedback) {
         ModelAndView modelAndView = new ModelAndView(FEEDBACK);
         feedBackService.saveOrUpdate(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
@@ -48,7 +48,7 @@ public class FeedBackController {
     }
 
     @GetMapping(value = "/user/{userId}/course/{courseId}")
-    public ModelAndView getFeedbackPage(HttpServletRequest request, @PathVariable int userId, @PathVariable int courseId) {
+    public ModelAndView getFeedbackPage(@PathVariable int userId, @PathVariable int courseId) {
         SecurityContextUser principal =
             (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int principalUserId = principal.getUserId();
