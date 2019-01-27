@@ -1,14 +1,12 @@
 package com.epam.lab.group1.facultative.config.application;
 
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
+@EnableAspectJAutoProxy
 @ComponentScans(value = {
     @ComponentScan("com.epam.lab.group1.facultative.config.application"),
     @ComponentScan("com.epam.lab.group1.facultative.service"),

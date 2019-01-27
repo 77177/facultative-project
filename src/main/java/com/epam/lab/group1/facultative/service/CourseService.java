@@ -28,7 +28,7 @@ public class CourseService {
         if (course == null) {
             throw new CourseDoesNotExistException("Course was not found in db by id: " + courseId);
         }
-        return courseDAO.getById(courseId);
+        return course;
     }
 
     public SingleCourseDto create(Course course) {

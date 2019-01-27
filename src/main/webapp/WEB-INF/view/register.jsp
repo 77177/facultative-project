@@ -92,7 +92,7 @@
         </div>
         <div class="row">
             <div class="col-sm-1"></div>
-            <form class="col form" method="post" action="/login">
+            <form class="col form" method="post" action="/authenticator/registration">
                 <div class="form-group row">
                     <label for="firstName" class="col-sm-2 col-form-label"><fmt:message key="firstName"/>:</label>
                     <div class="col-sm-10">
@@ -110,7 +110,7 @@
                 <div class="form-group row">
                     <label for="email" class="col-sm-2 col-form-label"><fmt:message key="email"/>:</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control-plaintext" name="username" id="email"
+                        <input type="email" class="form-control-plaintext" name="email" id="email"
                                placeholder="yourEmail@company.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                     </div>
                 </div>

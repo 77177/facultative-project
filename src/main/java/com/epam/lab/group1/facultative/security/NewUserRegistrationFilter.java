@@ -35,16 +35,16 @@ public class NewUserRegistrationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        boolean isRegistration = servletRequest.getParameter("registration") != null;
-        logger.debug("Entering to the new user creation zone.");
-        if (isRegistration) {
-            User user = createUserFromRequest(servletRequest);
-            try {
-                authenticationService.processNewUser(user);
-            } catch (ConstraintViolationException e) {
-                ((HttpServletResponse)response).sendRedirect("/authenticator/registration?error=true");
-            }
-        }
+//        boolean isRegistration = servletRequest.getParameter("registration") != null;
+//        logger.debug("Entering to the new user creation zone.");
+//        if (isRegistration) {
+//            User user = createUserFromRequest(servletRequest);
+//            try {
+//                authenticationService.processNewUser(user);
+//            } catch (ConstraintViolationException e) {
+//                ((HttpServletResponse)response).sendRedirect("/authenticator/registration?error=true");
+//            }
+//        }
         filterChain.doFilter(servletRequest, response);
     }
 
