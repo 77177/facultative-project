@@ -75,7 +75,7 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col">
-                <a class="btn btn-success" href="/course/action/create/<%=principal.getUserId()%>">
+                <a class="btn btn-success" href="/course/action/create/">
                     <fmt:message key="createNewCourse"/>
                 </a><br>
                 <h5><fmt:message key="myCourses"/>:</h5>

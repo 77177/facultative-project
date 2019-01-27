@@ -38,6 +38,9 @@ public class CourseService {
      * @return SingleCourseDto with info about errors.
      */
     public SingleCourseDto create(Course course) {
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ;
+        course.setTutorId(principal.getUserId());
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
         if (checkInputDateCreate(course, singleCourseDto).isErrorPresent()
@@ -61,6 +64,8 @@ public class CourseService {
      * @return SingleCourseDto with info about errors.
      */
     public SingleCourseDto update(Course course) {
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        course.setTutorId(principal.getUserId());
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
         if (checkInputDateUpdate(course, singleCourseDto).isErrorPresent()
@@ -68,8 +73,14 @@ public class CourseService {
             return singleCourseDto;
         }
         try {
-            courseDAO.update(course);
-            singleCourseDto.setErrorPresent(false);
+            if (principal.getUserId() == courseDAO.getById(course.getId()).getTutorId()) {
+                courseDAO.update(course);
+                singleCourseDto.setErrorPresent(false);
+            } else {
+                String message = String.format("Tutor with id: %s" + " tried to update the course with id: %s", principal.getUserId(), course.getId());
+                logger.debug(message);
+                singleCourseDto.setErrorPresent(true);
+            }
         } catch (ConstraintViolationException e) {
             String message = String.format("Course was not updated. Probably with name %s already exists", course.getName());
             logger.debug(message, e);
@@ -77,6 +88,7 @@ public class CourseService {
             singleCourseDto.setErrorMessage(message);
         }
         return singleCourseDto;
+
     }
 
     public boolean deleteById(int courseId) {
