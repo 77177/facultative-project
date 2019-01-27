@@ -114,7 +114,7 @@ public class CourseController {
         SingleCourseDto singleCourseDto = courseService.update(course);
         ModelAndView modelAndView = new ModelAndView();
         if (!singleCourseDto.isErrorPresent()) {
-            modelAndView.setView(new RedirectView("/user/profile"));
+            modelAndView.setView(new RedirectView("/course/" + course.getId()));
             return modelAndView;
         } else {
             modelAndView.setViewName(COURSE_EDIT);
