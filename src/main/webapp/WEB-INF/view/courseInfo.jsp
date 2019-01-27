@@ -153,8 +153,10 @@
                                 <tr>
                                     <td><% out.println(user.getFirstName());%></td>
                                     <td><% out.println(user.getLastName());%></td>
+                                    <%if(principal.getUserId() == course.getTutorId()){%>
                                     <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>">
                                         <fmt:message key="seeFeedback"/></a></td>
+                                    <%}%>
                                 </tr>
                                 <%
                                     }
@@ -207,7 +209,6 @@
                     </div>
                 </div>
             </div>
-
         </sec:authorize>
     </body>
 </html>
