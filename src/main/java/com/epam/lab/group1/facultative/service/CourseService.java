@@ -10,6 +10,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -50,8 +51,9 @@ public class CourseService {
         try {
             courseDAO.create(course);
             singleCourseDto.setErrorPresent(false);
-        } catch (ConstraintViolationException e) {
-            String message = String.format("Course was not created. Probably with name %s already exists.", course.getName());
+        } catch (PersistenceException e) {
+            String message = String.format("Course was not created. Probably course with name %s already exists.",
+                course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);

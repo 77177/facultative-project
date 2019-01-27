@@ -5,15 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.Filter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -26,13 +26,9 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private Filter registrationFilter;
-
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider());
     }
 
     @Override
@@ -42,7 +38,6 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
                 .antMatchers("/feedback/**").hasAnyAuthority("student", "tutor")
                 .antMatchers("/course/action/**").hasAuthority("tutor")
             .and()
-                .addFilterBefore(registrationFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin()
                 .loginPage("/authenticator/login")
                 .loginProcessingUrl("/login")
@@ -58,24 +53,15 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder((passwordEncoder()));
+        return authenticationProvider;
+    }
+
+    @Bean(value = "bCryptPasswordEncoder")
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
