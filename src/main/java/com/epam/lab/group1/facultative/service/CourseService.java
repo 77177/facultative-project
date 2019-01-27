@@ -4,8 +4,10 @@ import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
+import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -69,8 +71,17 @@ public class CourseService {
         return singleCourseDto;
     }
 
-    public void deleteById(int id) {
-        courseDAO.deleteById(id);
+    public boolean deleteById(int courseId) {
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal.getUserId() == courseDAO.getById(courseId).getTutorId()) {
+            courseDAO.deleteById(courseId);
+            return true;
+        } else {
+            String message = String.format("Tutor with id: %s" + " tried to delete the course with id: %s", principal.getUserId(), courseId);
+            logger.debug(message);
+            return false;
+        }
     }
 
     public List<Course> findAll(int page) {
@@ -117,4 +128,5 @@ public class CourseService {
             singleCourseDto.setErrorMessage(message);
         }
     }
+
 }

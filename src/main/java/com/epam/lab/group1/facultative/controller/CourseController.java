@@ -4,11 +4,13 @@ import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -84,8 +86,11 @@ public class CourseController {
 
     @GetMapping(value = "/action/delete/{courseId}")
     public String deleteCourse(@PathVariable int courseId) {
-        courseService.deleteById(courseId);
-        return "redirect:/user/profile";
+        if (courseService.deleteById(courseId)) {
+            return "redirect:/user/profile";
+        } else {
+            return "redirect:/course/" + courseId;
+        }
     }
 
     @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
@@ -99,7 +104,7 @@ public class CourseController {
 
     @PostMapping(value = "/action/edit")
     public ModelAndView editCourse(@ModelAttribute Course course) {
-        if(course.getStartingDate() == null || course.getFinishingDate() == null){
+        if (course.getStartingDate() == null || course.getFinishingDate() == null) {
             throw new IllegalArgumentException("The one or both of the course dates are null");
         }
         SingleCourseDto singleCourseDto = courseService.update(course);

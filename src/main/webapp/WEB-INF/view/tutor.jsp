@@ -105,11 +105,6 @@
                                 <fmt:message key="edit"/>
                             </a>
                         </td>
-                        <td>
-                            <a href="/course/action/delete/<%=course.getId()%>/">
-                                <fmt:message key="delete"/>
-                            </a>
-                        </td>
                     </tr>
                     <%
                         }
