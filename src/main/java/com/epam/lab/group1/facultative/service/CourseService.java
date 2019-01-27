@@ -55,6 +55,8 @@ public class CourseService {
     }
 
     public SingleCourseDto update(Course course) {
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        course.setTutorId(principal.getUserId());
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
         checkNameInCourse(course, singleCourseDto);

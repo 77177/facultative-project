@@ -121,14 +121,13 @@
 
                 <sec:authorize access="hasAnyAuthority('tutor')">
                     <div id="tutorZone">
+                        <%if (principal.getUserId() == course.getTutorId()) {%>
                         <div class="btn-group">
-                            <a class="btn btn-outline-primary"  href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">
+                            <a class="btn btn-outline-primary"  href="/course/action/edit/<%=course.getId()%>/">
                                 <fmt:message key="editCourse"/>
                             </a><br><br>
 
                             <!-- Button to Open the Modal -->
-                            <%if (principal.getUserId() == course.getTutorId()) {%>
-
                                 <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
                                         data-target="#delete">
                                     <fmt:message key="deleteCourse"/>

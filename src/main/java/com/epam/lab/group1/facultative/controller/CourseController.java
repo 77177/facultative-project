@@ -65,7 +65,6 @@ public class CourseController {
     @GetMapping(value = "/action/create")
     public ModelAndView createCourse() {
         ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
-        //modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
 
@@ -79,7 +78,6 @@ public class CourseController {
         } else {
             modelAndView.setViewName(COURSE_CREATE);
             modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
-            //modelAndView.addObject("tutorId", course.getTutorId());
             return modelAndView;
         }
     }
@@ -93,12 +91,19 @@ public class CourseController {
         }
     }
 
-    @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
-    public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
-        ModelAndView modelAndView = new ModelAndView(COURSE_EDIT);
-        modelAndView.addObject("tutorId", tutorId);
-        modelAndView.addObject("course", courseService.getById(courseId));
-        return modelAndView;
+    @GetMapping(value = "/action/edit/{courseId}")
+    public ModelAndView editCourse(@PathVariable int courseId) {
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (principal.getUserId() == courseService.getById(courseId).getTutorId()) {
+            modelAndView.setViewName(COURSE_EDIT);
+            modelAndView.addObject("course", courseService.getById(courseId));
+            return modelAndView;
+        } else {
+            modelAndView.setView(new RedirectView("/user/profile"));
+            return modelAndView;
+        }
     }
 
     @PostMapping(value = "/action/edit")
@@ -114,7 +119,6 @@ public class CourseController {
         } else {
             modelAndView.setViewName(COURSE_EDIT);
             modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
-            modelAndView.addObject("tutorId", singleCourseDto.getCourse().getTutorId());
             modelAndView.addObject("course", course);
             return modelAndView;
         }
