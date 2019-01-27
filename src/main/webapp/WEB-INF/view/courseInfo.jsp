@@ -83,7 +83,9 @@
                     <fmt:message key="courseStart"/>: <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
                     <fmt:message key="courseFinish"/>: <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
                     <fmt:message key="duration"/>:
-                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getDays()%> days.</span>
+                    <span>
+                        <%=Period.between(course.getStartingDate(), course.getFinishingDate()).getDays()%> days.
+                    </span>
                 </div>
                 <sec:authorize access="hasAnyAuthority('student')">
                     <div id="studentZone">

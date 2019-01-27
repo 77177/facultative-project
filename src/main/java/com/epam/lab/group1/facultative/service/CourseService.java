@@ -33,10 +33,15 @@ public class CourseService {
         return courseDAO.getById(courseId);
     }
 
+    /**
+     * @param course model from user's view
+     * @return SingleCourseDto with info about errors.
+     */
     public SingleCourseDto create(Course course) {
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
-        checkInputDataAndName(course, singleCourseDto);
+        checkInputDateCreate(course, singleCourseDto);
+        checkNameInCourse(course, singleCourseDto);
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
         }
@@ -52,9 +57,14 @@ public class CourseService {
         return singleCourseDto;
     }
 
+    /**
+     * @param course model from user's view
+     * @return SingleCourseDto with info about errors.
+     */
     public SingleCourseDto update(Course course) {
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);
+        checkInputDateUpdate(course, singleCourseDto);
         checkNameInCourse(course, singleCourseDto);
         if (singleCourseDto.isErrorPresent()) {
             return singleCourseDto;
@@ -99,25 +109,46 @@ public class CourseService {
         return courseDAO.getAllByUserId(userId, pageNumber, pageSize);
     }
 
-    private SingleCourseDto checkInputDataAndName(Course course, SingleCourseDto singleCourseDto) {
-        if (course.getStartingDate().isBefore(LocalDate.now().plus(1, ChronoUnit.DAYS))) {
-            String message = String.format("Wrong input date for course. Course should have starting date at least tomorrow." +
-                            "Course start date: %s Minimum date is: %s",
-                    course.getStartingDate().toString(), LocalDate.now().plus(2, ChronoUnit.DAYS).toString());
+    private SingleCourseDto checkInputDateUpdate(Course course, SingleCourseDto singleCourseDto) {
+        checkNullDate(course, singleCourseDto);
+        if (course.getStartingDate().isAfter(course.getFinishingDate())) {
+            String message= "Wrong input date for course. Start date can not be later than finishing date. " +
+                "Start: " + course.getStartingDate() + ". Finish: " + course.getFinishingDate();
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
-        } else if (course.getStartingDate().isAfter(course.getFinishingDate().minus(1, ChronoUnit.DAYS))) {
-            String message = String.format("Wrong input date for course. Finishing date should be at least 1 day after starting date." +
-                            "Start date: %s Finishing date is: %s",
-                    course.getStartingDate().toString(), course.getFinishingDate().toString());
-            logger.debug(message);
-            singleCourseDto.setErrorPresent(true);
-            singleCourseDto.setErrorMessage(message);
-        } else {
-            checkNameInCourse(course, singleCourseDto);
         }
         return singleCourseDto;
+    }
+
+    private SingleCourseDto checkInputDateCreate(Course course, SingleCourseDto singleCourseDto) {
+        checkNullDate(course, singleCourseDto);
+        if (course.getStartingDate().isBefore(LocalDate.now().plus(1, ChronoUnit.DAYS))) {
+            String message = String.format("Wrong input date for course. Course should have starting date at least tomorrow." +
+                    "Course start date: %s Minimum date is: %s",
+                course.getStartingDate().toString(), LocalDate.now().plus(2, ChronoUnit.DAYS).toString());
+            logger.debug(message);
+            singleCourseDto.setErrorPresent(true);
+            singleCourseDto.setErrorMessage(message);
+        }
+        if (course.getStartingDate().isAfter(course.getFinishingDate().minus(1, ChronoUnit.DAYS))) {
+            String message = String.format("Wrong input date for course. Finishing date should be at least 1 day after starting date." +
+                    "Start date: %s Finishing date is: %s",
+                course.getStartingDate().toString(), course.getFinishingDate().toString());
+            logger.debug(message);
+            singleCourseDto.setErrorPresent(true);
+            singleCourseDto.setErrorMessage(message);
+        }
+        return singleCourseDto;
+    }
+
+    private void checkNullDate(Course course, SingleCourseDto singleCourseDto) {
+        if (course.getFinishingDate() == null || course.getStartingDate() == null) {
+            String message= "Date can not be null";
+            logger.debug(message);
+            singleCourseDto.setErrorPresent(true);
+            singleCourseDto.setErrorMessage(message);
+        }
     }
 
     private void checkNameInCourse(Course course, SingleCourseDto singleCourseDto) {
