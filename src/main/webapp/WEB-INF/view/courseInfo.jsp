@@ -127,10 +127,13 @@
                             </a><br><br>
 
                             <!-- Button to Open the Modal -->
-                            <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
-                                    data-target="#delete">
-                                <fmt:message key="deleteCourse"/>
-                            </button>
+                            <%if (principal.getUserId() == course.getTutorId()) {%>
+
+                                <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
+                                        data-target="#delete">
+                                    <fmt:message key="deleteCourse"/>
+                                </button>
+                            <%}%>
                         </div>
                         <br>
                         <h3><fmt:message key="studentList"/></h3>
@@ -203,6 +206,7 @@
                     </div>
                 </div>
             </div>
+
         </sec:authorize>
     </body>
 </html>

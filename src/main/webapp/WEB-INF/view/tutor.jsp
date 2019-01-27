@@ -100,11 +100,6 @@
                         <td><%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
                         <td><%= course.isActive()%></td>
                         <td><a href="/course/<%=course.getId()%>">info</a></td>
-                        <td>
-                            <a href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">
-                                <fmt:message key="edit"/>
-                            </a>
-                        </td>
                     </tr>
                     <%
                         }

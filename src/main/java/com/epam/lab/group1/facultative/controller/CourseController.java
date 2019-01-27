@@ -95,7 +95,6 @@ public class CourseController {
 
     @GetMapping(value = "/{courseId}/action/edit/{tutorId}")
     public ModelAndView editCourse(@PathVariable int tutorId, @PathVariable int courseId) {
-
         ModelAndView modelAndView = new ModelAndView(COURSE_EDIT);
         modelAndView.addObject("tutorId", tutorId);
         modelAndView.addObject("course", courseService.getById(courseId));
