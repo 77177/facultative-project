@@ -6,15 +6,13 @@
 <fmt:setLocale value="${pageContext.response.locale}"/>
 <fmt:setBundle basename="bundle.createCourse"/>
 <%
-    SecurityContextUser principal = null;
-    int tutorId = (int) request.getAttribute("tutorId");
+
     Object errorMessageObject = request.getAttribute("errorMessage");
     String changeLanguageLink = null;
 %>
 <sec:authorize access="isAuthenticated()">
     <%
-        principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        changeLanguageLink = "/course/action/create/" + principal.getUserId();
+        changeLanguageLink = "/course/action/create/";
     %>
 </sec:authorize>
 <html>
@@ -77,9 +75,6 @@
         </nav>
 
         <sec:authorize access="isAuthenticated()">
-        <%
-        if (!principal.isStudent()) {
-            %>
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col">
@@ -133,15 +128,12 @@
                             </label>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="tutorId" value="<%=tutorId%>"/>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
                 <div class="col-sm-1"></div>
             </div>
-            <%
-        }
-        %>
+
         </sec:authorize>
     </body>
 </html>

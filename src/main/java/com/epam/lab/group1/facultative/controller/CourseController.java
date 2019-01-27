@@ -62,10 +62,10 @@ public class CourseController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/action/create/{tutorId}")
-    public ModelAndView createCourse(@PathVariable int tutorId) {
+    @GetMapping(value = "/action/create")
+    public ModelAndView createCourse() {
         ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
-        modelAndView.addObject("tutorId", tutorId);
+        //modelAndView.addObject("tutorId", tutorId);
         return modelAndView;
     }
 
@@ -79,7 +79,7 @@ public class CourseController {
         } else {
             modelAndView.setViewName(COURSE_CREATE);
             modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
-            modelAndView.addObject("tutorId", course.getTutorId());
+            //modelAndView.addObject("tutorId", course.getTutorId());
             return modelAndView;
         }
     }
