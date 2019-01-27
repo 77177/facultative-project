@@ -75,7 +75,7 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col">
-                <a class="btn btn-success" href="/course/action/create/<%=principal.getUserId()%>">
+                <a class="btn btn-success" href="/course/action/create/">
                     <fmt:message key="createNewCourse"/>
                 </a><br>
                 <h5><fmt:message key="myCourses"/>:</h5>
@@ -100,16 +100,6 @@
                         <td><%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></td>
                         <td><%= course.isActive()%></td>
                         <td><a href="/course/<%=course.getId()%>">info</a></td>
-                        <td>
-                            <a href="/course/<%=course.getId()%>/action/edit/<%=course.getTutorId()%>/">
-                                <fmt:message key="edit"/>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="/course/action/delete/<%=course.getId()%>/">
-                                <fmt:message key="delete"/>
-                            </a>
-                        </td>
                     </tr>
                     <%
                         }
