@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.exception.NotTheCourseTutorException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.persistance.FeedBackDAO;
+import com.epam.lab.group1.facultative.persistance.FeedBackDAOInterface;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -14,8 +15,8 @@ import java.security.Principal;
 @Service
 public class FeedBackService implements FeedBackServiceInterface {
 
-    private FeedBackDAO feedBackDAO;
-    private CourseService courseService;
+    private FeedBackDAOInterface feedBackDAO;
+    private CourseServiceInterface courseService;
 
     public FeedBackService(FeedBackDAO feedBackDAO, CourseService courseService) {
         this.feedBackDAO = feedBackDAO;

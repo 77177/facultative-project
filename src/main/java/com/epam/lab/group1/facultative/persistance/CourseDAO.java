@@ -1,6 +1,7 @@
 package com.epam.lab.group1.facultative.persistance;
 
 import com.epam.lab.group1.facultative.model.Course;
+import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.model.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -16,25 +17,13 @@ import java.util.Collections;
 import java.util.List;
 
 @Repository
-public class CourseDAO {
+public class CourseDAO implements CourseDAOInterface{
 
     private final Logger logger = Logger.getLogger(this.getClass());
     private SessionFactory sessionFactory;
 
     public CourseDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-    }
-
-    public Course getById(int id) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            Course course = session.get(Course.class, id);
-            session.getTransaction().commit();
-            return course;
-        } catch (PersistenceException e) {
-            logger.info("course with id " + id + "does not exist in database");
-            throw e;
-        }
     }
 
     public Course getByName(String name) {
@@ -50,6 +39,18 @@ public class CourseDAO {
         } catch (PersistenceException e) {
             String error = "Error retrieving course by name: " + name;
             logger.error(error);
+            throw e;
+        }
+    }
+
+    public Course getById(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Course course = session.get(Course.class, id);
+            session.getTransaction().commit();
+            return course;
+        } catch (PersistenceException e) {
+            logger.info("course with id " + id + "does not exist in database");
             throw e;
         }
     }
@@ -78,7 +79,7 @@ public class CourseDAO {
         }
     }
 
-    public void update(Course course) {
+    public FeedBack update(Course course) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.update(course);
@@ -88,9 +89,10 @@ public class CourseDAO {
             logger.error(error);
             throw e;
         }
+        return null;
     }
 
-    public void deleteById(int id) {
+    public boolean deleteById(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Course course = session.load(Course.class, id);
@@ -101,6 +103,7 @@ public class CourseDAO {
             logger.error(error);
             throw e;
         }
+        return false;
     }
 
     public List<Course> findAllActive(int pageNumber, int pageSize) {

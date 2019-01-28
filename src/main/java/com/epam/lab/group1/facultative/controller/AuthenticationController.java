@@ -2,7 +2,10 @@ package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.AuthenticationService;
+import com.epam.lab.group1.facultative.service.AuthenticationServiceInterface;
+import com.epam.lab.group1.facultative.service.AuthenticationServiceInterface;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,9 +19,10 @@ import static com.epam.lab.group1.facultative.view.ViewType.REGISTER;
 public class AuthenticationController {
 
     private final Logger logger = Logger.getLogger(this.getClass());
-    private AuthenticationService authenticationService;
+    private AuthenticationServiceInterface authenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    @Autowired
+    public AuthenticationController(AuthenticationServiceInterface authenticationService) {
         this.authenticationService = authenticationService;
     }
 
