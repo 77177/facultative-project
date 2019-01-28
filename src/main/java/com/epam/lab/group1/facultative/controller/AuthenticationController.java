@@ -2,6 +2,7 @@ package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.AuthenticationService;
+import com.epam.lab.group1.facultative.service.AuthenticationServiceInterface;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class AuthenticationController {
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticationServiceInterface authenticationService;
 
     /**
      * @return official project LOGIN page.

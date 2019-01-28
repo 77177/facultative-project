@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
  * Creates new user account and authorizes him un the SecurityContext
  */
 @Service
-public class AuthenticationService {
+public class AuthenticationService implements AuthenticationServiceInterface {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -39,6 +39,7 @@ public class AuthenticationService {
      *
      * @param user user's data from registration form.
      */
+    @Override
     public boolean registerNewUser(User user) {
         String password = user.getPassword();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
