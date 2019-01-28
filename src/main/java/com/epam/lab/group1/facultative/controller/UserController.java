@@ -1,22 +1,19 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.view.builder.UserViewBuilder;
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.User;
+import com.epam.lab.group1.facultative.model.UserPosition;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
-
-import static com.epam.lab.group1.facultative.controller.ViewName.*;
 
 @Controller
 @RequestMapping("/user")
@@ -25,70 +22,55 @@ public class UserController {
     private final Logger logger = Logger.getLogger(this.getClass());
     private UserService userService;
     private CourseService courseService;
-
-    @Autowired
     private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
+    private UserViewBuilder userViewBuilder;
+    private SecurityContextUser securityContextUser;
 
-    public UserController(UserService userService, CourseService courseService) {
+    public UserController(UserService userService, CourseService courseService,
+                          ExceptionModelAndViewBuilder exceptionModelAndViewBuilder, UserViewBuilder userViewBuilder,
+                          SecurityContextUser securityContextUser) {
         this.userService = userService;
         this.courseService = courseService;
+        this.exceptionModelAndViewBuilder = exceptionModelAndViewBuilder;
+        this.userViewBuilder = userViewBuilder;
+        this.securityContextUser = securityContextUser;
     }
 
     @RequestMapping("/profile")
     public ModelAndView sendRedirectToProfile(@RequestParam(name = "page", required = false) Integer page) {
+        //TODO mark courses where the student has gotten feedback.
         int pageNumber = page == null ? 0 : page;
-        ModelAndView modelAndView;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
-            modelAndView = userProfile(principal.getUserId(), pageNumber);
-        } else {
-            modelAndView = new ModelAndView(COURSE);
-            modelAndView.addObject("courseList", courseService.findAll(pageNumber));
+        User user = userService.getById(securityContextUser.getUserId());
+        if (user.getPosition().equals("student")) {
+            userViewBuilder.setPosition(UserPosition.STUDENT);
+        } else if (user.getPosition().equals("tutor")) {
+            userViewBuilder.setPosition(UserPosition.TUTOR);
         }
-        modelAndView.addObject("pageNumber", pageNumber);
-        return modelAndView;
+        return userViewBuilder
+            .setUser(user)
+            .setCourseList(courseService.getAllByUserId(user.getId(), pageNumber))
+            .setPageNumber(pageNumber)
+            .build();
     }
 
     @GetMapping("/{userId}/course/{courseId}/{action}")
     public String action(@PathVariable int userId, @PathVariable int courseId, @PathVariable String action) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return "redirect:/course";
-        }
-        SecurityContextUser principal = (SecurityContextUser) authentication.getPrincipal();
-        if (principal == null) {
-            return "redirect:/course";
-        }
+        //TODO check possibility of breaking the proceeding checks.
         if (action != null) {
             switch (action) {
                 case "leave": {
-                    principal.getCourseIdList().remove(new Integer(courseId));
+                    securityContextUser.getCourseIdList().remove(new Integer(courseId));
                     userService.leaveCourse(userId, courseId);
                     break;
                 }
                 case "subscribe": {
-                    principal.getCourseIdList().add(courseId);
+                    securityContextUser.getCourseIdList().add(courseId);
                     userService.subscribeCourse(userId, courseId);
                     break;
                 }
             }
         }
         return "redirect:/course/" + courseId;
-    }
-
-    private ModelAndView userProfile(int userId, int pageNumber) {
-        //TODO mark courses where the student has gotten feedback.
-        User user = userService.getById(userId);
-        ModelAndView modelAndView = new ModelAndView();
-        if (user.getPosition().equals("student")) {
-            modelAndView.setViewName(USER_STUDENT);
-        } else if (user.getPosition().equals("tutor")) {
-            modelAndView.setViewName(USER_TUTOR);
-        }
-        modelAndView.addObject("user", userService.getById(userId));
-        modelAndView.addObject("courseList", courseService.getAllByUserId(userId, pageNumber));
-        return modelAndView;
     }
 
     @ExceptionHandler(NoResultException.class)

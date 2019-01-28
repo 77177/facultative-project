@@ -1,7 +1,10 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
+import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
+import com.epam.lab.group1.facultative.view.builder.UserViewBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,7 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.*;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
+import static com.epam.lab.group1.facultative.view.ViewType.COURSE;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -23,20 +26,27 @@ public class UserControllerTest {
     private MockMvc mockMvc;
     private UserService userService;
     private CourseService courseService;
+    private UserViewBuilder userViewBuilder;
+    private SecurityContextUser securityContextUser;
+    private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
 
     public UserControllerTest() {
         this.userService = mock(UserService.class);
         this.courseService = mock(CourseService.class);
-        MockMvc mockMvc = MockMvcBuilders
-            .standaloneSetup(new UserController(userService, courseService))
+        this.exceptionModelAndViewBuilder = mock(ExceptionModelAndViewBuilder.class);
+        this.userViewBuilder = mock(UserViewBuilder.class);
+        this.securityContextUser = mock(SecurityContextUser.class);
+
+        this.mockMvc = MockMvcBuilders
+            .standaloneSetup(new UserController(userService, courseService, exceptionModelAndViewBuilder,
+                userViewBuilder, securityContextUser))
             .build();
-        this.mockMvc = mockMvc;
     }
 
     @Test
     public void testSendRedirectToProfile() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/user/profile"))
-            .andExpect(MockMvcResultMatchers.view().name(COURSE))
+            .andExpect(MockMvcResultMatchers.view().name(COURSE.viewName))
             .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
     }
 

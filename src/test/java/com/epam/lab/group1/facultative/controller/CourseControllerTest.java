@@ -5,7 +5,6 @@ import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,10 +17,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_INFO;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_CREATE;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE_EDIT;
+import static com.epam.lab.group1.facultative.view.ViewType.COURSE;
+import static com.epam.lab.group1.facultative.view.ViewType.COURSE_INFO;
+import static com.epam.lab.group1.facultative.view.ViewType.COURSE_CREATE;
+import static com.epam.lab.group1.facultative.view.ViewType.COURSE_EDIT;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -67,21 +66,21 @@ public class CourseControllerTest {
     @Test
     public void testGetAllCourses() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/course/"))
-            .andExpect(MockMvcResultMatchers.view().name(COURSE))
+            .andExpect(MockMvcResultMatchers.view().name(COURSE.viewName))
             .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
     }
 
     @Test
     public void tesGetById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/course/1"))
-            .andExpect(MockMvcResultMatchers.view().name(COURSE_INFO))
+            .andExpect(MockMvcResultMatchers.view().name(COURSE_INFO.viewName))
             .andExpect(MockMvcResultMatchers.model().attributeExists("tutorName", "course", "studentList"));
     }
 
     @Test
     public void testGetCreateCourse() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/course/action/create/1"))
-            .andExpect(MockMvcResultMatchers.view().name(COURSE_CREATE));
+            .andExpect(MockMvcResultMatchers.view().name(COURSE_CREATE.viewName));
     }
 
     @Test
@@ -100,7 +99,7 @@ public class CourseControllerTest {
     public void tesGetEditCourse() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/course/1/action/edit/1"))
             .andExpect(MockMvcResultMatchers.model().attributeExists("tutorId", "course"))
-            .andExpect(MockMvcResultMatchers.view().name(COURSE_EDIT));
+            .andExpect(MockMvcResultMatchers.view().name(COURSE_EDIT.viewName));
     }
 
     @Test

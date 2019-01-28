@@ -1,5 +1,9 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.view.builder.CourseCreateViewBuilder;
+import com.epam.lab.group1.facultative.view.builder.CourseEditViewBuilder;
+import com.epam.lab.group1.facultative.view.builder.CourseInfoViewBuilder;
+import com.epam.lab.group1.facultative.view.builder.CourseViewBuilder;
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
@@ -10,7 +14,6 @@ import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +24,6 @@ import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-
-import static com.epam.lab.group1.facultative.controller.ViewName.*;
 
 @Controller
 @RequestMapping("/course")
@@ -35,6 +36,21 @@ public class CourseController {
     @Autowired
     private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
 
+    @Autowired
+    private CourseViewBuilder courseViewBuilder;
+
+    @Autowired
+    private CourseCreateViewBuilder courseCreateViewBuilder;
+
+    @Autowired
+    private CourseEditViewBuilder courseEditViewBuilder;
+
+    @Autowired
+    private CourseInfoViewBuilder courseInfoViewBuilder;
+
+    @Autowired
+    private SecurityContextUser securityContextUser;
+
     public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
         this.userService = userService;
@@ -43,41 +59,36 @@ public class CourseController {
     @GetMapping(value = "/")
     public ModelAndView getAllCourses(@RequestParam(name = "page", required = false) Integer page) {
         int pageNumber = page == null ? 0 : page;
-        ModelAndView modelAndView = new ModelAndView(COURSE);
-        modelAndView.addObject("courseList", courseService.findAll(pageNumber));
-        modelAndView.addObject("pageNumber", pageNumber);
-        return modelAndView;
+        return courseViewBuilder
+            .setCourseList(courseService.findAll(pageNumber))
+            .setPageNumber(pageNumber)
+            .build();
     }
 
     @GetMapping(value = "/{courseId}")
     public ModelAndView getById(@PathVariable int courseId) {
         //TODO add information about having feedback by a student on this course. Depend on existence of feedback
         // mark students with/without it.
-        ModelAndView modelAndView = new ModelAndView(COURSE_INFO);
         Course course = courseService.getById(courseId);
-        modelAndView.addObject("tutorName", userService.getById(course.getTutorId()).getFullName());
-        modelAndView.addObject("course", course);
-        modelAndView.addObject("studentList", userService.getAllStudentByCourseId(courseId));
-        return modelAndView;
+        return courseInfoViewBuilder
+            .setCourse(course)
+            .setTutorName(userService.getById(course.getTutorId()).getFullName())
+            .setStudentList(userService.getAllStudentByCourseId(courseId))
+            .build();
     }
 
     @GetMapping(value = "/action/create")
     public ModelAndView createCourse() {
-        ModelAndView modelAndView = new ModelAndView(COURSE_CREATE);
-        return modelAndView;
+        return courseCreateViewBuilder.build();
     }
 
     @PostMapping(value = "/action/create")
     public ModelAndView createCourse(@ModelAttribute Course course) {
         SingleCourseDto singleCourseDto = courseService.create(course);
-        ModelAndView modelAndView = new ModelAndView();
         if (!singleCourseDto.isErrorPresent()) {
-            modelAndView.setView(new RedirectView("/user/profile"));
-            return modelAndView;
+            return new ModelAndView(new RedirectView("/user/profile"));
         } else {
-            modelAndView.setViewName(COURSE_CREATE);
-            modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
-            return modelAndView;
+            return courseCreateViewBuilder.setErrorMessage(singleCourseDto.getErrorMessage()).build();
         }
     }
 
@@ -92,34 +103,23 @@ public class CourseController {
 
     @GetMapping(value = "/action/edit/{courseId}")
     public ModelAndView editCourse(@PathVariable int courseId) {
-        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ModelAndView modelAndView = new ModelAndView();
-
-        if (principal.getUserId() == courseService.getById(courseId).getTutorId()) {
-            modelAndView.setViewName(COURSE_EDIT);
-            modelAndView.addObject("course", courseService.getById(courseId));
-            return modelAndView;
+        if (securityContextUser.getUserId() == courseService.getById(courseId).getTutorId()) {
+            return courseEditViewBuilder.setCourse(courseService.getById(courseId)).build();
         } else {
-            modelAndView.setView(new RedirectView("/user/profile"));
-            return modelAndView;
+            return new ModelAndView(new RedirectView("/user/profile"));
         }
     }
 
     @PostMapping(value = "/action/edit")
     public ModelAndView editCourse(@ModelAttribute Course course) {
-        if (course.getStartingDate() == null || course.getFinishingDate() == null) {
-            throw new IllegalArgumentException("The one or both of the course dates are null");
-        }
         SingleCourseDto singleCourseDto = courseService.update(course);
-        ModelAndView modelAndView = new ModelAndView();
         if (!singleCourseDto.isErrorPresent()) {
-            modelAndView.setView(new RedirectView("/course/" + course.getId()));
-            return modelAndView;
+            return new ModelAndView(new RedirectView("/course/" + course.getId()));
         } else {
-            modelAndView.setViewName(COURSE_EDIT);
-            modelAndView.addObject("errorMessage", singleCourseDto.getErrorMessage());
-            modelAndView.addObject("course", course);
-            return modelAndView;
+            return courseEditViewBuilder
+                .setCourse(course)
+                .setErrorMessage(singleCourseDto.getErrorMessage())
+                .build();
         }
     }
 

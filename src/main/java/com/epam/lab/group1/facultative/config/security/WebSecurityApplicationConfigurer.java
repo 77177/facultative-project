@@ -23,8 +23,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 })
 public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapter {
 
+    private final UserDetailsService userDetailsService;
+
     @Autowired
-    private UserDetailsService userDetailsService;
+    public WebSecurityApplicationConfigurer(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -34,7 +38,7 @@ public class WebSecurityApplicationConfigurer extends WebSecurityConfigurerAdapt
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/user/profile**").hasAnyAuthority("student", "tutor")
+                .antMatchers("/user/**").hasAnyAuthority("student", "tutor")
                 .antMatchers("/feedback/**").hasAnyAuthority("student", "tutor")
                 .antMatchers("/course/action/**").hasAuthority("tutor")
             .and()

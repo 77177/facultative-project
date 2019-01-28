@@ -1,16 +1,14 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.view.ViewType;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
-import static com.epam.lab.group1.facultative.controller.ViewName.ACCESS_DENIED;
+import static com.epam.lab.group1.facultative.view.ViewType.ERROR;
 
 @Controller
 public class ErrorController {
@@ -25,7 +23,7 @@ public class ErrorController {
                 request.getAttribute(s + "exception_type") + " " +
                 request.getAttribute(s + "exception") + " " +
                 request.getAttribute(s + "request_uri"));
-        ModelAndView modelAndView = new ModelAndView(ERROR);
+        ModelAndView modelAndView = new ModelAndView(ERROR.viewName);
         modelAndView.addObject("errorStatus", request.getAttribute(s + "status_code"));
         modelAndView.addObject("message", request.getAttribute(s + "message"));
         modelAndView.addObject("exception_type", request.getAttribute(s + "exception_type"));
@@ -34,9 +32,4 @@ public class ErrorController {
         return modelAndView;
     }
 
-    @RequestMapping("/access-denied")
-    public ModelAndView accessDenied(Exception e) {
-        ModelAndView modelAndView = new ModelAndView(ACCESS_DENIED);
-        return modelAndView;
-    }
 }

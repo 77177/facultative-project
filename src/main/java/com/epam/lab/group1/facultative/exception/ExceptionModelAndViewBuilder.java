@@ -5,9 +5,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
-import static com.epam.lab.group1.facultative.controller.ViewName.ERROR;
+import static com.epam.lab.group1.facultative.view.ViewType.ERROR;
 
 @Data
 @Component
@@ -23,7 +24,7 @@ public class ExceptionModelAndViewBuilder {
         this.e = e;
         this.message = "";
         this.userMessage = "";
-        this.modelAndView = new ModelAndView(ERROR);
+        this.modelAndView = new ModelAndView(ERROR.viewName);
         return this;
     }
 
@@ -33,12 +34,12 @@ public class ExceptionModelAndViewBuilder {
     }
 
     public ExceptionModelAndViewBuilder addUserMessage(String message) {
-        this.userMessage.concat(" " + message);
+        this.userMessage = this.userMessage.concat(" " + message);
         return this;
     }
 
     public ExceptionModelAndViewBuilder addErrorMessage(String message) {
-        message.concat(" " + message);
+        this.message = message.concat(" " + message);
         return this;
     }
 

@@ -11,9 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static com.epam.lab.group1.facultative.controller.ViewName.COURSE;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
