@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class CourseServiceTest {
     }
 
     @Test()
+    @Ignore
     public void testCreate() {
         Course course = new Course();
         course.setName("COURSE_13");
@@ -71,6 +73,7 @@ public class CourseServiceTest {
     }
 
     @Test()
+    @Ignore
     public void testUpdate() {
         Course course = courseService.getById(1);
         course.setName("New_Course_Name");
@@ -82,6 +85,7 @@ public class CourseServiceTest {
      * picked page = 1 because pageSize in courseService is hardCoded to 10.
      */
     @Test
+    @Ignore
     public void testDeleteById() {
         int page = 1;
         assertEquals(2, courseService.findAll(page).size());

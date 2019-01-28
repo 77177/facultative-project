@@ -6,6 +6,7 @@ import com.epam.lab.group1.facultative.model.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
+import static com.epam.lab.group1.facultative.view.ViewType.FEEDBACK;
 import static com.epam.lab.group1.facultative.view.ViewType.USER_TUTOR;
 
 @Component
@@ -40,7 +41,7 @@ public class FeedbackViewBuilder {
     }
 
     public ModelAndView build() {
-        ModelAndView modelAndView = new ModelAndView(USER_TUTOR.viewName);
+        ModelAndView modelAndView = new ModelAndView(FEEDBACK.viewName);
         modelAndView.addObject("course", course);
         modelAndView.addObject("student", student);
         modelAndView.addObject("feedback", feedback);

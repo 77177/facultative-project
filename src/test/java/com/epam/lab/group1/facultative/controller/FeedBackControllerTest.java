@@ -8,8 +8,7 @@ import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
 import com.epam.lab.group1.facultative.service.UserService;
-import com.epam.lab.group1.facultative.view.builder.FeedbackViewBuilder;
-import com.epam.lab.group1.facultative.view.builder.UserViewBuilder;
+import com.epam.lab.group1.facultative.view.builder.*;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,20 +31,29 @@ import static org.mockito.Mockito.when;
 public class FeedBackControllerTest {
 
     private MockMvc mockMvc;
+    private UserService userService;
+    private CourseService courseService;
+    private FeedBackService feedBackService;
+    private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
+    private FeedbackViewBuilder feedbackViewBuilder;
 
     public FeedBackControllerTest() {
+        this.feedbackViewBuilder = new FeedbackViewBuilder();
+        this.exceptionModelAndViewBuilder = new ExceptionModelAndViewBuilder();
         ExceptionModelAndViewBuilder exceptionModelAndViewBuilder = mock(ExceptionModelAndViewBuilder.class);
-        FeedbackViewBuilder feedbackViewBuilder = mock(FeedbackViewBuilder.class);
 
+        FeedBack feedBack = new FeedBack();
+        feedBack.setStudentId(0);
+        feedBack.setCourseId(0);
 
-        CourseService courseService = mock(CourseService.class);
+        this.userService = mock(UserService.class);
+        when(userService.getById(0)).thenReturn(new User());
+
+        this.courseService = mock(CourseService.class);
         when(courseService.getById(0)).thenReturn(new Course());
 
-        FeedBackService feedBackService = mock(FeedBackService.class);
+        this.feedBackService = mock(FeedBackService.class);
         when(feedBackService.getFeedBack(0, 0)).thenReturn(new FeedBack());
-
-        UserService userService = mock(UserService.class);
-        when(userService.getById(0)).thenReturn(new User());
 
         mockMvc = MockMvcBuilders
             .standaloneSetup(new FeedBackController(userService, courseService, feedBackService,

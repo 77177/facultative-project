@@ -95,7 +95,6 @@ public class CourseService {
 
     public boolean deleteById(int courseId) {
         SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (principal.getUserId() == courseDAO.getById(courseId).getTutorId()) {
             courseDAO.deleteById(courseId);
             return true;

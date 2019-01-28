@@ -33,25 +33,24 @@ public class CourseController {
     private final Logger logger = Logger.getLogger(this.getClass());
     private CourseService courseService;
     private UserService userService;
-
-    @Autowired
     private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
-
-    @Autowired
     private CourseViewBuilder courseViewBuilder;
-
-    @Autowired
     private CourseCreateViewBuilder courseCreateViewBuilder;
-
-    @Autowired
     private CourseEditViewBuilder courseEditViewBuilder;
-
-    @Autowired
     private CourseInfoViewBuilder courseInfoViewBuilder;
 
-    public CourseController(CourseService courseService, UserService userService) {
+    @Autowired
+    public CourseController(CourseService courseService, UserService userService,
+                            ExceptionModelAndViewBuilder exceptionModelAndViewBuilder, CourseViewBuilder courseViewBuilder,
+                            CourseCreateViewBuilder courseCreateViewBuilder, CourseEditViewBuilder courseEditViewBuilder,
+                            CourseInfoViewBuilder courseInfoViewBuilder) {
         this.courseService = courseService;
         this.userService = userService;
+        this.exceptionModelAndViewBuilder = exceptionModelAndViewBuilder;
+        this.courseViewBuilder = courseViewBuilder;
+        this.courseCreateViewBuilder = courseCreateViewBuilder;
+        this.courseEditViewBuilder = courseEditViewBuilder;
+        this.courseInfoViewBuilder = courseInfoViewBuilder;
     }
 
     @GetMapping(value = "/")

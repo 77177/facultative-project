@@ -33,7 +33,7 @@ public class UserController {
         this.userViewBuilder = userViewBuilder;
     }
 
-    @RequestMapping("/profile")
+    @GetMapping("/profile")
     public ModelAndView sendRedirectToProfile(@RequestParam(name = "page", required = false) Integer page) {
         //TODO mark courses where the student has gotten feedback.
         int pageNumber = page == null ? 0 : page;
