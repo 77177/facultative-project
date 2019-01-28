@@ -2,11 +2,10 @@ package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
+import com.epam.lab.group1.facultative.exception.NotTheCourseTutorException;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
-import com.epam.lab.group1.facultative.service.CourseService;
-import com.epam.lab.group1.facultative.service.FeedBackService;
-import com.epam.lab.group1.facultative.service.UserService;
+import com.epam.lab.group1.facultative.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
 
 import static com.epam.lab.group1.facultative.controller.ViewName.FEEDBACK;
 
@@ -24,9 +22,9 @@ import static com.epam.lab.group1.facultative.controller.ViewName.FEEDBACK;
 public class FeedBackController {
 
     private final Logger logger = Logger.getLogger(this.getClass());
-    private UserService userService;
-    private CourseService courseService;
-    private FeedBackService feedBackService;
+    private UserServiceInterface userService;
+    private CourseServiceInterface courseService;
+    private FeedBackServiceInterface feedBackService;
 
     @Autowired
     private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
@@ -40,7 +38,8 @@ public class FeedBackController {
     @PostMapping(value = "/")
     public ModelAndView createFeedBack(@ModelAttribute(name = "feedback") FeedBack feedback) {
         ModelAndView modelAndView = new ModelAndView(FEEDBACK);
-        feedBackService.saveOrUpdate(feedback);
+
+        feedBackService.saveOrUpdateFeedBack(feedback);
         modelAndView.addObject("feedback", feedBackService.getFeedBack(feedback.getCourseId(), feedback.getStudentId()));
         modelAndView.addObject("student", userService.getById(feedback.getStudentId()));
         modelAndView.addObject("course", courseService.getById(feedback.getCourseId()));
@@ -50,7 +49,7 @@ public class FeedBackController {
     @GetMapping(value = "/user/{userId}/course/{courseId}")
     public ModelAndView getFeedbackPage(@PathVariable int userId, @PathVariable int courseId) {
         SecurityContextUser principal =
-            (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int principalUserId = principal.getUserId();
         ModelAndView modelAndView = new ModelAndView(FEEDBACK);
         FeedBack feedBack;
@@ -73,6 +72,12 @@ public class FeedBackController {
 
     @ExceptionHandler(CourseDoesNotExistException.class)
     public ModelAndView courseDoesNotExistException(CourseDoesNotExistException e) {
+        logger.error(e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).replaceUserMessage("No such course is here.").build();
+    }
+
+    @ExceptionHandler(NotTheCourseTutorException.class)
+    public ModelAndView notTheCourseTutorHandler(NotTheCourseTutorException e) {
         logger.error(e.getMessage(), e);
         return exceptionModelAndViewBuilder.setException(e).replaceUserMessage("No such course is here.").build();
     }

@@ -10,7 +10,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 
 import static org.junit.Assert.assertEquals;
@@ -50,7 +49,7 @@ public class FeedBackServiceTest {
         feedBackIn.setCourseId(2);
         feedBackIn.setMark(4);
         feedBackIn.setText("Good");
-        feedBackService.saveOrUpdate(feedBackIn);
+        feedBackService.saveOrUpdateFeedBack(feedBackIn);
         FeedBack feedBack = feedBackService.getFeedBack(2, 4);
         assertEquals(4, feedBack.getStudentId());
         assertEquals(2, feedBack.getCourseId());
