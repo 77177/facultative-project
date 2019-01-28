@@ -3,6 +3,7 @@ package com.epam.lab.group1.facultative.controller;
 import com.epam.lab.group1.facultative.view.builder.FeedbackViewBuilder;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
+import com.epam.lab.group1.facultative.exception.NotTheCourseTutorException;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
@@ -40,7 +41,7 @@ public class FeedBackController {
 
     @PostMapping(value = "/")
     public ModelAndView createFeedBack(@ModelAttribute(name = "feedback") FeedBack feedback) {
-        feedBackService.saveOrUpdate(feedback);
+        feedBackService.saveOrUpdateFeedBack(feedback);
         return feedbackViewBuilder
             .setStudent(userService.getById(feedback.getStudentId()))
             .setCourse(courseService.getById(feedback.getCourseId()))
@@ -72,6 +73,12 @@ public class FeedBackController {
 
     @ExceptionHandler(CourseDoesNotExistException.class)
     public ModelAndView courseDoesNotExistException(CourseDoesNotExistException e) {
+        logger.error(e.getMessage(), e);
+        return exceptionModelAndViewBuilder.setException(e).replaceUserMessage("No such course is here.").build();
+    }
+
+    @ExceptionHandler(NotTheCourseTutorException.class)
+    public ModelAndView notTheCourseTutorHandler(NotTheCourseTutorException e) {
         logger.error(e.getMessage(), e);
         return exceptionModelAndViewBuilder.setException(e).replaceUserMessage("No such course is here.").build();
     }

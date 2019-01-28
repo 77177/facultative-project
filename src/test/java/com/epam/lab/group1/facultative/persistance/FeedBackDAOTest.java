@@ -51,7 +51,7 @@ public class FeedBackDAOTest {
         feedBackIn.setCourseId(2);
         feedBackIn.setMark(4);
         feedBackIn.setText("Good");
-        feedBackDAO.saveOrUpdate(feedBackIn);
+        feedBackDAO.saveOrUpdateFeedBack(feedBackIn);
         FeedBack feedBack = feedBackDAO.getFeedBack(2, 6);
         assertEquals(6, feedBack.getStudentId());
         assertEquals(2, feedBack.getCourseId());

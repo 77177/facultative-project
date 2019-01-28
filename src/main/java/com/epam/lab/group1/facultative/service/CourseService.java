@@ -83,7 +83,7 @@ public class CourseService {
                 logger.debug(message);
                 singleCourseDto.setErrorPresent(true);
             }
-        } catch (ConstraintViolationException e) {
+        } catch (PersistenceException e) {
             String message = String.format("Course was not updated. Probably with name %s already exists", course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
