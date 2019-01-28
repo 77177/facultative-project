@@ -10,6 +10,8 @@ public interface UserDAOInterface extends DAOInterface<User> {
 
     List<User> getAllTutors();
 
+    User getByEmail(String email);
+
     List<User> getAllStudentByCourseId(int id);
 
     void subscribeCourse(int userId, int courseId);

@@ -2,6 +2,7 @@ package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.persistance.UserDAO;
+import com.epam.lab.group1.facultative.persistance.UserDAOInterface;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class UserService implements UserServiceInterface {
     //TODO check email
 
     private final Logger logger = Logger.getLogger(this.getClass());
-    private UserDAO userDAO;
+    private UserDAOInterface userDAO;
 
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;

@@ -4,6 +4,7 @@ import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.persistance.CourseDAO;
+import com.epam.lab.group1.facultative.persistance.CourseDAOInterface;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
@@ -19,7 +20,7 @@ import java.util.List;
 public class CourseService implements CourseServiceInterface {
 
     private final Logger logger = Logger.getLogger(this.getClass());
-    private CourseDAO courseDAO;
+    private CourseDAOInterface courseDAO;
     private final int pageSize = 10;
 
     public CourseService(CourseDAO courseDAO) {

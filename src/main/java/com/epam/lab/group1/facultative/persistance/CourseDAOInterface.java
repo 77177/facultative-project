@@ -4,7 +4,7 @@ import com.epam.lab.group1.facultative.model.Course;
 
 import java.util.List;
 
-interface CourseDAOInterface extends DAOInterface<Course> {
+public interface CourseDAOInterface extends DAOInterface<Course> {
 
     List<Course> findAllActive(int pageNumber, int pageSize);
 

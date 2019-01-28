@@ -22,7 +22,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @Autowired
     private UserDetailsService userDetailsService;
