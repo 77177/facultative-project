@@ -16,7 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
-public class CourseService {
+public class CourseService implements CourseServiceInterface {
 
     private final Logger logger = Logger.getLogger(this.getClass());
     private CourseDAO courseDAO;
@@ -26,6 +26,7 @@ public class CourseService {
         this.courseDAO = courseDAO;
     }
 
+    @Override
     public Course getById(int courseId) {
         Course course = courseDAO.getById(courseId);
         if (course == null) {
@@ -38,6 +39,7 @@ public class CourseService {
      * @param course model from user's view
      * @return SingleCourseDto with info about errors.
      */
+    @Override
     public SingleCourseDto create(Course course) {
         SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ;
@@ -65,6 +67,7 @@ public class CourseService {
      * @param course model from user's view
      * @return SingleCourseDto with info about errors.
      */
+    @Override
     public SingleCourseDto update(Course course) {
         SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         course.setTutorId(principal.getUserId());
@@ -93,6 +96,7 @@ public class CourseService {
 
     }
 
+    @Override
     public boolean deleteById(int courseId) {
         SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -106,6 +110,7 @@ public class CourseService {
         }
     }
 
+    @Override
     public List<Course> findAll(int page) {
         if (page < 0) {
             page = 0;
@@ -117,6 +122,7 @@ public class CourseService {
         return courseList;
     }
 
+    @Override
     public List<Course> getAllByUserId(int userId, int pageNumber) {
         return courseDAO.getAllByUserId(userId, pageNumber, pageSize);
     }

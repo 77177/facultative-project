@@ -4,7 +4,9 @@ import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.User;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
+import com.epam.lab.group1.facultative.service.CourseServiceInterface;
 import com.epam.lab.group1.facultative.service.UserService;
+import com.epam.lab.group1.facultative.service.UserServiceInterface;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,8 +25,8 @@ import static com.epam.lab.group1.facultative.controller.ViewName.*;
 public class UserController {
 
     private final Logger logger = Logger.getLogger(this.getClass());
-    private UserService userService;
-    private CourseService courseService;
+    private UserServiceInterface userService;
+    private CourseServiceInterface courseService;
 
     @Autowired
     private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
