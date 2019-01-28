@@ -36,7 +36,6 @@ public class FeedBackControllerTest {
     public FeedBackControllerTest() {
         ExceptionModelAndViewBuilder exceptionModelAndViewBuilder = mock(ExceptionModelAndViewBuilder.class);
         FeedbackViewBuilder feedbackViewBuilder = mock(FeedbackViewBuilder.class);
-        SecurityContextUser securityContextUser = mock(SecurityContextUser.class);
 
 
         CourseService courseService = mock(CourseService.class);
@@ -50,7 +49,7 @@ public class FeedBackControllerTest {
 
         mockMvc = MockMvcBuilders
             .standaloneSetup(new FeedBackController(userService, courseService, feedBackService,
-                exceptionModelAndViewBuilder, feedbackViewBuilder, securityContextUser))
+                exceptionModelAndViewBuilder, feedbackViewBuilder))
             .build();
     }
 

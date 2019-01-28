@@ -29,8 +29,4 @@ public class MainContextConfig {
         return new ExceptionModelAndViewBuilder();
     }
 
-    @Bean
-    public SecurityContextUser securityContextUser() {
-        return (SecurityContextUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
 }

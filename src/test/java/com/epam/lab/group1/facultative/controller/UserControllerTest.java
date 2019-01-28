@@ -27,7 +27,6 @@ public class UserControllerTest {
     private UserService userService;
     private CourseService courseService;
     private UserViewBuilder userViewBuilder;
-    private SecurityContextUser securityContextUser;
     private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
 
     public UserControllerTest() {
@@ -35,11 +34,10 @@ public class UserControllerTest {
         this.courseService = mock(CourseService.class);
         this.exceptionModelAndViewBuilder = mock(ExceptionModelAndViewBuilder.class);
         this.userViewBuilder = mock(UserViewBuilder.class);
-        this.securityContextUser = mock(SecurityContextUser.class);
 
         this.mockMvc = MockMvcBuilders
             .standaloneSetup(new UserController(userService, courseService, exceptionModelAndViewBuilder,
-                userViewBuilder, securityContextUser))
+                userViewBuilder))
             .build();
     }
 

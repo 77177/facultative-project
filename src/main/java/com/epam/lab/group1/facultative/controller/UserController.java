@@ -8,7 +8,7 @@ import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,23 +24,21 @@ public class UserController {
     private CourseService courseService;
     private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
     private UserViewBuilder userViewBuilder;
-    private SecurityContextUser securityContextUser;
 
     public UserController(UserService userService, CourseService courseService,
-                          ExceptionModelAndViewBuilder exceptionModelAndViewBuilder, UserViewBuilder userViewBuilder,
-                          SecurityContextUser securityContextUser) {
+                          ExceptionModelAndViewBuilder exceptionModelAndViewBuilder, UserViewBuilder userViewBuilder) {
         this.userService = userService;
         this.courseService = courseService;
         this.exceptionModelAndViewBuilder = exceptionModelAndViewBuilder;
         this.userViewBuilder = userViewBuilder;
-        this.securityContextUser = securityContextUser;
     }
 
     @RequestMapping("/profile")
     public ModelAndView sendRedirectToProfile(@RequestParam(name = "page", required = false) Integer page) {
         //TODO mark courses where the student has gotten feedback.
         int pageNumber = page == null ? 0 : page;
-        User user = userService.getById(securityContextUser.getUserId());
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getById(principal.getUserId());
         if (user.getPosition().equals("student")) {
             userViewBuilder.setPosition(UserPosition.STUDENT);
         } else if (user.getPosition().equals("tutor")) {
@@ -56,15 +54,16 @@ public class UserController {
     @GetMapping("/{userId}/course/{courseId}/{action}")
     public String action(@PathVariable int userId, @PathVariable int courseId, @PathVariable String action) {
         //TODO check possibility of breaking the proceeding checks.
+        SecurityContextUser principal = (SecurityContextUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (action != null) {
             switch (action) {
                 case "leave": {
-                    securityContextUser.getCourseIdList().remove(new Integer(courseId));
+                    principal.getCourseIdList().remove(new Integer(courseId));
                     userService.leaveCourse(userId, courseId);
                     break;
                 }
                 case "subscribe": {
-                    securityContextUser.getCourseIdList().add(courseId);
+                    principal.getCourseIdList().add(courseId);
                     userService.subscribeCourse(userId, courseId);
                     break;
                 }

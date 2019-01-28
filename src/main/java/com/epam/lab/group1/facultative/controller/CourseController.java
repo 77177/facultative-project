@@ -14,6 +14,7 @@ import com.epam.lab.group1.facultative.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +48,6 @@ public class CourseController {
 
     @Autowired
     private CourseInfoViewBuilder courseInfoViewBuilder;
-
-    @Autowired
-    private SecurityContextUser securityContextUser;
 
     public CourseController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
@@ -103,7 +101,8 @@ public class CourseController {
 
     @GetMapping(value = "/action/edit/{courseId}")
     public ModelAndView editCourse(@PathVariable int courseId) {
-        if (securityContextUser.getUserId() == courseService.getById(courseId).getTutorId()) {
+        SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal.getUserId() == courseService.getById(courseId).getTutorId()) {
             return courseEditViewBuilder.setCourse(courseService.getById(courseId)).build();
         } else {
             return new ModelAndView(new RedirectView("/user/profile"));
