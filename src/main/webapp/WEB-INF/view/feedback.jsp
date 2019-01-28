@@ -74,9 +74,7 @@
                     <form action="/feedback/" method="post">
                         <span><%=student.getFullName()%></span>, <fmt:message key="feedback"/> <span><%=course.getName()%></span><br>
                         <textarea name="text" rows="4" cols="50"
-                                <%out.print(course.getTutorId() != principal.getUserId() ? "readonly" : "");%>>
-                                ${feedback.text}
-                        </textarea>
+                                <%out.print(course.getTutorId() != principal.getUserId() ? "readonly" : "");%>>${feedback.text}</textarea>
                         <br/>
                         <fmt:message key="mark"/>
                         <br/>

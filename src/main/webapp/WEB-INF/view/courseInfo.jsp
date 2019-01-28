@@ -59,12 +59,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/course/"
                        data-toggle="allCourses" data-placement="top" title="Back to the main facultative page!">
-                        all courses
+                        <fmt:message key="allCourses"/>
                     </a>
                 </li>
                 <li class="nav-item">
                     <sec:authorize access="isAuthenticated()">
-                        <a class="nav-link" href="/user/profile">My Profile</a>
+                        <a class="nav-link" href="/user/profile"><fmt:message key="myProfile"/></a>
                     </sec:authorize>
                 </li>
                 <sec:authorize access="isAuthenticated()">
@@ -80,8 +80,9 @@
             <div class="col">
                 <div id="courseInfo">
                     <fmt:message key="tutor"/>: <span>${tutorName}</span><br/>
-                    <fmt:message key="courseStart"/>: <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
-                    <fmt:message key="courseFinish"/>: <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))%></span><br>
+                    <fmt:message key="courseStart"/>: <span><%=course.getStartingDate()%></span><br>
+                    <fmt:message key="courseFinish"/>: <span><%=course.getFinishingDate()%></span><br>
+                    <fmt:message key="isActive"/>: <span><%=course.isActive()%></span><br>
                     <fmt:message key="duration"/>:
                     <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getYears()%> <fmt:message key="year"/> </span>
                     <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getMonths()%> <fmt:message key="month"/> </span>
@@ -125,7 +126,7 @@
                     <div id="tutorZone">
                         <%if (principal.getUserId() == course.getTutorId()) {%>
                         <div class="btn-group">
-                            <a class="btn btn-outline-primary"  href="/course/action/edit/<%=course.getId()%>/">
+                            <a class="btn btn-outline-primary rtn-sm"  href="/course/action/edit/<%=course.getId()%>/">
                                 <fmt:message key="editCourse"/>
                             </a><br><br>
 
