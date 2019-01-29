@@ -67,7 +67,6 @@
                         <button type="submit" class="btn btn-warning">
                             <fmt:message key="button.logout"/>
                         </button>
-                        <%--<input class="btn btn-warning" type="submit" value="<fmt:message key="Logout"/>"/>--%>
                         <sec:csrfInput/>
                     </form>
                 </sec:authorize>

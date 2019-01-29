@@ -8,10 +8,12 @@
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="java.time.Period" %>
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${pageContext.response.locale}"/>
-<fmt:setBundle basename="bundle.courseInfo"/>
+<fmt:setBundle basename="bundle.common"/>
 <%
+    Locale locale = pageContext.getResponse().getLocale();
     SecurityContextUser principal = null;
     Course course = (Course)request.getAttribute("course");
     List<User> studentList = (List) request.getAttribute("word.studentList");
@@ -24,7 +26,11 @@
 </sec:authorize>
 <html>
     <head>
-        <title><fmt:message key="form.title"/></title>
+        <title>
+            <fmt:bundle basename = "bundle.courseInfo">
+                <fmt:message key="title"/>
+            </fmt:bundle>
+        </title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
@@ -42,7 +48,12 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="form.title"/>: <%=course.getName()%></h2>
+            <h2>
+                <fmt:bundle basename = "bundle.courseInfo">
+                    <fmt:message key="title"/>
+                </fmt:bundle>
+                : <%=course.getName()%>
+            </h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -59,17 +70,28 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/course/"
                        data-toggle="allCourses" data-placement="top" title="Back to the main facultative page!">
-                        <fmt:message key="allCourses"/>
+                        <fmt:message key="button.allCourses"/>
                     </a>
                 </li>
                 <li class="nav-item">
+                    <sec:authorize access="!isAuthenticated()">
+                        <a class="nav-link" href="/authenticator/login">
+                            <fmt:message key="button.login"/>
+                        </a>
+                    </sec:authorize>
+                </li>
+                <li class="nav-item">
                     <sec:authorize access="isAuthenticated()">
-                        <a class="nav-link" href="/user/profile"><fmt:message key="message.myProfile"/></a>
+                        <a class="nav-link" href="/user/profile">
+                            <fmt:message key="message.myProfile"/>
+                        </a>
                     </sec:authorize>
                 </li>
                 <sec:authorize access="isAuthenticated()">
-                    <form class="form-inline" method="post" action="/logout">
-                        <input class="btn btn-warning" type="submit" value="Logout"/>
+                    <form class="form-inline justify-content-end" method="post" action="/logout">
+                        <button type="submit" class="btn btn-warning">
+                            <fmt:message key="button.logout"/>
+                        </button>
                         <sec:csrfInput/>
                     </form>
                 </sec:authorize>
@@ -80,15 +102,28 @@
             <div class="col">
                 <div id="courseInfo">
                     <fmt:message key="word.tutor"/>: <span>${tutorName}</span><br/>
-                    <fmt:message key="courseStart"/>: <span><%=course.getStartingDate()%></span><br>
-                    <fmt:message key="courseFinish"/>: <span><%=course.getFinishingDate()%></span><br>
+                    <fmt:message key="form.startDate"/>: <span><%=course.getStartingDate()%></span><br>
+                    <fmt:message key="form.finishDate"/>: <span><%=course.getFinishingDate()%></span><br>
                     <fmt:message key="word.status"/>: <span><%=course.isActive()%></span><br>
-                    <fmt:message key="word.duration"/>:
-                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getYears()%> <fmt:message key="word.year"/> </span>
-                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getMonths()%> <fmt:message key="word.month"/> </span>
-                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getDays()%> <fmt:message key="word.day"/> </span>
+                    <fmt:bundle basename = "bundle.courseInfo">
+                        <fmt:message key="word.duration"/>:
+                        <%
+                            Period duration = Period.between(course.getStartingDate(), course.getFinishingDate());
+                            if (duration.getDays() > 0) {
+                                out.print(duration.getDays()); %> <fmt:message key="word.day"/><%
+                            }
+                            if (duration.getMonths() > 0) {
+                                out.print(duration.getMonths()); %> <fmt:message key="word.month"/><%
+                            }
+                            if (duration.getYears() > 0) {
+                                out.print(duration.getYears()); %> <fmt:message key="word.year"/><%
+                            }
+                        %>
+                    </fmt:bundle>
                 </div>
+                <br>
                 <sec:authorize access="hasAnyAuthority('student')">
+                    <fmt:bundle basename = "bundle.courseInfo">
                     <div id="studentZone">
                         <%
                             if (principal.getCourseIdList().contains(course.getId())) {
@@ -107,40 +142,43 @@
                             </button>
                         </p>
                         <%
-                        } else {
-                        %>
-                        <p>
-                            <fmt:message key="message.subscribe"/> <%=course.getName()%> <br>
-                            <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">
-                                <fmt:message key="option.subscribe"/>
-                            </a>
-                        </p>
-
+                        } else {%>
+                            <p>
+                                <fmt:message key="message.subscribe"/> <%=course.getName()%> <br>
+                                <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">
+                                    <fmt:message key="option.subscribe"/>
+                                </a>
+                            </p>
                         <%
-                            }
+                        }
                         %>
                     </div>
+                    </fmt:bundle>
                 </sec:authorize>
 
                 <sec:authorize access="hasAnyAuthority('tutor')">
                     <div id="tutorZone">
+                        <fmt:bundle basename = "bundle.courseInfo">
                         <%if (principal.getUserId() == course.getTutorId()) {%>
                         <div class="btn-group">
-                            <a class="btn btn-outline-primary rtn-sm"  href="/course/action/edit/<%=course.getId()%>/">
+                            <a class="btn btn-outline-primary"  href="/course/action/edit/<%=course.getId()%>/">
                                 <fmt:message key="option.editCourse"/>
-                            </a><br><br>
+                            </a>
 
                             <!-- Button to Open the Modal -->
-                                <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
-                                        data-target="#delete">
-                                    <fmt:message key="option.deleteCourse"/>
-                                </button>
+                            <button type="button" class="btn btn-outline-danger" data-toggle="modal"
+                                    data-target="#delete">
+                                <fmt:message key="option.deleteCourse"/>
+                            </button>
                             <%}%>
                         </div>
-                        <br>
+                        <br><br>
                         <h3><fmt:message key="word.studentList"/></h3>
+                        </fmt:bundle>
                         <table  class="table-striped table-hover col">
-                            <caption><fmt:message key="word.studentList"/></caption>
+                            <fmt:bundle basename = "bundle.courseInfo">
+                                <caption><fmt:message key="word.studentList"/></caption>
+                            </fmt:bundle>
                             <thead>
                                 <tr>
                                     <th><fmt:message key="form.firstName"/></th>
@@ -149,17 +187,22 @@
                             </thead>
                             <tbody>
                                 <%
-                                    for (User user : studentList) {
-                                %>
-                                <tr>
-                                    <td><% out.println(user.getFirstName());%></td>
-                                    <td><% out.println(user.getLastName());%></td>
-                                    <%if(principal.getUserId() == course.getTutorId()){%>
-                                    <td><a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>">
-                                        <fmt:message key="seeFeedback"/></a></td>
-                                    <%}%>
-                                </tr>
-                                <%
+                                    if (studentList != null && !studentList.isEmpty()) {
+                                        for (User user : studentList) {
+                                        %>
+                                        <tr>
+                                            <td><% out.println(user.getFirstName());%></td>
+                                            <td><% out.println(user.getLastName());%></td>
+                                            <%if(principal.getUserId() == course.getTutorId()){%>
+                                            <td>
+                                                <a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>">
+                                                    <fmt:message key="word.feedback"/>
+                                                </a>
+                                            </td>
+                                            <%}%>
+                                        </tr>
+                                        <%
+                                        }
                                     }
                                 %>
                             </tbody>
@@ -170,16 +213,17 @@
             <div class="col-sm-1"></div>
         </div>
         <sec:authorize access="isAuthenticated()">
+            <fmt:bundle basename = "bundle.courseInfo">
             <!-- The leave modal -->
             <div class="modal" id="leave">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Leaving course</h4>
+                            <h4 class="modal-title"><fmt:message key="option.leaveCourse"/></h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body ">
-                            Are you sure that you want unsubscribe from this course?
+                            <fmt:message key="message.leaving"/>
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-danger"
@@ -195,11 +239,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Delete course</h4>
+                            <h4 class="modal-title"><fmt:message key="option.deleteCourse"/></h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body ">
-                            Do you want to delete the course?
+                            <fmt:message key="message.deleting"/>
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-danger"
@@ -210,6 +254,7 @@
                     </div>
                 </div>
             </div>
+            </fmt:bundle>
         </sec:authorize>
     </body>
 </html>
