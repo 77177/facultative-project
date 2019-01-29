@@ -3,6 +3,7 @@
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
 <%@ page import="com.epam.lab.group1.facultative.model.FeedBack" %>
+<%@ page import="java.util.Locale" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -11,12 +12,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${pageContext.response.locale}"/>
 <fmt:setBundle basename="bundle.feedback"/>
+<fmt:setBundle basename="bundle.common"/>
 <%
     SecurityContextUser principal = null;
     Course course = (Course) request.getAttribute("course");
     User student = (User) request.getAttribute("word.student");
     FeedBack feedBack = (FeedBack) request.getAttribute("word.feedback");
-    String changeLanguageLink = "/feedback/user/" + student.getId() + "/course/" + course.getId();
+//    String changeLanguageLink = "/feedback/user/" + student.getId() + "/course/" + course.getId();
+    String changeLanguageLink = "/feedback/user/1/course/1";
 %>
 <sec:authorize access="isAuthenticated()">
     <%
@@ -25,7 +28,11 @@
 </sec:authorize>
 <html>
     <head>
-        <title><fmt:message key="form.title"/></title>
+        <title>
+            <fmt:bundle basename = "bundle.feedback">
+                <fmt:message key="title"/>
+            </fmt:bundle>
+        </title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
@@ -33,8 +40,12 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="form.title"/> <%=student.getFirstName() + " " + student.getLastName()%>
-                <fmt:message key="word.forCourse"/> <%=course.getName()%></h2>
+            <fmt:bundle basename = "bundle.feedback">
+                <h2>
+                    <fmt:message key="title"/> <%=student.getFirstName() + " " + student.getLastName()%>
+                    <fmt:message key="word.forCourse"/> <%=course.getName()%>
+                </h2>
+            </fmt:bundle>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -51,17 +62,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/course/"
                        data-toggle="allCourses" data-placement="top" title="Back to the main facultative page!">
-                        all courses
+                        <fmt:message key="button.allCourses"/>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <sec:authorize access="isAuthenticated()">
-                        <a class="nav-link" href="/user/profile">My Profile</a>
+                    <sec:authorize access="!isAuthenticated()">
+                        <a class="nav-link" href="/authenticator/login">
+                            <fmt:message key="button.login"/>
+                        </a>
                     </sec:authorize>
                 </li>
                 <sec:authorize access="isAuthenticated()">
-                    <form class="form-inline" method="post" action="/logout">
-                        <input class="btn btn-warning" type="submit" value="Logout"/>
+                    <form class="form-inline justify-content-end" method="post" action="/logout">
+                        <button type="submit" class="btn btn-warning">
+                            <fmt:message key="button.logout"/>
+                        </button>
                         <sec:csrfInput/>
                     </form>
                 </sec:authorize>
@@ -70,6 +85,7 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col">
+                <fmt:bundle basename = "bundle.feedback">
                 <sec:authorize access="hasAnyAuthority('tutor')">
                     <form action="/feedback/" method="post">
                         <span><%=student.getFullName()%></span>, <fmt:message key="word.feedback"/> <span><%=course.getName()%></span><br>
@@ -92,13 +108,14 @@
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('student')">
                     <h6>
-                        <fmt:message key="word.feedback"/> <span><%=course.getName()%></span>:
+                        <fmt:message key="message.feedbackForCourse"/> <span><%=course.getName()%></span>:
                     </h6>
                     <div class="card col-5">
                         <div class="card-body"><%=feedBack.getText()%></div>
                     </div>
                     <fmt:message key="message.yourMarkForCourse"/>: <%=feedBack.getMark()%>
                 </sec:authorize>
+                </fmt:bundle>
             </div>
             <div class="col-sm-1"></div>
         </div>
