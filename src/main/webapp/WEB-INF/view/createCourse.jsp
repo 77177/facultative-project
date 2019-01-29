@@ -2,10 +2,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${pageContext.response.locale}"/>
-<fmt:setBundle basename="bundle.createCourse"/>
+<fmt:setBundle basename="bundle.common"/>
 <%
     Object errorMessageObject = request.getAttribute("errorMessage");
-    String changeLanguageLink = null;
+    String changeLanguageLink = "/course/action/create/";
 %>
 <html>
     <head>
@@ -108,7 +108,7 @@
             <% } %>
                     <form method="post" action="/course/action/create/">
                         <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label"><fmt:message key="courseName"/>:</label>
+                            <label for="name" class="col-sm-2 col-form-label"><fmt:message key="form.title"/>:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control-plaintext" id="name" name="name"
                                        placeholder="course title" minlength="1" required>

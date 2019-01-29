@@ -2,14 +2,20 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<fmt:setLocale value="${pageContext.request.locale}"/>
-<fmt:setBundle basename="bundle.login"/>
+<fmt:setLocale value="${pageContext.response.locale}"/>
+<fmt:setBundle basename="bundle.common"/>
 <%
     String changeLanguageLink = "/authenticator/login";
 %>
 <html>
     <head>
-        <title>Login to facultative</title>
+        <title>
+            <title>
+                <fmt:bundle basename = "bundle.login">
+                    <fmt:message key="title"/>
+                </fmt:bundle>
+            </title>
+        </title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -23,7 +29,11 @@
     </head>
     <body>
         <div class="header jumbotron">
-            <h2><fmt:message key="message.welcome"/></h2>
+            <h2>
+                <fmt:bundle basename = "bundle.login">
+                    <fmt:message key="message.welcome"/>
+                </fmt:bundle>
+            </h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -40,17 +50,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/course/"
                        data-toggle="allCourses" data-placement="top" title="Back to the main facultative page!">
-                        all courses
+                        <fmt:message key="button.allCourses"/>
                     </a>
                 </li>
                 <li class="nav-item">
                     <sec:authorize access="isAuthenticated()">
-                        <a class="nav-link" href="/user/profile">My Profile</a>
+                        <a class="nav-link" href="/user/profile">
+                            <fmt:message key="message.myProfile"/>
+                        </a>
                     </sec:authorize>
                 </li>
                 <sec:authorize access="isAuthenticated()">
-                    <form class="form-inline" method="post" action="/logout">
-                        <input class="btn btn-warning" type="submit" value="Logout"/>
+                    <form class="form-inline justify-content-end" method="post" action="/logout">
+                        <button type="submit" class="btn btn-warning">
+                            <fmt:message key="button.logout"/>
+                        </button>
                         <sec:csrfInput/>
                     </form>
                 </sec:authorize>
@@ -73,7 +87,7 @@
                                placeholder="Password" required>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><fmt:message key="button.loginIn"/></button>
+                <button type="submit" class="btn btn-primary"><fmt:message key="button.login"/></button>
                 <sec:csrfInput/>
             </form>
             <div class="col-sm-3"></div>
@@ -82,10 +96,12 @@
             <div class="col-sm-1"></div>
             <div class="col">
                 <br>
+                <fmt:bundle basename = "bundle.login">
                 <fmt:message key="message.noRegistration"/> <br>
                 <a class="btn btn-info" href="/authenticator/registration">
-                    <fmt:message key="button.register"/>
+                        <fmt:message key="button.register"/>
                 </a>
+                </fmt:bundle>
             </div>
             <div class="col-sm-3"></div>
         </div>
