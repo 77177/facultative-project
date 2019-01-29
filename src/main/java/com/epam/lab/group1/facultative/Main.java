@@ -27,8 +27,3 @@ public class Main {
         tomcat.startTomcat();
     }
 }
-
-
-
-
-

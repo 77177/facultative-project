@@ -40,7 +40,7 @@
         <div class="jumbotron">
             <fmt:bundle basename = "bundle.feedback">
                 <h2>
-                    <fmt:message key="title"/> <%=student.getFirstName() + " " + student.getLastName()%>
+                    <fmt:message key="title"/>
                     <fmt:message key="word.forCourse"/> <%=course.getName()%>
                 </h2>
             </fmt:bundle>
