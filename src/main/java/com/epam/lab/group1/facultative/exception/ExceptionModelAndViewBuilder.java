@@ -50,7 +50,7 @@ public class ExceptionModelAndViewBuilder {
 
     public ModelAndView build() {
         modelAndView.addObject("userMessage", this.userMessage);
-        modelAndView.addObject("message", e.getMessage());
+        modelAndView.addObject("messagesdfsdf", e.getMessage());
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         e.printStackTrace(printWriter);

@@ -16,19 +16,21 @@
                 <fmt:message key="errorMessage"/>
             </h5>
             <a href="/course/">
-                <fmt:message key="allCourses"/>
+                <fmt:bundle basename = "bundle.common">
+                    <fmt:message key="button.allCourses"/>
+                </fmt:bundle>
             </a>
         </div>
         <div>
             <div>
                 ${userMessage}
             </div>
-            <button data-toggle="collapse" data-target="#details">Details</button>
+            <button data-toggle="collapse" data-target="#details"><fmt:message key="details"/></button>
             <div id="details" class="collapse">
                 <div>
                     ${message}
                 </div>
-                <button data-toggle="collapse" data-target="#moreDetails">More details</button>
+                <button data-toggle="collapse" data-target="#moreDetails"><fmt:message key="moreDetails"/></button>
                 <div id="moreDetails" class="collapse">
                     ${stackTrace}
                 </div>
