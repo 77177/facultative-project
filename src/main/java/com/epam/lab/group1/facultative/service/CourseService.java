@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.service;
 
+import com.epam.lab.group1.facultative.controller.LocaleHolder;
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.model.Course;
@@ -7,6 +8,7 @@ import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import com.epam.lab.group1.facultative.persistance.CourseDAOInterface;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,6 @@ import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Service
@@ -23,6 +24,9 @@ public class CourseService implements CourseServiceInterface {
     private final Logger logger = Logger.getLogger(this.getClass());
     private CourseDAOInterface courseDAO;
     private final int pageSize = 10;
+
+    @Autowired
+    private LocaleHolder localeHolder;
 
     public CourseService(CourseDAO courseDAO) {
         this.courseDAO = courseDAO;
@@ -56,8 +60,7 @@ public class CourseService implements CourseServiceInterface {
             courseDAO.create(course);
             singleCourseDto.setErrorPresent(false);
         } catch (PersistenceException e) {
-            Locale locale = Locale.getDefault();
-            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            ResourceBundle errorMessages = ResourceBundle.getBundle("bundle.errorMessages", localeHolder.getLocale());
             String message = String.format(errorMessages.getString("courseWithNameAlreadyExists"), course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
@@ -90,8 +93,7 @@ public class CourseService implements CourseServiceInterface {
                 singleCourseDto.setErrorPresent(true);
             }
         } catch (PersistenceException e) {
-            Locale locale = Locale.getDefault();
-            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            ResourceBundle errorMessages = ResourceBundle.getBundle("bundle.errorMessages", localeHolder.getLocale());
             String message = String.format(errorMessages.getString("courseWithNameAlreadyExists"), course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
@@ -143,8 +145,7 @@ public class CourseService implements CourseServiceInterface {
             return singleCourseDto;
         }
         if (course.getStartingDate().isBefore(LocalDate.now().plus(1, ChronoUnit.DAYS))) {
-            Locale locale = Locale.getDefault();
-            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            ResourceBundle errorMessages = ResourceBundle.getBundle("bundle.errorMessages", localeHolder.getLocale());
             String message = String.format(errorMessages.getString("wrongStartFinishDate"),
                 course.getStartingDate(), course.getFinishingDate());
             logger.debug(message);
@@ -156,8 +157,7 @@ public class CourseService implements CourseServiceInterface {
 
     private SingleCourseDto checkWrongStartDate(Course course, SingleCourseDto singleCourseDto) {
         if (course.getStartingDate().isAfter(course.getFinishingDate())) {
-            Locale locale = Locale.getDefault();
-            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            ResourceBundle errorMessages = ResourceBundle.getBundle("bundle.errorMessages", localeHolder.getLocale());
             String message = String.format(errorMessages.getString("wrongStartDate"),
                 course.getStartingDate(), course.getFinishingDate());
             logger.debug(message);
@@ -169,7 +169,7 @@ public class CourseService implements CourseServiceInterface {
 
     private SingleCourseDto checkNullDate(Course course, SingleCourseDto singleCourseDto) {
         if (course.getFinishingDate() == null || course.getStartingDate() == null) {
-            String message= "Date can not be null";
+            String message = "Date can not be null";
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
@@ -179,7 +179,7 @@ public class CourseService implements CourseServiceInterface {
 
     private SingleCourseDto checkNameInCourse(Course course, SingleCourseDto singleCourseDto) {
         if (course.getName().isEmpty()) {
-            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages");
+            ResourceBundle errorMessages = ResourceBundle.getBundle("bundle.errorMessages", localeHolder.getLocale());
             String message = errorMessages.getString("emptyName");
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);

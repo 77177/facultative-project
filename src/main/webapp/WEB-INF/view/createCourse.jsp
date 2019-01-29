@@ -134,7 +134,7 @@
                         </div>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" id="active" name="active" value="true"
-                                   required>
+                                   checked required>
                             <label class="form-check-label" for="active"><fmt:message key="form.active"/></label>
                         </div>
                         <div class="form-check">

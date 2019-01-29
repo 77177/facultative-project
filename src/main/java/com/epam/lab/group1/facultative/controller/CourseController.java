@@ -1,9 +1,5 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.view.builder.CourseCreateViewBuilder;
-import com.epam.lab.group1.facultative.view.builder.CourseEditViewBuilder;
-import com.epam.lab.group1.facultative.view.builder.CourseInfoViewBuilder;
-import com.epam.lab.group1.facultative.view.builder.CourseViewBuilder;
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.exception.CourseDoesNotExistException;
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
@@ -13,13 +9,24 @@ import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.CourseServiceInterface;
 import com.epam.lab.group1.facultative.service.UserService;
 import com.epam.lab.group1.facultative.service.UserServiceInterface;
+import com.epam.lab.group1.facultative.view.builder.CourseCreateViewBuilder;
+import com.epam.lab.group1.facultative.view.builder.CourseEditViewBuilder;
+import com.epam.lab.group1.facultative.view.builder.CourseInfoViewBuilder;
+import com.epam.lab.group1.facultative.view.builder.CourseViewBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -40,6 +47,9 @@ public class CourseController {
     private CourseCreateViewBuilder courseCreateViewBuilder;
     private CourseEditViewBuilder courseEditViewBuilder;
     private CourseInfoViewBuilder courseInfoViewBuilder;
+
+    @Autowired
+    private LocaleHolder localeHolder;
 
     @Autowired
     public CourseController(CourseService courseService, UserService userService,
@@ -82,7 +92,8 @@ public class CourseController {
     }
 
     @PostMapping(value = "/action/create")
-    public ModelAndView createCourse(@ModelAttribute Course course) {
+    public ModelAndView createCourse(@ModelAttribute Course course, Locale locale) {
+        localeHolder.setLocale(locale);
         SingleCourseDto singleCourseDto = courseService.create(course);
         if (!singleCourseDto.isErrorPresent()) {
             return new ModelAndView(new RedirectView("/user/profile"));
@@ -111,7 +122,8 @@ public class CourseController {
     }
 
     @PostMapping(value = "/action/edit")
-    public ModelAndView editCourse(@ModelAttribute Course course) {
+    public ModelAndView editCourse(@ModelAttribute Course course, Locale locale) {
+        localeHolder.setLocale(locale);
         SingleCourseDto singleCourseDto = courseService.update(course);
         if (!singleCourseDto.isErrorPresent()) {
             return new ModelAndView(new RedirectView("/course/" + course.getId()));

@@ -88,15 +88,15 @@
             <%
                 if (courseList.isEmpty()) {
                     %>
-                    <fmt:bundle basename = "bundle.student">
                     <div>
-                        <fmt:message key="message.noCourses"/>
+                        <fmt:bundle basename = "bundle.student">
+                            <fmt:message key="message.noCourses"/>
+                        </fmt:bundle>
                         <a class="nav-link btn btn-outline-primary btn-lg" href="/course/"
                            data-toggle="allCourses" data-placement="top" title="Back to the main facultative page!">
-                            all courses
+                            <fmt:message key="button.allCourses"/>
                         </a>
                     </div>
-                    </fmt:bundle>
                     <%
                     } else {
                     %>

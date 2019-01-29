@@ -1,18 +1,18 @@
 package com.epam.lab.group1.facultative.controller;
 
 import com.epam.lab.group1.facultative.model.User;
-import com.epam.lab.group1.facultative.service.AuthenticationService;
 import com.epam.lab.group1.facultative.service.AuthenticationServiceInterface;
-import com.epam.lab.group1.facultative.service.AuthenticationServiceInterface;
-import com.sun.deploy.net.HttpResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpSession;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -43,11 +43,11 @@ public class AuthenticationController {
      * @return page of REGISTER form.
      */
     @GetMapping("/registration")
-    public ModelAndView registrationPage(@RequestParam(required = false) String error, HttpSession session) {
+    public ModelAndView registrationPage(@RequestParam(required = false) String error, Locale locale) {
         ModelAndView modelAndView = new ModelAndView(REGISTER.viewName);
         if (error != null) {
             logger.error("User with this email already exists");
-            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", Locale.getDefault());
+            ResourceBundle errorMessages = ResourceBundle.getBundle("bundle.errorMessages", locale);
             String errorMessage = errorMessages.getString("userWithEmailExists");
             modelAndView.addObject("error", errorMessage);
         }
