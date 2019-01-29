@@ -7,7 +7,6 @@ import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import com.epam.lab.group1.facultative.persistance.CourseDAOInterface;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import org.apache.log4j.Logger;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,8 @@ import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Service
 public class CourseService implements CourseServiceInterface {
@@ -55,8 +56,9 @@ public class CourseService implements CourseServiceInterface {
             courseDAO.create(course);
             singleCourseDto.setErrorPresent(false);
         } catch (PersistenceException e) {
-            String message = String.format("Course was not created. Probably course with name %s already exists.",
-                course.getName());
+            Locale locale = Locale.getDefault();
+            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            String message = String.format(errorMessages.getString("courseWithNameAlreadyExists"), course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
@@ -88,7 +90,9 @@ public class CourseService implements CourseServiceInterface {
                 singleCourseDto.setErrorPresent(true);
             }
         } catch (PersistenceException e) {
-            String message = String.format("Course was not updated. Probably with name %s already exists", course.getName());
+            Locale locale = Locale.getDefault();
+            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            String message = String.format(errorMessages.getString("courseWithNameAlreadyExists"), course.getName());
             logger.debug(message, e);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
@@ -131,14 +135,7 @@ public class CourseService implements CourseServiceInterface {
         if (checkNullDate(course, singleCourseDto).isErrorPresent()) {
             return singleCourseDto;
         }
-        if (course.getStartingDate().isAfter(course.getFinishingDate())) {
-            String message= "Wrong input date for course. Start date can not be later than finishing date. " +
-                "Start: " + course.getStartingDate() + ". Finish: " + course.getFinishingDate();
-            logger.debug(message);
-            singleCourseDto.setErrorPresent(true);
-            singleCourseDto.setErrorMessage(message);
-        }
-        return singleCourseDto;
+        return checkWrongStartDate(course, singleCourseDto);
     }
 
     private SingleCourseDto checkInputDateCreate(Course course, SingleCourseDto singleCourseDto) {
@@ -146,17 +143,23 @@ public class CourseService implements CourseServiceInterface {
             return singleCourseDto;
         }
         if (course.getStartingDate().isBefore(LocalDate.now().plus(1, ChronoUnit.DAYS))) {
-            String message = String.format("Wrong input date for course. Course should have starting date at least tomorrow." +
-                    "Course start date: %s Minimum date is: %s",
-                course.getStartingDate().toString(), LocalDate.now().plus(2, ChronoUnit.DAYS).toString());
+            Locale locale = Locale.getDefault();
+            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            String message = String.format(errorMessages.getString("wrongStartFinishDate"),
+                course.getStartingDate(), course.getFinishingDate());
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
         }
-        if (course.getStartingDate().isAfter(course.getFinishingDate().minus(1, ChronoUnit.DAYS))) {
-            String message = String.format("Wrong input date for course. Finishing date should be at least 1 day after starting date." +
-                    "Start date: %s Finishing date is: %s",
-                course.getStartingDate().toString(), course.getFinishingDate().toString());
+        return checkWrongStartDate(course, singleCourseDto);
+    }
+
+    private SingleCourseDto checkWrongStartDate(Course course, SingleCourseDto singleCourseDto) {
+        if (course.getStartingDate().isAfter(course.getFinishingDate())) {
+            Locale locale = Locale.getDefault();
+            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages", locale);
+            String message = String.format(errorMessages.getString("wrongStartDate"),
+                course.getStartingDate(), course.getFinishingDate());
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);
@@ -176,7 +179,8 @@ public class CourseService implements CourseServiceInterface {
 
     private SingleCourseDto checkNameInCourse(Course course, SingleCourseDto singleCourseDto) {
         if (course.getName().isEmpty()) {
-            String message = "Wrong input name for course. Course should have not empty name.";
+            ResourceBundle errorMessages = ResourceBundle.getBundle("errorMessages");
+            String message = errorMessages.getString("emptyName");
             logger.debug(message);
             singleCourseDto.setErrorPresent(true);
             singleCourseDto.setErrorMessage(message);

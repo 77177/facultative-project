@@ -96,7 +96,11 @@
                 %>
                 <div class="toast col" data-autohide="false">
                     <div class="toast-header">
-                        <strong class="mr-auto text-primary">Course was not created!</strong>
+                        <strong class="mr-auto text-primary">
+                            <fmt:bundle basename = "bundle.editCourse">
+                                <fmt:message key="courseWasNotUpdated"/>
+                            </fmt:bundle>
+                        </strong>
                         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
                     </div>
                     <div class="toast-body">
