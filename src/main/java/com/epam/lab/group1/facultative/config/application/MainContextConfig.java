@@ -21,7 +21,7 @@ public class MainContextConfig {
 
     @Bean
     public LocaleResolver localeResolver() {
-        return new SessionLocaleResolver();
+        return new  SessionLocaleResolver();
     }
 
     @Bean
