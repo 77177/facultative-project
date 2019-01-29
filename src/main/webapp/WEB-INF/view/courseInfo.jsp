@@ -4,11 +4,11 @@
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="java.time.Period" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${pageContext.response.locale}"/>
 <fmt:setBundle basename="bundle.common"/>
@@ -102,8 +102,10 @@
             <div class="col">
                 <div id="courseInfo">
                     <fmt:message key="word.tutor"/>: <span>${tutorName}</span><br/>
-                    <fmt:message key="form.startDate"/>: <span><%=course.getStartingDate()%></span><br>
-                    <fmt:message key="form.finishDate"/>: <span><%=course.getFinishingDate()%></span><br>
+                    <fmt:message key="form.startDate"/>:
+                    <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy").withLocale(locale))%></span><br>
+                    <fmt:message key="form.finishDate"/>:
+                    <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy").withLocale(locale))%></span><br>
                     <fmt:message key="word.status"/>: <span><%=course.isActive()%></span><br>
                     <fmt:bundle basename = "bundle.courseInfo">
                         <fmt:message key="word.duration"/>:
