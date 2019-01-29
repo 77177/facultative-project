@@ -112,13 +112,13 @@
                         <%
                             Period duration = Period.between(course.getStartingDate(), course.getFinishingDate());
                             if (duration.getDays() > 0) {
-                                out.print(duration.getDays()); %> <fmt:message key="word.day"/><%
+                                out.print(duration.getDays()); %> <fmt:message key="word.day"/> <%
                             }
                             if (duration.getMonths() > 0) {
-                                out.print(duration.getMonths()); %> <fmt:message key="word.month"/><%
+                                out.print(duration.getMonths()); %> <fmt:message key="word.month"/> <%
                             }
                             if (duration.getYears() > 0) {
-                                out.print(duration.getYears()); %> <fmt:message key="word.year"/><%
+                                out.print(duration.getYears()); %> <fmt:message key="word.year"/> <%
                             }
                         %>
                     </fmt:bundle>
@@ -195,13 +195,14 @@
                                         <tr>
                                             <td><% out.println(user.getFirstName());%></td>
                                             <td><% out.println(user.getLastName());%></td>
-                                            <%if(principal.getUserId() == course.getTutorId()){%>
                                             <td>
+                                            <%if(principal.getUserId() == course.getTutorId()){%>
                                                 <a href="/feedback/user/<%=user.getId()%>/course/<%=course.getId()%>">
                                                     <fmt:message key="word.feedback"/>
                                                 </a>
-                                            </td>
                                             <%}%>
+                                            </td>
+
                                         </tr>
                                         <%
                                         }
