@@ -1,16 +1,26 @@
 package com.epam.lab.group1.facultative.controller;
 
+import com.epam.lab.group1.facultative.config.application.DaoConfig;
+import com.epam.lab.group1.facultative.config.application.MainContextConfig;
+import com.epam.lab.group1.facultative.config.application.WebConfig;
+import com.epam.lab.group1.facultative.config.security.WebSecurityApplicationConfigurer;
 import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.model.User;
+import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
 import com.epam.lab.group1.facultative.service.UserService;
+import com.epam.lab.group1.facultative.view.ViewType;
 import com.epam.lab.group1.facultative.view.builder.*;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -18,17 +28,26 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
 
 import static com.epam.lab.group1.facultative.view.ViewType.FEEDBACK;
 import static org.mockito.Mockito.when;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("/controller/feedbackControllerTestContext.xml")
+@ContextConfiguration(classes = {WebConfig.class, MainContextConfig.class, DaoConfig.class, WebSecurityApplicationConfigurer.class})
+//@ContextConfiguration("/controller/feedbackControllerTestContext.xml")
 public class FeedBackControllerTest {
 
+    @Autowired
+    private WebApplicationContext context;
     private MockMvc mockMvc;
     private UserService userService;
     private CourseService courseService;
@@ -54,10 +73,15 @@ public class FeedBackControllerTest {
         this.feedBackService = mock(FeedBackService.class);
         when(feedBackService.getFeedBack(0, 0)).thenReturn(new FeedBack());
 
-        mockMvc = MockMvcBuilders
-            .standaloneSetup(new FeedBackController(userService, courseService, feedBackService,
-                exceptionModelAndViewBuilder, feedbackViewBuilder))
-            .build();
+//        mockMvc = MockMvcBuilders
+//            .standaloneSetup(new FeedBackController(userService, courseService, feedBackService,
+//                exceptionModelAndViewBuilder, feedbackViewBuilder))
+//            .build();
+    }
+
+    @Before
+    public void init() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
     }
 
     @Test
@@ -67,12 +91,34 @@ public class FeedBackControllerTest {
             .andExpect(MockMvcResultMatchers.model().attributeExists("student", "course", "feedback"));
     }
 
-    @Ignore
     @Test
+//    @WithMockUser(authorities = {"student", "tutor"}, value = "1student@gmail.com", password = "1")
     public void testGetFeedbackPage() throws Exception {
         //TODO exceptionHandler should be implemented.
-        mockMvc.perform(MockMvcRequestBuilders.get("/feedback/user/3/course/1/"))
-            .andExpect(MockMvcResultMatchers.view().name(FEEDBACK.viewName))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("feedback", "student", "course"));
+        String username = "1student@gmail.com";
+        String password = "1";
+        SimpleGrantedAuthority studentAuthority = new SimpleGrantedAuthority("student");
+        SecurityContextUser securityContextUser = new SecurityContextUser(username, password, Arrays.asList(studentAuthority));
+
+//        mockMvc
+//                .perform(MockMvcRequestBuilders.get("/feedback/user/4/course/1/").with(user(securityContextUser)))
+//                .andExpect(MockMvcResultMatchers.view().name(ViewType.FEEDBACK.viewName));
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/1/").with(user(securityContextUser)))
+                .andExpect(MockMvcResultMatchers.view().name(ViewType.FEEDBACK.viewName));
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/2/").with(user(securityContextUser)))
+                .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+
+//        mockMvc
+//                .perform(MockMvcRequestBuilders
+//                        .post("/login")
+//                                .with(user("1student@gmail.com").password("1").authorities(studentAuthority)));
+//        mockMvc.perform(MockMvcRequestBuilders.get("/feedback/user/3/course/1/")
+//        .with(user("").password("0").authorities(studentAuthority)))
+//                .andExpect(MockMvcResultMatchers.redirectedUrl("/authenticator/login"));
+//        mockMvc.perform(MockMvcRequestBuilders.get("/feedback/user/3/course/1/"))
+//            .andExpect(MockMvcResultMatchers.view().name(FEEDBACK.viewName))
+//            .andExpect(MockMvcResultMatchers.model().attributeExists("feedback", "student", "course"));
     }
 }

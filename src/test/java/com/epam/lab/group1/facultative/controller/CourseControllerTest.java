@@ -126,7 +126,6 @@ public class CourseControllerTest {
             .andExpect(MockMvcResultMatchers.redirectedUrl("/course/1"));
     }
 
-
     @Test
     @Ignore
     public void tesGetEditCourse() throws Exception {

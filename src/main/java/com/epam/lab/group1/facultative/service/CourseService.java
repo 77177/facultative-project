@@ -46,7 +46,6 @@ public class CourseService implements CourseServiceInterface {
     @Override
     public SingleCourseDto create(Course course) {
         SecurityContextUser principal = (SecurityContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ;
         course.setTutorId(principal.getUserId());
         SingleCourseDto singleCourseDto = new SingleCourseDto();
         singleCourseDto.setCourse(course);

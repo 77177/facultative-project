@@ -68,10 +68,10 @@ VALUES ('COURSE_12', 4, '2019-04-01', '2019-06-01', 'true');
 
 --course 1
 INSERT INTO student_course(student_id, course_id, mark, feedback)
-VALUES (3, 1, -1, 'feed back bad');
+VALUES (8, 1, -1, 'feed back bad');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)
-VALUES (4, 1, 3, 'feedback good');
+VALUES (9, 1, 3, 'feedback good');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (5, 1, 2, 'excellent');
@@ -90,4 +90,4 @@ INSERT INTO student_course(student_id, course_id, mark, feedback)
 VALUES (7, 2, 5, 'Awful performance');
 
 INSERT INTO student_course(student_id, course_id, mark, feedback)
-VALUES (5, 2, 42, 'Alien');
+VALUES (6, 2, 42, 'Alien');
