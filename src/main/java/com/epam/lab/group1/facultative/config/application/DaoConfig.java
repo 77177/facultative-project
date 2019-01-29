@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.config.application;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +18,7 @@ import java.util.Properties;
 @ComponentScan(value = "com.epam.lab.group1.facultative.persistance")
 public class DaoConfig {
 
-    @Bean(name = "dataSource")
+    //@Bean(name = "dataSource")
     public DataSource H2DataSource() {
         EmbeddedDatabase embeddedDatabase = new EmbeddedDatabaseBuilder()
             .setName("Facultative")
@@ -26,6 +27,16 @@ public class DaoConfig {
             .addScript("fill_script.sql")
             .build();
         return embeddedDatabase;
+    }
+
+    @Bean
+    public DataSource postgresDataSource() {
+        BasicDataSource dataSourceConfig = new BasicDataSource();
+        dataSourceConfig.setDriverClassName("org.postgresql.Driver");
+        dataSourceConfig.setUrl("jdbc:postgresql://35.246.157.173:5432/facultative");
+        dataSourceConfig.setUsername("postgres");
+        dataSourceConfig.setPassword("admin");
+        return dataSourceConfig;
     }
 
     @Bean(name = "sessionFactory")
