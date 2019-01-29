@@ -3,8 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.epam.lab.group1.facultative.security.SecurityContextUser" %>
-<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
