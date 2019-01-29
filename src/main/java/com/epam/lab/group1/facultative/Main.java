@@ -16,7 +16,7 @@ public class Main {
 
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
-        tomcat.addWebapp("/", Paths.get(docBase).toAbsolutePath().toString());
+        tomcat.addWebapp("", Paths.get(docBase).toAbsolutePath().toString());
 
         tomcat.start();
         tomcat.getServer().await();
