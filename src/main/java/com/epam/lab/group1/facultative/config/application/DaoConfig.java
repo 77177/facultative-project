@@ -2,6 +2,7 @@ package com.epam.lab.group1.facultative.config.application;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.hibernate.dialect.PostgreSQL81Dialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +42,7 @@ public class DaoConfig {
 
     @Bean(name = "sessionFactory")
     public SessionFactory sessionFactory() {
-        SessionFactory sessionFactory = new LocalSessionFactoryBuilder(H2DataSource())
+        SessionFactory sessionFactory = new LocalSessionFactoryBuilder(postgresDataSource())
             .scanPackages("com.epam.lab.group1.facultative.model")
             .addProperties(getHibernateProperties())
             .buildSessionFactory();
@@ -55,8 +56,7 @@ public class DaoConfig {
 
     private Properties getHibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL81Dialect");
         return properties;
     }
 }
