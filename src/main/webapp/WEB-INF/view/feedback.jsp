@@ -3,7 +3,6 @@
 <%@ page import="com.epam.lab.group1.facultative.model.Course" %>
 <%@ page import="com.epam.lab.group1.facultative.model.User" %>
 <%@ page import="com.epam.lab.group1.facultative.model.FeedBack" %>
-<%@ page import="java.util.Locale" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -16,10 +15,9 @@
 <%
     SecurityContextUser principal = null;
     Course course = (Course) request.getAttribute("course");
-    User student = (User) request.getAttribute("word.student");
-    FeedBack feedBack = (FeedBack) request.getAttribute("word.feedback");
-//    String changeLanguageLink = "/feedback/user/" + student.getId() + "/course/" + course.getId();
-    String changeLanguageLink = "/feedback/user/1/course/1";
+    User student = (User) request.getAttribute("student");
+    FeedBack feedBack = (FeedBack) request.getAttribute("feedback");
+    String changeLanguageLink = "/feedback/user/" + student.getId() + "/course/" + course.getId();
 %>
 <sec:authorize access="isAuthenticated()">
     <%
@@ -88,7 +86,7 @@
                 <fmt:bundle basename = "bundle.feedback">
                 <sec:authorize access="hasAnyAuthority('tutor')">
                     <form action="/feedback/" method="post">
-                        <span><%=student.getFullName()%></span>, <fmt:message key="word.feedback"/> <span><%=course.getName()%></span><br>
+                        <span><%=student.getFullName()%></span>,  <span><%=course.getName()%></span><br>
                         <textarea name="text" rows="4" cols="50"
                                 <%out.print(course.getTutorId() != principal.getUserId() ? "readonly" : "");%>>${feedback.text}</textarea>
                         <br/>

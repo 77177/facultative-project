@@ -16,7 +16,7 @@
     Locale locale = pageContext.getResponse().getLocale();
     SecurityContextUser principal = null;
     Course course = (Course)request.getAttribute("course");
-    List<User> studentList = (List) request.getAttribute("word.studentList");
+    List<User> studentList = (List) request.getAttribute("studentList");
     String changeLanguageLink = "/course/" + course.getId();
 %>
 <sec:authorize access="isAuthenticated()">
@@ -146,7 +146,6 @@
                         <%
                         } else {%>
                             <p>
-                                <fmt:message key="message.subscribe"/> <%=course.getName()%> <br>
                                 <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">
                                     <fmt:message key="option.subscribe"/>
                                 </a>
@@ -185,6 +184,7 @@
                                 <tr>
                                     <th><fmt:message key="form.firstName"/></th>
                                     <th><fmt:message key="form.lastName"/></th>
+                                    <th><fmt:message key="word.feedback"/></th>
                                 </tr>
                             </thead>
                             <tbody>
