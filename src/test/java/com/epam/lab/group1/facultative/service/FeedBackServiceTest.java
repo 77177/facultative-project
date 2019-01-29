@@ -2,6 +2,7 @@ package com.epam.lab.group1.facultative.service;
 
 import com.epam.lab.group1.facultative.model.FeedBack;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class FeedBackServiceTest {
     }
 
     @Test
+    @Ignore
     public void testGetFeedBack() {
         FeedBack feedBack = feedBackService.getFeedBack(1, 5);
         assertEquals(5, feedBack.getStudentId());
@@ -43,6 +45,7 @@ public class FeedBackServiceTest {
     }
 
     @Test
+    @Ignore
     public void testSaveOrUpdate() {
         FeedBack feedBackIn = new FeedBack();
         feedBackIn.setStudentId(4);

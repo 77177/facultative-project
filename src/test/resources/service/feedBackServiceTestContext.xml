@@ -37,4 +37,23 @@
     <bean id="feedBackService" class="com.epam.lab.group1.facultative.service.FeedBackService">
         <constructor-arg ref="feedBackDAO"/>
     </bean>
+
+    <bean id="courseDAO" class="com.epam.lab.group1.facultative.persistance.CourseDAO">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="userDAO" class="com.epam.lab.group1.facultative.persistance.UserDAO">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean name="localHolder" class="com.epam.lab.group1.facultative.controller.LocaleHolder"/>
+
+    <bean id="courseService" class="com.epam.lab.group1.facultative.service.CourseService">
+        <constructor-arg name="courseDAO" ref="courseDAO"/>
+        <constructor-arg name="localeHolder" ref="localHolder"/>
+    </bean>
+
+    <bean class="com.epam.lab.group1.facultative.service.UserService">
+        <constructor-arg name="userDAO" ref="userDAO"/>
+    </bean>
 </beans>

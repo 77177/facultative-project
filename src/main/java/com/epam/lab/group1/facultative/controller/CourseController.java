@@ -47,15 +47,13 @@ public class CourseController {
     private CourseCreateViewBuilder courseCreateViewBuilder;
     private CourseEditViewBuilder courseEditViewBuilder;
     private CourseInfoViewBuilder courseInfoViewBuilder;
-
-    @Autowired
     private LocaleHolder localeHolder;
 
     @Autowired
     public CourseController(CourseService courseService, UserService userService,
                             ExceptionModelAndViewBuilder exceptionModelAndViewBuilder, CourseViewBuilder courseViewBuilder,
                             CourseCreateViewBuilder courseCreateViewBuilder, CourseEditViewBuilder courseEditViewBuilder,
-                            CourseInfoViewBuilder courseInfoViewBuilder) {
+                            CourseInfoViewBuilder courseInfoViewBuilder, LocaleHolder localeHolder) {
         this.courseService = courseService;
         this.userService = userService;
         this.exceptionModelAndViewBuilder = exceptionModelAndViewBuilder;
@@ -63,6 +61,7 @@ public class CourseController {
         this.courseCreateViewBuilder = courseCreateViewBuilder;
         this.courseEditViewBuilder = courseEditViewBuilder;
         this.courseInfoViewBuilder = courseInfoViewBuilder;
+        this.localeHolder = localeHolder;
     }
 
     @GetMapping(value = "/")

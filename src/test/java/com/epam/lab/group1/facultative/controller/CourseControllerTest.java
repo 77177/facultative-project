@@ -55,6 +55,7 @@ public class CourseControllerTest {
         this.userService = mock(UserService.class);
         this.courseService = mock(CourseService.class);
         this.singleCourseDto = mock(SingleCourseDto.class);
+        LocaleHolder localeHolder = mock(LocaleHolder.class);
 
         this.exceptionModelAndViewBuilder = mock(ExceptionModelAndViewBuilder.class);
 
@@ -81,7 +82,7 @@ public class CourseControllerTest {
 
         this.mockMvc = MockMvcBuilders
             .standaloneSetup(new CourseController(courseService, userService, exceptionModelAndViewBuilder,
-                    courseViewBuilder, courseCreateViewBuilder, courseEditViewBuilder, courseInfoViewBuilder))
+                    courseViewBuilder, courseCreateViewBuilder, courseEditViewBuilder, courseInfoViewBuilder, localeHolder))
             .build();
     }
 

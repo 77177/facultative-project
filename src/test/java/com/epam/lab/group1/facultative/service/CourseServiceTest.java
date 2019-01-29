@@ -1,5 +1,6 @@
 package com.epam.lab.group1.facultative.service;
 
+import com.epam.lab.group1.facultative.controller.LocaleHolder;
 import com.epam.lab.group1.facultative.dto.SingleCourseDto;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.User;
@@ -29,6 +30,7 @@ public class CourseServiceTest {
 
     @Autowired
     private DataSource dataSource;
+
 
     @Before
     public void init() {

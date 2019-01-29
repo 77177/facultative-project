@@ -24,6 +24,7 @@ public class AuthenticationControllerTest {
 
     public AuthenticationControllerTest() {
         AuthenticationService authenticationService = mock(AuthenticationService.class);
+        LocaleHolder localeHolder = mock(LocaleHolder.class);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(new AuthenticationController(authenticationService))
                 .build();

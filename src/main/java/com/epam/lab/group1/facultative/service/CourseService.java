@@ -8,7 +8,6 @@ import com.epam.lab.group1.facultative.persistance.CourseDAO;
 import com.epam.lab.group1.facultative.persistance.CourseDAOInterface;
 import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +23,11 @@ public class CourseService implements CourseServiceInterface {
     private final Logger logger = Logger.getLogger(this.getClass());
     private CourseDAOInterface courseDAO;
     private final int pageSize = 10;
-
-    @Autowired
     private LocaleHolder localeHolder;
 
-    public CourseService(CourseDAO courseDAO) {
+    public CourseService(CourseDAO courseDAO, LocaleHolder localeHolder) {
         this.courseDAO = courseDAO;
+        this.localeHolder = localeHolder;
     }
 
     @Override
