@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import static com.epam.lab.group1.facultative.view.ViewType.FEEDBACK;
-import static com.epam.lab.group1.facultative.view.ViewType.USER_TUTOR;
 
 @Component
 public class FeedbackViewBuilder {

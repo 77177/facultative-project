@@ -1,6 +1,5 @@
 package com.epam.lab.group1.facultative.view.builder;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 

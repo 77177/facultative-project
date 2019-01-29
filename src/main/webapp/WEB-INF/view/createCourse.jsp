@@ -17,7 +17,7 @@
 </sec:authorize>
 <html>
     <head>
-        <title><fmt:message key="title"/></title>
+        <title><fmt:message key="form.title"/></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
@@ -40,7 +40,7 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="title"/></h2>
+            <h2><fmt:message key="form.title"/></h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -102,14 +102,14 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="startingDate" class="col-sm-2 col-form-label"><fmt:message key="startDate"/>:</label>
+                            <label for="startingDate" class="col-sm-2 col-form-label"><fmt:message key="form.startDate"/>:</label>
                             <div class="col-sm-2">
                                 <input type="date" class="form-control-plaintext" id="startingDate" name="startingDate"
                                        required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="finishDate" class="col-sm-2 col-form-label"><fmt:message key="finishDate"/>:</label>
+                            <label for="finishDate" class="col-sm-2 col-form-label"><fmt:message key="form.finishDate"/>:</label>
                             <div class="col-sm-2">
                                 <input type="date" class="form-control-plaintext" id="finishDate" name="finishingDate"
                                        required>
@@ -118,13 +118,13 @@
                         <div class="form-check">
                             <input type="radio" class="form-check-input" id="active" name="active" value="true"
                                    required>
-                            <label class="form-check-label" for="active"><fmt:message key="active"/></label>
+                            <label class="form-check-label" for="active"><fmt:message key="sdfsfd"/></label>
                         </div>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" id="closed" name="active" value="false"
                                    required>
                             <label class="form-check-label" for="closed">
-                                <fmt:message key="closed"/>
+                                <fmt:message key="form.closed"/>
                             </label>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

@@ -4,7 +4,6 @@ import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
 import com.epam.lab.group1.facultative.model.Course;
 import com.epam.lab.group1.facultative.model.FeedBack;
 import com.epam.lab.group1.facultative.model.User;
-import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import com.epam.lab.group1.facultative.service.CourseService;
 import com.epam.lab.group1.facultative.service.FeedBackService;
 import com.epam.lab.group1.facultative.service.UserService;

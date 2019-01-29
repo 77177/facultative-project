@@ -14,8 +14,8 @@
 <%
     SecurityContextUser principal = null;
     Course course = (Course) request.getAttribute("course");
-    User student = (User) request.getAttribute("student");
-    FeedBack feedBack = (FeedBack) request.getAttribute("feedback");
+    User student = (User) request.getAttribute("word.student");
+    FeedBack feedBack = (FeedBack) request.getAttribute("word.feedback");
     String changeLanguageLink = "/feedback/user/" + student.getId() + "/course/" + course.getId();
 %>
 <sec:authorize access="isAuthenticated()">
@@ -25,7 +25,7 @@
 </sec:authorize>
 <html>
     <head>
-        <title><fmt:message key="title"/></title>
+        <title><fmt:message key="form.title"/></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
@@ -33,8 +33,8 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="title"/> <%=student.getFirstName() + " " + student.getLastName()%>
-                <fmt:message key="forCourse"/> <%=course.getName()%></h2>
+            <h2><fmt:message key="form.title"/> <%=student.getFirstName() + " " + student.getLastName()%>
+                <fmt:message key="word.forCourse"/> <%=course.getName()%></h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -72,11 +72,11 @@
             <div class="col">
                 <sec:authorize access="hasAnyAuthority('tutor')">
                     <form action="/feedback/" method="post">
-                        <span><%=student.getFullName()%></span>, <fmt:message key="feedback"/> <span><%=course.getName()%></span><br>
+                        <span><%=student.getFullName()%></span>, <fmt:message key="word.feedback"/> <span><%=course.getName()%></span><br>
                         <textarea name="text" rows="4" cols="50"
                                 <%out.print(course.getTutorId() != principal.getUserId() ? "readonly" : "");%>>${feedback.text}</textarea>
                         <br/>
-                        <fmt:message key="mark"/>
+                        <fmt:message key="word.mark"/>
                         <br/>
                         <input name="mark" type="number" min="0" max="5" value="${feedback.mark}"
                                 <%out.print(course.getTutorId() != principal.getUserId() ? "readonly" : "");%>/>
@@ -92,12 +92,12 @@
                 </sec:authorize>
                 <sec:authorize access="hasAuthority('student')">
                     <h6>
-                        <fmt:message key="feedback"/> <span><%=course.getName()%></span>:
+                        <fmt:message key="word.feedback"/> <span><%=course.getName()%></span>:
                     </h6>
                     <div class="card col-5">
                         <div class="card-body"><%=feedBack.getText()%></div>
                     </div>
-                    <fmt:message key="yourMarkForCourse"/>: <%=feedBack.getMark()%>
+                    <fmt:message key="message.yourMarkForCourse"/>: <%=feedBack.getMark()%>
                 </sec:authorize>
             </div>
             <div class="col-sm-1"></div>

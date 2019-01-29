@@ -23,7 +23,7 @@
     </head>
     <body>
         <div class="header jumbotron">
-            <h2><fmt:message key="welcome"/></h2>
+            <h2><fmt:message key="message.welcome"/></h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -60,14 +60,14 @@
             <div class="col-sm-1"></div>
             <form class="col form" method="post" action="/login">
                 <div class="form-group row">
-                    <label for="email" class="col-sm-2 col-form-label"><fmt:message key="email"/>:</label>
+                    <label for="email" class="col-sm-2 col-form-label"><fmt:message key="form.email"/>:</label>
                     <div class="col-sm-10">
                         <input type="email" class="form-control-plaintext" name="username" id="email"
                                placeholder="yourEmail@company.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="password" class="col-sm-2 col-form-label"><fmt:message key="password"/>:</label>
+                    <label for="password" class="col-sm-2 col-form-label"><fmt:message key="form.password"/>:</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control" name="password" id="password"
                                placeholder="Password" required>
@@ -82,7 +82,7 @@
             <div class="col-sm-1"></div>
             <div class="col">
                 <br>
-                <fmt:message key="noRegistration"/> <br>
+                <fmt:message key="message.noRegistration"/> <br>
                 <a class="btn btn-info" href="/authenticator/registration">
                     <fmt:message key="button.register"/>
                 </a>

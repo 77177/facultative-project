@@ -22,7 +22,7 @@
 %>
 <html>
     <head>
-        <title><fmt:message key="title"/></title>
+        <title><fmt:message key="form.title"/></title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -31,10 +31,10 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="title"/></h2>
+            <h2><fmt:message key="form.title"/></h2>
             <sec:authorize access="isAuthenticated()">
                 <h4>
-                    <fmt:message key="hello"/>, <%=user.getFirstName() + " " + user.getLastName()%>
+                    <fmt:message key="message.hello"/>, <%=user.getFirstName() + " " + user.getLastName()%>
                 </h4>
             </sec:authorize>
         </div>
@@ -71,7 +71,7 @@
                 if (courseList.isEmpty()) {
                     %>
                     <div>
-                        <fmt:message key="noCoursesMessage"/>
+                        <fmt:message key="message.noCourses"/>
                         <a class="nav-link btn btn-outline-primary btn-lg" href="/course/"
                            data-toggle="allCourses" data-placement="top" title="Back to the main facultative page!">
                             all courses
@@ -80,16 +80,16 @@
                     <%
                     } else {
                     %>
-                    <h5><fmt:message key="yourCourses"/>:</h5>
+                    <h5><fmt:message key="message.myCourses"/>:</h5>
                     <table class="table-striped table-hover col">
-                        <caption><fmt:message key="yourCourses"/></caption>
+                        <caption><fmt:message key="message.myCourses"/></caption>
                         <thead>
                         <tr>
                             <th><fmt:message key="courseName"/></th>
-                            <th><fmt:message key="start"/></th>
-                            <th><fmt:message key="finish"/></th>
+                            <th><fmt:message key="startdfgdfg"/></th>
+                            <th><fmt:message key="fghfgh"/></th>
                             <th>info</th>
-                            <th><fmt:message key="feedback"/></th>
+                            <th><fmt:message key="word.feedback"/></th>
                         </tr>
                         </thead>
                         <tbody>

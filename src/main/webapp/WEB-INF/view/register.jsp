@@ -32,7 +32,7 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="welcome"/></h2>
+            <h2><fmt:message key="message.welcome"/></h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -94,35 +94,35 @@
             <div class="col-sm-1"></div>
             <form class="col form" method="post" action="/authenticator/registration">
                 <div class="form-group row">
-                    <label for="firstName" class="col-sm-2 col-form-label"><fmt:message key="firstName"/>:</label>
+                    <label for="firstName" class="col-sm-2 col-form-label"><fmt:message key="form.firstName"/>:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control-plaintext" id="firstName" name="firstName"
                                placeholder="first name" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="lastName" class="col-sm-2 col-form-label"><fmt:message key="lastName"/>:</label>
+                    <label for="lastName" class="col-sm-2 col-form-label"><fmt:message key="form.lastName"/>:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control-plaintext" id="lastName" name="lastName"
                                placeholder="last name" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="col-sm-2 col-form-label"><fmt:message key="email"/>:</label>
+                    <label for="email" class="col-sm-2 col-form-label"><fmt:message key="form.email"/>:</label>
                     <div class="col-sm-10">
                         <input type="email" class="form-control-plaintext" name="email" id="email"
                                placeholder="yourEmail@company.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="password" class="col-sm-2 col-form-label"><fmt:message key="password"/>:</label>
+                    <label for="password" class="col-sm-2 col-form-label"><fmt:message key="form.password"/>:</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control" id="password" name="password"
                                placeholder="Password" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="position" class="col-sm-2 col-form-label"><fmt:message key="position"/>:</label>
+                    <label for="position" class="col-sm-2 col-form-label"><fmt:message key="form.position"/>:</label>
                     <select class="form-control" id="position" name="position" required>
                         <option><fmt:message key="option.student"/></option>
                         <option><fmt:message key="option.tutor"/></option>

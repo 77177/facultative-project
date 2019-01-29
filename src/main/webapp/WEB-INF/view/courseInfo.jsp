@@ -14,7 +14,7 @@
 <%
     SecurityContextUser principal = null;
     Course course = (Course)request.getAttribute("course");
-    List<User> studentList = (List) request.getAttribute("studentList");
+    List<User> studentList = (List) request.getAttribute("word.studentList");
     String changeLanguageLink = "/course/" + course.getId();
 %>
 <sec:authorize access="isAuthenticated()">
@@ -24,7 +24,7 @@
 </sec:authorize>
 <html>
     <head>
-        <title><fmt:message key="title"/></title>
+        <title><fmt:message key="form.title"/></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
@@ -42,7 +42,7 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="title"/>: <%=course.getName()%></h2>
+            <h2><fmt:message key="form.title"/>: <%=course.getName()%></h2>
         </div>
         <nav class="navbar navbar-expand-sm bg-light">
             <ul class="navbar-nav">
@@ -64,7 +64,7 @@
                 </li>
                 <li class="nav-item">
                     <sec:authorize access="isAuthenticated()">
-                        <a class="nav-link" href="/user/profile"><fmt:message key="myProfile"/></a>
+                        <a class="nav-link" href="/user/profile"><fmt:message key="message.myProfile"/></a>
                     </sec:authorize>
                 </li>
                 <sec:authorize access="isAuthenticated()">
@@ -79,14 +79,14 @@
             <div class="col-sm-1"></div>
             <div class="col">
                 <div id="courseInfo">
-                    <fmt:message key="tutor"/>: <span>${tutorName}</span><br/>
+                    <fmt:message key="word.tutor"/>: <span>${tutorName}</span><br/>
                     <fmt:message key="courseStart"/>: <span><%=course.getStartingDate()%></span><br>
                     <fmt:message key="courseFinish"/>: <span><%=course.getFinishingDate()%></span><br>
-                    <fmt:message key="isActive"/>: <span><%=course.isActive()%></span><br>
-                    <fmt:message key="duration"/>:
-                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getYears()%> <fmt:message key="year"/> </span>
-                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getMonths()%> <fmt:message key="month"/> </span>
-                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getDays()%> <fmt:message key="day"/> </span>
+                    <fmt:message key="word.status"/>: <span><%=course.isActive()%></span><br>
+                    <fmt:message key="word.duration"/>:
+                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getYears()%> <fmt:message key="word.year"/> </span>
+                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getMonths()%> <fmt:message key="word.month"/> </span>
+                    <span><%=Period.between(course.getStartingDate(), course.getFinishingDate()).getDays()%> <fmt:message key="word.day"/> </span>
                 </div>
                 <sec:authorize access="hasAnyAuthority('student')">
                     <div id="studentZone">
@@ -96,23 +96,23 @@
                         <p>
                             <a class="btn btn-outline-primary"
                                href="/feedback/user/<%=principal.getUserId()%>/course/<%=course.getId()%>">
-                                <fmt:message key="feedbackMessage"/>
+                                <fmt:message key="message.feedback"/>
                             </a>
                         </p>
                         <p>
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
                                     data-target="#leave">
-                                <fmt:message key="leaveCourse"/>
+                                <fmt:message key="option.leaveCourse"/>
                             </button>
                         </p>
                         <%
                         } else {
                         %>
                         <p>
-                            <fmt:message key="subscribeMessage"/> <%=course.getName()%> <br>
+                            <fmt:message key="message.subscribe"/> <%=course.getName()%> <br>
                             <a href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/subscribe/">
-                                <fmt:message key="subscribe"/>
+                                <fmt:message key="option.subscribe"/>
                             </a>
                         </p>
 
@@ -127,24 +127,24 @@
                         <%if (principal.getUserId() == course.getTutorId()) {%>
                         <div class="btn-group">
                             <a class="btn btn-outline-primary rtn-sm"  href="/course/action/edit/<%=course.getId()%>/">
-                                <fmt:message key="editCourse"/>
+                                <fmt:message key="option.editCourse"/>
                             </a><br><br>
 
                             <!-- Button to Open the Modal -->
                                 <button type="button" class="btn btn-outline-danger rtn-sm" data-toggle="modal"
                                         data-target="#delete">
-                                    <fmt:message key="deleteCourse"/>
+                                    <fmt:message key="option.deleteCourse"/>
                                 </button>
                             <%}%>
                         </div>
                         <br>
-                        <h3><fmt:message key="studentList"/></h3>
+                        <h3><fmt:message key="word.studentList"/></h3>
                         <table  class="table-striped table-hover col">
-                            <caption><fmt:message key="studentList"/></caption>
+                            <caption><fmt:message key="word.studentList"/></caption>
                             <thead>
                                 <tr>
-                                    <th><fmt:message key="firstName"/></th>
-                                    <th><fmt:message key="lastName"/></th>
+                                    <th><fmt:message key="form.firstName"/></th>
+                                    <th><fmt:message key="form.lastName"/></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -184,7 +184,7 @@
                         <div class="modal-footer">
                             <a class="btn btn-danger"
                                href="/user/<%=principal.getUserId()%>/course/<%=course.getId()%>/leave/">
-                                <fmt:message key="leaveCourse"/>
+                                <fmt:message key="option.leaveCourse"/>
                             </a>
                         </div>
                     </div>
@@ -204,7 +204,7 @@
                         <div class="modal-footer">
                             <a class="btn btn-danger"
                                href="/course/action/delete/<%=course.getId()%>/">
-                                <fmt:message key="deleteCourse"/>
+                                <fmt:message key="option.deleteCourse"/>
                             </a>
                         </div>
                     </div>

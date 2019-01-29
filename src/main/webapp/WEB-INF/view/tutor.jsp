@@ -30,7 +30,7 @@
 </sec:authorize>
 <html>
     <head>
-        <title><fmt:message key="title"/></title>
+        <title><fmt:message key="form.title"/></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
@@ -38,10 +38,10 @@
     </head>
     <body>
         <div class="jumbotron">
-            <h2><fmt:message key="title"/></h2>
+            <h2><fmt:message key="form.title"/></h2>
             <sec:authorize access="isAuthenticated()">
                 <h4>
-                    <fmt:message key="greeting"/>, <%=user.getFirstName() + " " + user.getLastName()%>
+                    <fmt:message key="message.greeting"/>, <%=user.getFirstName() + " " + user.getLastName()%>
                 </h4>
             </sec:authorize>
         </div>
@@ -76,18 +76,18 @@
             <div class="col-sm-1"></div>
             <div class="col">
                 <a class="btn btn-success" href="/course/action/create/">
-                    <fmt:message key="createNewCourse"/>
+                    <fmt:message key="message.createNewCourse"/>
                 </a><br>
-                <h5><fmt:message key="myCourses"/>:</h5>
+                <h5><fmt:message key="message.myCourses"/>:</h5>
                 <table class="table-striped table-hover col">
-                    <caption><fmt:message key="myCourses"/></caption>
+                    <caption><fmt:message key="message.myCourses"/></caption>
                     <thead>
                     <tr>
                         <th><fmt:message key="titleTitle"/></th>
-                        <th><fmt:message key="start"/></th>
-                        <th><fmt:message key="finish"/></th>
-                        <th><fmt:message key="active"/></th>
-                        <th colspan="3"><fmt:message key="options"/></th>
+                        <th><fmt:message key="startdfgdfg"/></th>
+                        <th><fmt:message key="fghfgh"/></th>
+                        <th><fmt:message key="sdfsfd"/></th>
+                        <th colspan="3"><fmt:message key="dfgdfgdfgdfg"/></th>
                     </tr>
                     </thead>
                     <tbody>
