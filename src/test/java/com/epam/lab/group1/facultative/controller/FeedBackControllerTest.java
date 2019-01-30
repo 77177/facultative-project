@@ -54,8 +54,8 @@ public class FeedBackControllerTest {
             .param("text", "feedbacktext")
             .param("mark", "5")
             .with(user(securityContextUser)))
-            .andExpect(MockMvcResultMatchers.view().name(ERROR.viewName))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("userMessage", "message", "stackTrace"));
+            .andExpect(MockMvcResultMatchers.view().name(FEEDBACK.viewName))
+            .andExpect(MockMvcResultMatchers.model().attributeExists("student", "course", "feedback"));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class FeedBackControllerTest {
         SecurityContextUser securityContextUser = new SecurityContextUser(username, password, Arrays.asList(studentAuthority));
         mockMvc
             .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/2/").with(user(securityContextUser)))
-            .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+            .andExpect(MockMvcResultMatchers.view().name(ViewType.FEEDBACK.viewName));
         mockMvc
             .perform(MockMvcRequestBuilders.get("/feedback/user/6/course/3/").with(user(securityContextUser)))
             .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
@@ -141,7 +141,7 @@ public class FeedBackControllerTest {
         //Non subscribed student from my course
         mockMvc
             .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/2/").with(user(securityContextUser)))
-            .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+            .andExpect(MockMvcResultMatchers.view().name(ViewType.FEEDBACK.viewName));
 
         //Subscribed student from my course
         mockMvc

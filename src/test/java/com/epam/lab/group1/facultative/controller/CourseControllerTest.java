@@ -1,19 +1,19 @@
 package com.epam.lab.group1.facultative.controller;
 
-import com.epam.lab.group1.facultative.dto.SingleCourseDto;
-import com.epam.lab.group1.facultative.exception.ExceptionModelAndViewBuilder;
-import com.epam.lab.group1.facultative.model.Course;
-import com.epam.lab.group1.facultative.model.User;
-import com.epam.lab.group1.facultative.service.CourseService;
-import com.epam.lab.group1.facultative.service.UserService;
-import com.epam.lab.group1.facultative.view.builder.CourseCreateViewBuilder;
-import com.epam.lab.group1.facultative.view.builder.CourseEditViewBuilder;
-import com.epam.lab.group1.facultative.view.builder.CourseInfoViewBuilder;
-import com.epam.lab.group1.facultative.view.builder.CourseViewBuilder;
+import com.epam.lab.group1.facultative.config.DaoConfigTest;
+import com.epam.lab.group1.facultative.config.application.MainContextConfig;
+import com.epam.lab.group1.facultative.config.application.WebConfig;
+import com.epam.lab.group1.facultative.config.security.WebSecurityApplicationConfigurer;
+import com.epam.lab.group1.facultative.persistance.CourseDAO;
+import com.epam.lab.group1.facultative.security.FacultativeJdbcUserDetailsService;
+import com.epam.lab.group1.facultative.security.SecurityContextUser;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -21,123 +21,231 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Collections;
+import javax.sql.DataSource;
 
-import static com.epam.lab.group1.facultative.view.ViewType.COURSE;
-import static com.epam.lab.group1.facultative.view.ViewType.COURSE_INFO;
-import static com.epam.lab.group1.facultative.view.ViewType.COURSE_CREATE;
-import static com.epam.lab.group1.facultative.view.ViewType.COURSE_EDIT;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static com.epam.lab.group1.facultative.view.ViewType.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("/controller/courseControllerTestContext.xml")
+@ContextConfiguration(classes = {WebConfig.class, MainContextConfig.class, DaoConfigTest.class, WebSecurityApplicationConfigurer.class})
 public class CourseControllerTest {
 
+    @Autowired
+    private WebApplicationContext context;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private CourseDAO courseDAO;
+
+    @Autowired
+    private FacultativeJdbcUserDetailsService userDetailsService;
     private MockMvc mockMvc;
-    private User user;
-    private Course course;
-    private UserService userService;
-    private CourseService courseService;
-    private SingleCourseDto singleCourseDto;
-    private CourseViewBuilder courseViewBuilder;
-    private CourseCreateViewBuilder courseCreateViewBuilder;
-    private CourseEditViewBuilder courseEditViewBuilder;
-    private CourseInfoViewBuilder courseInfoViewBuilder;
-    private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
-
-    public CourseControllerTest() {
-        this.user = mock(User.class);
-        this.course = mock(Course.class);
-        this.userService = mock(UserService.class);
-        this.courseService = mock(CourseService.class);
-        this.singleCourseDto = mock(SingleCourseDto.class);
-        LocaleHolder localeHolder = mock(LocaleHolder.class);
-
-        this.exceptionModelAndViewBuilder = mock(ExceptionModelAndViewBuilder.class);
-
-        when(course.getTutorId()).thenReturn(1);
-
-        when(user.getFullName()).thenReturn("Poligraf Poligrafovich");
-
-        when(singleCourseDto.isErrorPresent()).thenReturn(false);
-
-        when(courseService.getById(1)).thenReturn(course);
-        Course courseForCreate = new Course();
-        when(courseService.create(courseForCreate)).thenReturn(singleCourseDto);
-        when(courseService.update(courseForCreate)).thenReturn(singleCourseDto);
-        when(courseService.findAll(0)).thenReturn(Collections.emptyList());
-
-        when(userService.getAllStudentByCourseId(1)).thenReturn(Collections.emptyList());
-        when(userService.getById(1)).thenReturn(user);
-
-        this.courseViewBuilder = new CourseViewBuilder();
-        this.courseCreateViewBuilder = new CourseCreateViewBuilder();
-        this.courseEditViewBuilder = new CourseEditViewBuilder();
-        this.courseInfoViewBuilder = new CourseInfoViewBuilder();
-        this.exceptionModelAndViewBuilder = new ExceptionModelAndViewBuilder();
-
-        this.mockMvc = MockMvcBuilders
-            .standaloneSetup(new CourseController(courseService, userService, exceptionModelAndViewBuilder,
-                    courseViewBuilder, courseCreateViewBuilder, courseEditViewBuilder, courseInfoViewBuilder, localeHolder))
-            .build();
-    }
 
     @Before
     public void init() {
-        this.courseViewBuilder = new CourseViewBuilder();
-        this.courseCreateViewBuilder = new CourseCreateViewBuilder();
-        this.courseEditViewBuilder = new CourseEditViewBuilder();
-        this.courseInfoViewBuilder = new CourseInfoViewBuilder();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScripts(
+            new ClassPathResource("/dao/sql/create_script.sql"),
+            new ClassPathResource("/dao/sql/fill_script.sql"));
+        populator.execute(this.dataSource);
     }
 
     @Test
     public void testGetAllCourses() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/course/"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/").with(anonymous()))
             .andExpect(MockMvcResultMatchers.view().name(COURSE.viewName))
             .andExpect(MockMvcResultMatchers.model().attributeExists("courseList"));
+        mockMvc.perform(MockMvcRequestBuilders.get("/").with(anonymous()))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/course/"));
     }
 
     @Test
     public void tesGetById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/course/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/1").with(anonymous()))
             .andExpect(MockMvcResultMatchers.view().name(COURSE_INFO.viewName))
             .andExpect(MockMvcResultMatchers.model().attributeExists("tutorName", "course", "studentList"));
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/-1").with(anonymous()))
+            .andExpect(MockMvcResultMatchers.view().name(ERROR.viewName))
+            .andExpect(MockMvcResultMatchers.model().attributeExists("userMessage", "message", "stackTrace"));
     }
 
     @Test
-    public void testGetCreateCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/create"))
-            .andExpect(MockMvcResultMatchers.view().name(COURSE_CREATE.viewName));
+    public void testGetCreateCourseAnonymous() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/create/").with(anonymous()))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/authenticator/login"));
+    }
+
+    @Test
+    public void testGetCreateCourseStudent() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/create/").with(user(getStudentAccount())))
+            .andExpect(MockMvcResultMatchers.status().is(403));
     }
 
     @Test
     public void testPostCreateCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/create"))
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/create")
+            .with(csrf())
+            .param("name", "any new course")
+            .param("tutorId", "2")
+            .param("startingDate", "2019-04-01")
+            .param("finishingDate", "2019-05-05")
+            .param("active", "true")
+            .with(user(getTutorAccount())))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/user/profile"));
+    assertEquals(13, courseDAO.findAllActive(0, 100).size());
+    }
+
+    @Test
+    public void testPostCreateCourseSameName() throws Exception {
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/create")
+            .with(csrf())
+            .param("name", "COURSE_1")
+            .param("tutorId", "2")
+            .param("startingDate", "2019-04-01")
+            .param("finishingDate", "2019-05-05")
+            .param("active", "true")
+            .with(user(getTutorAccount())))
+            .andExpect(MockMvcResultMatchers.view().name(COURSE_CREATE.viewName))
+            .andExpect(MockMvcResultMatchers.model().attributeExists("errorMessage"));
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+    }
+
+    @Test
+    public void testEditCourse() throws Exception {
+        int courseId = 2;
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/edit")
+            .with(csrf())
+            .param("name", "new name")
+            .param("startingDate", "2019-04-01")
+            .param("finishingDate", "2019-05-05")
+            .param("active", "true")
+            .param("id", String.valueOf(courseId))
+            .with(user(getTutorAccount())))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/course/" + courseId));
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        assertEquals("new name", courseDAO.getById(courseId).getName());
+    }
+
+    @Test
+    public void testEditCourseNameNonUnique() throws Exception {
+        int courseId = 2;
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/edit")
+            .with(csrf())
+            .param("name", "COURSE_3")
+            .param("startingDate", "2019-04-01")
+            .param("finishingDate", "2019-05-05")
+            .param("active", "true")
+            .param("id", String.valueOf(courseId))
+            .with(user(getTutorAccount())))
+            .andExpect(MockMvcResultMatchers.view().name(COURSE_EDIT.viewName))
+            .andExpect(MockMvcResultMatchers.model().attributeExists("errorMessage", "course"));
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        assertEquals("COURSE_2", courseDAO.getById(courseId).getName());
+    }
+
+    @Test
+    public void testEditCourseNotAnOwner() throws Exception {
+        int courseId = 1;
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/edit")
+            .with(csrf())
+            .param("name", "COURSE_3")
+            .param("startingDate", "2019-04-01")
+            .param("finishingDate", "2019-05-05")
+            .param("active", "true")
+            .param("id", String.valueOf(courseId))
+            .with(user(getTutorAccount())))
+            .andExpect(MockMvcResultMatchers.view().name(COURSE_EDIT.viewName))
+            .andExpect(MockMvcResultMatchers.model().attributeExists("course"));
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        assertEquals("COURSE_1", courseDAO.getById(courseId).getName());
+    }
+
+    @Test
+    public void testEditCourseNonTutorStudent() throws Exception {
+        int courseId = 2;
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/edit")
+            .with(csrf())
+            .param("name", "COURSE_3")
+            .param("startingDate", "2019-04-01")
+            .param("finishingDate", "2019-05-05")
+            .param("active", "true")
+            .param("id", String.valueOf(courseId))
+            .with(user(getStudentAccount())))
+            .andExpect(MockMvcResultMatchers.status().is(403));
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        assertEquals("COURSE_2", courseDAO.getById(courseId).getName());
+    }
+
+    @Test
+    public void testEditCourseNonTutorAnonymous() throws Exception {
+        int courseId = 2;
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/edit")
+            .with(csrf())
+            .param("name", "COURSE_3")
+            .param("startingDate", "2019-04-01")
+            .param("finishingDate", "2019-05-05")
+            .param("active", "true")
+            .param("id", String.valueOf(courseId))
+            .with(anonymous()))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/authenticator/login"));
+        assertEquals(12, courseDAO.findAllActive(0, 100).size());
+        assertEquals("COURSE_2", courseDAO.getById(courseId).getName());
+    }
+
+    @Test
+    public void testDeleteCourseAnonymous() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/delete/1")
+            .with(anonymous()))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/authenticator/login"));
+    }
+
+    @Test
+    public void testDeleteCourseStudent() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/delete/1")
+            .with(user(getStudentAccount())))
+            .andExpect(MockMvcResultMatchers.status().is(403));
+    }
+
+    @Test
+    public void testDeleteCourseTutor() throws Exception {
+        int courseId = 2;
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/delete/" + courseId)
+            .with(user(getTutorAccount())))
             .andExpect(MockMvcResultMatchers.redirectedUrl("/user/profile"));
     }
 
     @Test
-    public void testDeleteCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/delete/1"))
-            .andExpect(MockMvcResultMatchers.redirectedUrl("/course/1"));
+    public void testDeleteCourseTutorNotAnOwner() throws Exception {
+        int courseId = 1;
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/delete/" + courseId)
+            .with(user(getTutorAccount())))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/course/" + courseId));
     }
 
-    @Test
-    @Ignore
-    public void tesGetEditCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/course/action/edit/1"))
-            .andExpect(MockMvcResultMatchers.model().attributeExists("tutorId", "course"))
-            .andExpect(MockMvcResultMatchers.view().name(COURSE_EDIT.viewName));
+    private SecurityContextUser getStudentAccount() {
+        String username = "1student@gmail.com";
+        SecurityContextUser student = (SecurityContextUser) userDetailsService.loadUserByUsername(username);
+        return student;
     }
 
-    @Test
-    public void testPostEditCourse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/course/action/edit"))
-            .andExpect(MockMvcResultMatchers.redirectedUrl("/course/0"));
+    private SecurityContextUser getTutorAccount() {
+        String username = "1tutor@gmail.com";
+        SecurityContextUser tutor = (SecurityContextUser) userDetailsService.loadUserByUsername(username);
+        return tutor;
     }
-
 }

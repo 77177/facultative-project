@@ -52,51 +52,6 @@ public class CourseServiceTest {
         assertEquals(Boolean.TRUE, course.isActive());
     }
 
-    @Test()
-    @Ignore
-    public void testCreate() {
-        Course course = new Course();
-        course.setName("COURSE_13");
-        course.setTutorId(1);
-        course.setStartingDate(LocalDate.of(2019, 1, 30));
-        course.setFinishingDate(LocalDate.of(2020, 1, 30));
-        course.setActive(false);
-
-        SingleCourseDto courseDto = new SingleCourseDto();
-        courseDto.setCourse(course);
-        courseService.create(course);
-
-        assertEquals(courseDto.getCourse().getName(), courseService.getById(course.getId()).getName());
-        assertEquals(courseDto.getCourse().getTutorId(), courseService.getById(course.getId()).getTutorId());
-        assertEquals(courseDto.getCourse().getStartingDate(), courseService.getById(course.getId()).getStartingDate());
-        assertEquals(courseDto.getCourse().getFinishingDate(), courseService.getById(course.getId()).getFinishingDate());
-        assertEquals(courseDto.getCourse().isActive(), courseService.getById(course.getId()).isActive());
-
-    }
-
-    @Test()
-    @Ignore
-    public void testUpdate() {
-        Course course = courseService.getById(1);
-        course.setName("New_Course_Name");
-        courseService.update(course);
-        assertEquals("New_Course_Name", courseService.getById(1).getName());
-    }
-
-    /**
-     * picked page = 1 because pageSize in courseService is hardCoded to 10.
-     */
-    @Test
-    @Ignore
-    public void testDeleteById() {
-        int page = 1;
-        assertEquals(2, courseService.findAll(page).size());
-        courseService.deleteById(1);
-        assertEquals(1, courseService.findAll(page).size());
-        assertEquals(12, courseService.findAll(page).get(0).getId());
-        assertEquals("COURSE_12", courseService.findAll(page).get(0).getName());
-    }
-
     @Test
     public void testGetAllById() {
         int page = 0;
