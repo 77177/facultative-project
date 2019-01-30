@@ -147,7 +147,6 @@
                         </fmt:bundle>
                     </select>
                 </div>
-                <input type="hidden" name="registration" value="true"/>
                 <sec:csrfInput/>
                 <button type="submit" class="btn btn-primary"><fmt:message key="button.submit"/></button>
             </form>

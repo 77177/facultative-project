@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
 import javax.sql.DataSource;
 
 import static com.epam.lab.group1.facultative.view.ViewType.*;
@@ -126,13 +125,11 @@ public class UserControllerTest {
 
     private SecurityContextUser getStudentAccount() {
         String username = "1student@gmail.com";
-        SecurityContextUser student = (SecurityContextUser) userDetailsService.loadUserByUsername(username);
-        return student;
+        return (SecurityContextUser) userDetailsService.loadUserByUsername(username);
     }
 
     private SecurityContextUser getTutorAccount() {
         String username = "1tutor@gmail.com";
-        SecurityContextUser tutor = (SecurityContextUser) userDetailsService.loadUserByUsername(username);
-        return tutor;
+        return (SecurityContextUser) userDetailsService.loadUserByUsername(username);
     }
 }
