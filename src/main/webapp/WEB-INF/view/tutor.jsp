@@ -112,7 +112,7 @@
                         <td>
                             <%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy").withLocale(locale))%>
                         </td>
-                        <td><%= course.isActive()%></td>
+                        <td><%if(course.isActive() == true) {%><fmt:message key="form.active"/> <%} else {%><fmt:message key="form.closed"/><%}%></td>
                         <td><a href="/course/<%=course.getId()%>"><fmt:message key="word.info"/></a></td>
                     </tr>
                     <%

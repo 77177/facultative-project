@@ -73,4 +73,3 @@ public class FacultativeJdbcUserDetailsService implements UserDetailsService {
         return securityContextUser;
     }
 }
-

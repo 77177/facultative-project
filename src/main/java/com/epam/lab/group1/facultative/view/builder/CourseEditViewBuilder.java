@@ -34,6 +34,7 @@ public class CourseEditViewBuilder {
         ModelAndView modelAndView = new ModelAndView(COURSE_EDIT.viewName);
         modelAndView.addObject("course", course);
         modelAndView.addObject("errorMessage", errorMessage);
+        errorMessage = null;
         return modelAndView;
     }
 }

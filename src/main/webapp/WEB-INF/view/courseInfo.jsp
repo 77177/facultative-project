@@ -106,7 +106,7 @@
                     <span><%=course.getStartingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy").withLocale(locale))%></span><br>
                     <fmt:message key="form.finishDate"/>:
                     <span><%=course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy").withLocale(locale))%></span><br>
-                    <fmt:message key="word.status"/>: <span><%=course.isActive()%></span><br>
+                    <fmt:message key="word.status"/>: <span><%if(course.isActive() == true) {%><fmt:message key="form.active"/> <%} else {%><fmt:message key="form.closed"/><%}%></span><br>
                     <fmt:bundle basename = "bundle.courseInfo">
                         <fmt:message key="word.duration"/>:
                         <%

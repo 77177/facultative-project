@@ -99,7 +99,7 @@
                                 <td>
                                     <%= course.getFinishingDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy").withLocale(locale))%>
                                 </td>
-                                <td><a href="/course/<%=course.getId()%>">info</a></td>
+                                <td><a href="/course/<%=course.getId()%>"><fmt:message key="word.info"/></a></td>
                             </tr>
                             <%
                                 }

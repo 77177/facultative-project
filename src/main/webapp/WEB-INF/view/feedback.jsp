@@ -64,6 +64,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <sec:authorize access="isAuthenticated()">
+                        <a class="nav-link" href="/user/profile">
+                            <fmt:message key="message.myProfile"/>
+                        </a>
+                    </sec:authorize>
+                </li>
+                <li class="nav-item">
                     <sec:authorize access="!isAuthenticated()">
                         <a class="nav-link" href="/authenticator/login">
                             <fmt:message key="button.login"/>
