@@ -2,7 +2,6 @@ package com.epam.lab.group1.facultative.config.application;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
-import org.hibernate.dialect.PostgreSQL81Dialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,7 @@ import java.util.Properties;
 @ComponentScan(value = "com.epam.lab.group1.facultative.persistance")
 public class DaoConfig {
 
-    //@Bean(name = "dataSource")
+    @Bean(name = "H2DataSource")
     public DataSource H2DataSource() {
         EmbeddedDatabase embeddedDatabase = new EmbeddedDatabaseBuilder()
             .setName("Facultative")
@@ -30,7 +29,7 @@ public class DaoConfig {
         return embeddedDatabase;
     }
 
-    @Bean
+    @Bean(name = "postgresDataSource")
     public DataSource postgresDataSource() {
         BasicDataSource dataSourceConfig = new BasicDataSource();
         dataSourceConfig.setDriverClassName("org.postgresql.Driver");
@@ -40,11 +39,24 @@ public class DaoConfig {
         return dataSourceConfig;
     }
 
+    @Bean(name = "H2SessionFactory")
+    public SessionFactory H2sessionFactory() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        SessionFactory sessionFactory = new LocalSessionFactoryBuilder(H2DataSource())
+            .scanPackages("com.epam.lab.group1.facultative.model")
+            .addProperties(properties)
+            .buildSessionFactory();
+        return sessionFactory;
+    }
+
     @Bean(name = "sessionFactory")
     public SessionFactory sessionFactory() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL81Dialect");
         SessionFactory sessionFactory = new LocalSessionFactoryBuilder(postgresDataSource())
             .scanPackages("com.epam.lab.group1.facultative.model")
-            .addProperties(getHibernateProperties())
+            .addProperties(properties)
             .buildSessionFactory();
         return sessionFactory;
     }
@@ -52,11 +64,5 @@ public class DaoConfig {
     @Bean
     public HibernateTransactionManager transactionManager() {
         return new HibernateTransactionManager(sessionFactory());
-    }
-
-    private Properties getHibernateProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL81Dialect");
-        return properties;
     }
 }
