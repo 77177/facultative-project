@@ -60,13 +60,17 @@ public class UserController {
         if (action != null) {
             switch (action) {
                 case "leave": {
-                    principal.getCourseIdList().remove(new Integer(courseId));
-                    userService.leaveCourse(userId, courseId);
+                    if (principal.getCourseIdList().contains(new Integer(courseId))) {
+                        principal.getCourseIdList().remove(new Integer(courseId));
+                        userService.leaveCourse(userId, courseId);
+                    }
                     break;
                 }
                 case "subscribe": {
-                    principal.getCourseIdList().add(courseId);
-                    userService.subscribeCourse(userId, courseId);
+                    if (!principal.getCourseIdList().contains(new Integer(courseId))) {
+                        userService.subscribeCourse(userId, courseId);
+                        principal.getCourseIdList().add(courseId);
+                    }
                     break;
                 }
             }
