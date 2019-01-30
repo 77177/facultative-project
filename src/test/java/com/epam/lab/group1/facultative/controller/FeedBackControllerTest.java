@@ -47,30 +47,6 @@ public class FeedBackControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mockMvc;
-    private UserService userService;
-    private CourseService courseService;
-    private FeedBackService feedBackService;
-    private ExceptionModelAndViewBuilder exceptionModelAndViewBuilder;
-    private FeedbackViewBuilder feedbackViewBuilder;
-
-    public FeedBackControllerTest() {
-        this.feedbackViewBuilder = new FeedbackViewBuilder();
-        this.exceptionModelAndViewBuilder = new ExceptionModelAndViewBuilder();
-        ExceptionModelAndViewBuilder exceptionModelAndViewBuilder = mock(ExceptionModelAndViewBuilder.class);
-
-        FeedBack feedBack = new FeedBack();
-        feedBack.setStudentId(0);
-        feedBack.setCourseId(0);
-
-        this.userService = mock(UserService.class);
-        when(userService.getById(0)).thenReturn(new User());
-
-        this.courseService = mock(CourseService.class);
-        when(courseService.getById(0)).thenReturn(new Course());
-
-        this.feedBackService = mock(FeedBackService.class);
-        when(feedBackService.getFeedBack(0, 0)).thenReturn(new FeedBack());
-    }
 
     @Before
     public void init() {
@@ -78,20 +54,28 @@ public class FeedBackControllerTest {
     }
 
     @Test
-    public void testCreateFeedback() throws Exception {
+    public void testCreateFeedbackNonSubscribedUser() throws Exception {
         String username = "1tutor@gmail.com";
         String password = "1";
         SimpleGrantedAuthority tutorAuthority = new SimpleGrantedAuthority("tutor");
         SecurityContextUser securityContextUser = new SecurityContextUser(username, password, Arrays.asList(tutorAuthority));
         mockMvc.perform(MockMvcRequestBuilders.post("/feedback/")
-                .with(csrf())
-                .param("studentId", "5")
-                .param("courseId", "2")
-                .param("text", "feedbacktext")
-                .param("mark", "5")
-                .with(user(securityContextUser)))
+            .with(csrf())
+            .param("studentId", "5")
+            .param("courseId", "2")
+            .param("text", "feedbacktext")
+            .param("mark", "5")
+            .with(user(securityContextUser)))
             .andExpect(MockMvcResultMatchers.view().name(ERROR.viewName))
             .andExpect(MockMvcResultMatchers.model().attributeExists("userMessage", "message", "stackTrace"));
+    }
+
+    @Test
+    public void testCreateFeedbackSubscribedUser() throws Exception {
+        String username = "1tutor@gmail.com";
+        String password = "1";
+        SimpleGrantedAuthority tutorAuthority = new SimpleGrantedAuthority("tutor");
+        SecurityContextUser securityContextUser = new SecurityContextUser(username, password, Arrays.asList(tutorAuthority));
         mockMvc.perform(MockMvcRequestBuilders.post("/feedback/")
                 .with(csrf())
                 .param("studentId", "6")
@@ -117,7 +101,7 @@ public class FeedBackControllerTest {
     }
 
     @Test
-    public void testGetFeedbackPageProperlyLoggedStudent() throws Exception {
+    public void testGetFeedbackPageProperlyLoggedStudentSubscribed() throws Exception {
         String username = "1student@gmail.com";
         String password = "1";
         SimpleGrantedAuthority studentAuthority = new SimpleGrantedAuthority("student");
@@ -128,47 +112,72 @@ public class FeedBackControllerTest {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/6/course/1/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.FEEDBACK.viewName));
-        mockMvc
-                .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/2/").with(user(securityContextUser)))
-                .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/6/course/2/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.FEEDBACK.viewName));
+
+    }
+
+    @Test
+    public void testGetFeedbackPageProperlyLoggedStudentNonSubscribed() throws Exception {
+        String username = "1student@gmail.com";
+        String password = "1";
+        SimpleGrantedAuthority studentAuthority = new SimpleGrantedAuthority("student");
+        SecurityContextUser securityContextUser = new SecurityContextUser(username, password, Arrays.asList(studentAuthority));
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/2/").with(user(securityContextUser)))
+                .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/6/course/3/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
     }
 
     @Test
-    public void testGetFeedbackPageProperlyLoggedTutor() throws Exception {
+    public void testGetFeedbackPageProperlyLoggedTutorCourseOwner() throws Exception {
         String username = "1tutor@gmail.com";
         String password = "1";
         SimpleGrantedAuthority tutorAuthority = new SimpleGrantedAuthority("tutor");
         SecurityContextUser securityContextUser = new SecurityContextUser(username, password, Arrays.asList(tutorAuthority));
+
         //see my self feedback from my course
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/2/course/2/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
-        //see non subscribed me mine feedback from another course
-        mockMvc
-                .perform(MockMvcRequestBuilders.get("/feedback/user/2/course/3/").with(user(securityContextUser)))
-                .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+
         //another non subscribed tutor from my course
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/3/course/2/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+
         //Non subscribed student from my course
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/2/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+
         //Subscribed student from my course
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/6/course/2/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.FEEDBACK.viewName));
+    }
+
+    @Test
+    public void testGetFeedbackPageProperlyLoggedTutorNotCourseOwner() throws Exception {
+        String username = "1tutor@gmail.com";
+        String password = "1";
+        SimpleGrantedAuthority tutorAuthority = new SimpleGrantedAuthority("tutor");
+        SecurityContextUser securityContextUser = new SecurityContextUser(username, password, Arrays.asList(tutorAuthority));
+
+        //see non subscribed me mine feedback from another course
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/feedback/user/2/course/3/").with(user(securityContextUser)))
+                .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+
         //Non subscribed student from other course
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/5/course/3/").with(user(securityContextUser)))
                 .andExpect(MockMvcResultMatchers.view().name(ViewType.ERROR.viewName));
+
         //Subscribed student from another course
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/feedback/user/6/course/1/").with(user(securityContextUser)))
